@@ -1,0 +1,15 @@
+{
+  "published": [
+    "reason-rebase",
+    "bs-json",
+    "reason-react",
+    "bs-glamor",
+    "bucklescript-tea",
+    "reason-nact",
+    "reason-apollo"
+  ],
+
+  "unpublished": [
+    "glennsl/refetch"
+  ]
+}

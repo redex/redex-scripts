@@ -1,0 +1,23 @@
+{
+  "name": "reindex",
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "bsb -clean-world",
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "^2.1.0"
+  },
+  "dependencies": {
+    "bs-json": "^0.2.4",
+    "isomorphic-fetch": "^2.2.1",
+    "reason-rebase": "^0.1.2",
+    "refetch": "github:glennsl/refetch"
+  }
+}

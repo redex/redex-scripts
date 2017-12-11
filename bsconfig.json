@@ -1,0 +1,7 @@
+{
+  "name": "reindex",
+  "sources": ["src"],
+  "bsc-flags": ["-bs-super-errors"],
+  "refmt": 3,
+  "bs-dependencies": ["bs-json", "refetch", "reason-rebase"]
+}
