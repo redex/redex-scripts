@@ -54,11 +54,13 @@
     "immutable-re",
     "reductive",
     "bs-ocaml-protoc-json",
-    "vow",
     "bs-rebug",
     "reason-rebase",
 
-    "re-respect"
+    "re-respect",
+
+    "bs-date-fns",
+    "bs-websockets"
   ],
 
   "unpublished": [
@@ -84,6 +86,7 @@
     "transducers.re",
     "bs-revamp",
     "reason-react-native-navigation",
-    "infinite-jest"
+    "infinite-jest",
+    "vow"
   ]
 }
