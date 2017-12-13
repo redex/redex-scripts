@@ -1,6 +1,13 @@
 {
   "name": "reindex",
-  "sources": ["src"],
+  "package-specs": [{
+    "module": "commonjs",
+    "in-source": true
+  }],
+  "sources": [{
+    "dir": "src",
+    "subdirs": true
+  }],
   "bsc-flags": ["-bs-super-errors"],
   "refmt": 3,
   "bs-dependencies": ["bs-json", "refetch", "reason-rebase"]
