@@ -1,9 +1,11 @@
 let length = List.length;
 open Rebase;
 
+let packageDir = "data/generated/packages";
+
 let getKeywords = json => Json.Decode.(
   (
-    json |> field("name", string),
+    json |> field("id", string),
     json |> field("keywords", array(string))
   )
 );
@@ -12,21 +14,22 @@ let makeInvertedIndex = data => {
   let index = Hashtbl.create(data |> Array.length);
 
   data |> Array.forEach(
-          ((name, keywords)) =>
+          ((id, keywords)) =>
             keywords |> Array.forEach(
                         keyword => {
                           let old = switch (Hashtbl.find(index, keyword)) {
                           | exception Not_found => []
                           | v => v
                           };
-                          Hashtbl.replace(index, keyword, [name, ...old])
+                          Hashtbl.replace(index, keyword, [id, ...old])
                         }));
 
   Hashtbl.fold((k, v, acc) => [(k, v), ...acc], index, [])
 };
 
-Node.Fs.readdirSync("data/generated/packages")
-|> Array.map(filename => Node.Fs.readFileSync("data/generated/packages/" ++ filename, `utf8))
+Utils.Fs.readDirRecursively(packageDir)
+|> Array.filter(filename => filename |> Js.String.endsWith(".json"))
+|> Array.map(path => Node.Fs.readFileSync(path, `utf8))
 |> Array.map(Js.Json.parseExn)
 |> Array.map(getKeywords)
 |> makeInvertedIndex
