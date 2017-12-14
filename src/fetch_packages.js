@@ -2,13 +2,14 @@
 'use strict';
 
 var Fs                = require("fs");
+var $$Array           = require("bs-platform/lib/js/array.js");
 var Curry             = require("bs-platform/lib/js/curry.js");
 var Rebase            = require("reason-rebase/src/rebase.js");
 var Resync            = require("refetch/src/Resync.js");
 var Refetch           = require("refetch/src/Refetch.js");
 var Pervasives        = require("bs-platform/lib/js/pervasives.js");
 var Json_decode       = require("bs-json/src/Json_decode.js");
-var Json_encode       = require("bs-json/src/Json_encode.js");
+var Js_null_undefined = require("bs-platform/lib/js/js_null_undefined.js");
 var Refetch__Response = require("refetch/src/Refetch__Response.js");
 
 require('isomorphic-fetch')
@@ -65,37 +66,19 @@ function decode(json) {
                                     return new Date(prim);
                                   }), Json_decode.string, param);
                     })), json),
-          /* author */Json_decode.oneOf(/* :: */[
-                Json_decode.at(/* :: */[
-                      "collected",
+          /* author */Json_decode.optional(Json_decode.at(/* :: */[
+                    "collected",
+                    /* :: */[
+                      "metadata",
                       /* :: */[
-                        "metadata",
+                        "author",
                         /* :: */[
-                          "author",
-                          /* :: */[
-                            "name",
-                            /* [] */0
-                          ]
+                          "name",
+                          /* [] */0
                         ]
                       ]
-                    ], Json_decode.string),
-                /* :: */[
-                  Json_decode.at(/* :: */[
-                        "collected",
-                        /* :: */[
-                          "metadata",
-                          /* :: */[
-                            "publisher",
-                            /* :: */[
-                              "username",
-                              /* [] */0
-                            ]
-                          ]
-                        ]
-                      ], Json_decode.string),
-                  /* [] */0
-                ]
-              ], json),
+                    ]
+                  ], Json_decode.string), json),
           /* license */Json_decode.optional(Json_decode.at(/* :: */[
                     "collected",
                     /* :: */[
@@ -154,6 +137,36 @@ function decode(json) {
                       "final",
                       /* [] */0
                     ]
+                  ], Json_decode.$$float), json),
+          /* quality */Curry._1(Json_decode.at(/* :: */[
+                    "score",
+                    /* :: */[
+                      "detail",
+                      /* :: */[
+                        "quality",
+                        /* [] */0
+                      ]
+                    ]
+                  ], Json_decode.$$float), json),
+          /* popularity */Curry._1(Json_decode.at(/* :: */[
+                    "score",
+                    /* :: */[
+                      "detail",
+                      /* :: */[
+                        "popularity",
+                        /* [] */0
+                      ]
+                    ]
+                  ], Json_decode.$$float), json),
+          /* maintenance */Curry._1(Json_decode.at(/* :: */[
+                    "score",
+                    /* :: */[
+                      "detail",
+                      /* :: */[
+                        "maintenance",
+                        /* [] */0
+                      ]
+                    ]
                   ], Json_decode.$$float), json)
         ];
 }
@@ -178,87 +191,38 @@ var NPMS = /* module */[
   /* get */get
 ];
 
-function encodePackage(data) {
-  return Json_encode.object_(/* :: */[
-              /* tuple */[
-                "name",
-                data[/* name */1]
-              ],
-              /* :: */[
-                /* tuple */[
-                  "version",
-                  data[/* version */2]
-                ],
-                /* :: */[
-                  /* tuple */[
-                    "description",
-                    data[/* description */3]
-                  ],
-                  /* :: */[
-                    /* tuple */[
-                      "author",
-                      data[/* author */5]
-                    ],
-                    /* :: */[
-                      /* tuple */[
-                        "license",
-                        Json_encode.nullable((function (prim) {
-                                return prim;
-                              }), data[/* license */6])
-                      ],
-                      /* :: */[
-                        /* tuple */[
-                          "keywords",
-                          data[/* keywords */8]
-                        ],
-                        /* :: */[
-                          /* tuple */[
-                            "readme",
-                            data[/* readme */7]
-                          ],
-                          /* :: */[
-                            /* tuple */[
-                              "analyzed",
-                              data[/* analyzed */0].toISOString()
-                            ],
-                            /* :: */[
-                              /* tuple */[
-                                "updated",
-                                data[/* analyzed */0].toISOString()
-                              ],
-                              /* :: */[
-                                /* tuple */[
-                                  "stars",
-                                  Json_encode.nullable((function (prim) {
-                                          return prim;
-                                        }), data[/* stars */9])
-                                ],
-                                /* :: */[
-                                  /* tuple */[
-                                    "downloads",
-                                    data[/* downloads */10]
-                                  ],
-                                  /* :: */[
-                                    /* tuple */[
-                                      "score",
-                                      data[/* score */11]
-                                    ],
-                                    /* [] */0
-                                  ]
-                                ]
-                              ]
-                            ]
-                          ]
-                        ]
-                      ]
-                    ]
-                  ]
-                ]
-              ]
-            ]);
+function normalizeKeyword(keyword) {
+  var keyword$1 = keyword.toLowerCase();
+  if (keyword$1 === "reasonml") {
+    return "reason";
+  } else {
+    return keyword$1;
+  }
 }
 
-function getPublished(sourceFilename) {
+function makePackage(data) {
+  return {
+          type: "published",
+          id: data[/* name */1],
+          name: data[/* name */1],
+          version: data[/* version */2],
+          description: data[/* description */3],
+          author: Js_null_undefined.from_opt(data[/* author */5]),
+          license: Js_null_undefined.from_opt(data[/* license */6]),
+          keywords: $$Array.map(normalizeKeyword, data[/* keywords */8]),
+          readme: data[/* readme */7],
+          analyzed: data[/* analyzed */0],
+          updated: data[/* analyzed */0],
+          stars: Js_null_undefined.from_opt(data[/* stars */9]),
+          downloads: data[/* downloads */10],
+          score: data[/* score */11],
+          quality: data[/* quality */12],
+          popularity: data[/* popularity */13],
+          maintenance: data[/* maintenance */14]
+        };
+}
+
+function getSources(sourceFilename) {
   return Json_decode.field("published", (function (param) {
                 return Json_decode.array(Json_decode.string, param);
               }), JSON.parse(Fs.readFileSync(sourceFilename, "ascii")));
@@ -271,14 +235,15 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                         return /* () */0;
                       } else {
                         var data = param[0];
-                        var json = JSON.stringify(encodePackage(data));
+                        var json = JSON.stringify(makePackage(data));
                         Fs.writeFileSync("data/generated/packages/" + (encodeURIComponent(data[/* name */1]) + ".json"), json, "utf8");
                         return /* () */0;
                       }
                     }), get(source));
-      }), getPublished("data/sources.json"));
+      }), getSources("data/sources.json"));
 
-exports.NPMS          = NPMS;
-exports.encodePackage = encodePackage;
-exports.getPublished  = getPublished;
+exports.NPMS             = NPMS;
+exports.normalizeKeyword = normalizeKeyword;
+exports.makePackage      = makePackage;
+exports.getSources       = getSources;
 /*  Not a pure module */
