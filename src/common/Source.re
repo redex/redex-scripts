@@ -39,14 +39,3 @@ let parse = str =>
   } else {
     failwith("Fuck if I know what this is: " ++ str);
   };
-
-let getPublished = sourceFilename => 
-  Node.Fs.readFileSync(sourceFilename, `ascii)
-  |> Js.Json.parseExn
-  |> Json.Decode.(field("published", array(string)));
-
-let getUnpublished = sourceFilename => 
-  Node.Fs.readFileSync(sourceFilename, `ascii)
-  |> Js.Json.parseExn
-  |> Json.Decode.(field("unpublished", array(string)))
-  |> Array.map(parse);

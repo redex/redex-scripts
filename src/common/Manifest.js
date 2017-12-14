@@ -14,7 +14,17 @@ function decode(json) {
           /* description */Json_decode.optional((function (param) {
                   return Json_decode.field("description", Json_decode.string, param);
                 }), json),
-          /* license */Json_decode.field("license", Json_decode.string, json),
+          /* author */Json_decode.optional((function (param) {
+                  return Json_decode.field("author", Json_decode.string, param);
+                }), json),
+          /* license */Json_decode.optional((function (param) {
+                  return Json_decode.field("license", Json_decode.string, param);
+                }), json),
+          /* keywords */Json_decode.withDefault(/* array */[], (function (param) {
+                  return Json_decode.field("keywords", (function (param) {
+                                return Json_decode.array(Json_decode.string, param);
+                              }), param);
+                }), json),
           /* dependencies */Json_decode.withDefault({ }, (function (param) {
                   return Json_decode.field("dependencies", (function (param) {
                                 return Json_decode.dict(Json_decode.string, param);

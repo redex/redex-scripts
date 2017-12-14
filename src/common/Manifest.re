@@ -2,7 +2,9 @@ type t = {
   name: string,
   version: string,
   description: option(string),
-  license: string,
+  author: option(string),
+  license: option(string),
+  keywords: array(string),
   dependencies: Js.Dict.t(string)
 };
 
@@ -10,7 +12,9 @@ let decode = json => Json.Decode.{
   name: json |> field("name", string),
   version: json |> field("version", string),
   description: json |> optional(field("description", string)),
-  license: json |> field("license", string),
+  author: json |> optional(field("author", string)),
+  license: json |> optional(field("license", string)),
+  keywords: json |> withDefault([||], field("keywords", array(string))),
   dependencies: json |> withDefault(Js.Dict.empty(), field("dependencies", dict(string))),
 };
 
