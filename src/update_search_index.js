@@ -17,15 +17,27 @@ var index = client.initIndex(Config.Algolia[/* packageIndex */1]);
 
 $$Array.map((function (record) {
         index.addObject(record, (function (err, _) {
-                console.log(err);
-                return /* () */0;
+                if (err == null) {
+                  return /* () */0;
+                } else {
+                  console.log("");
+                  console.log(record.id);
+                  console.log("  ", err.message);
+                  return /* () */0;
+                }
               }));
         return /* () */0;
-      }), $$Array.map((function (prim) {
-            return JSON.parse(prim);
-          }), $$Array.map((function (path) {
-                return Fs.readFileSync(path, "utf8");
-              }), Utils.Fs[/* readDirRecursively */0](Config.packageDir))));
+      }), $$Array.map((function (record) {
+            return Object.assign({
+                        objectID: record.id
+                      }, record);
+          }), $$Array.map((function (prim) {
+                return prim;
+              }), $$Array.map((function (prim) {
+                    return JSON.parse(prim);
+                  }), $$Array.map((function (path) {
+                        return Fs.readFileSync(path, "utf8");
+                      }), Utils.Fs[/* readDirRecursively */0](Config.packageDir))))));
 
 exports.apiKey = apiKey;
 exports.client = client;

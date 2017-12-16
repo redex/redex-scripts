@@ -1,6 +1,7 @@
 type t = {.
   "type"          : string,
   "id"            : string,
+
   "name"          : string,
   "version"       : string,
   "description"   : string,
@@ -21,3 +22,6 @@ type t = {.
   "issuesUrl"     : Js.nullable(string),
   "docsUrl"       : Js.nullable(string),
 };
+
+external unsafeDecode : Js.Json.t => t = "%identity";
+external encode : t => Js.Json.t = "%identity";

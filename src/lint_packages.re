@@ -1,8 +1,5 @@
 open Rebase;
 
-external decodePackage : Js.Json.t => Package.t = "%identity";
-
-
 let lints = [
   ("Missing readme", package => package##readme == ""),
   ("Missing license", package => Js.Nullable.test(package##license)),
@@ -16,7 +13,7 @@ let lints = [
 Utils.Fs.readDirRecursively(Config.packageDir)
 |> Array.map(path => Node.Fs.readFileSync(path, `utf8))
 |> Array.map(Js.Json.parseExn)
-|> Array.map(decodePackage)
+|> Array.map(Package.unsafeDecode)
 |> Array.map(package => {
     let errors =
       lints |> List.map(((message, test)) => test(package) ? Some(message) : None)
