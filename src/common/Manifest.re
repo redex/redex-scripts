@@ -1,21 +1,34 @@
 type t = {
-  name: string,
-  version: string,
-  description: option(string),
-  author: option(string),
-  license: option(string),
-  keywords: array(string),
-  dependencies: Js.Dict.t(string)
+  name          : string,
+  version       : string,
+  description   : option(string),
+  author        : option(string),
+  license       : option(string),
+  keywords      : option(array(string)),
+  dependencies  : option(Js.Dict.t(string)),
+  homepage      : option(string),
+  repositoryUrl : option(string),
+  bugsUrl       : option(string),
+
 };
 
 let decode = json => Json.Decode.{
-  name: json |> field("name", string),
-  version: json |> field("version", string),
-  description: json |> optional(field("description", string)),
-  author: json |> optional(field("author", string)),
-  license: json |> optional(field("license", string)),
-  keywords: json |> withDefault([||], field("keywords", array(string))),
-  dependencies: json |> withDefault(Js.Dict.empty(), field("dependencies", dict(string))),
+  name          : json |> field("name", string),
+  version       : json |> field("version", string),
+  description   : json |> optional(field("description", string)),
+  author        : json |> optional(field("author", string)),
+  license       : json |> optional(either(
+                            at(["license", "type"], string),
+                            field("license", string))),
+  keywords      : json |> optional(field("keywords", array(string))),
+  dependencies  : json |> optional(field("dependencies", dict(string))),
+  homepage      : json |> optional(field("homepage", string)),
+  repositoryUrl : json |> optional(either(
+                            at(["repository", "url"], string),
+                            field("repository", string))),
+  bugsUrl       : json |> optional(either(
+                            at(["bugs", "url"], string),
+                            field("bugs", string))),
 };
 
 let get = source => {

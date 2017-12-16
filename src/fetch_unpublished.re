@@ -1,27 +1,6 @@
-open Rebase;
+open! Rebase;
  
 [%%raw {|require('isomorphic-fetch')|}];
-let makePackage = (manifest: Manifest.t, readme: string, stars: int): Package.t =>
-  {
-    "type"        : "unpublished",
-    "id"          : "unpublished/" ++ manifest.name,
-    "name"        : manifest.name,
-    "version"     : manifest.version,
-    "description" : manifest.description |> Option.getOr(""),
-    "author"      : manifest.author |> Js.Nullable.from_opt,
-    "license"     : manifest.license |> Js.Nullable.from_opt,
-    "keywords"    : manifest.keywords |> Array.map(Js.String.toLowerCase),
-    "readme"      : readme,
-    "analyzed"    : Js.Date.make(),
-    "updated"     : Js.Date.make(),
-    "stars"       : Js.Nullable.return(stars),
-    "downloads"   : 0.,
-    "score"       : 0.,
-    "quality"     : 0.,
-    "popularity"  : 0.,
-    "maintenance" : 0.
-  };
-
 let getSources = sourceFilename => 
   Node.Fs.readFileSync(sourceFilename, `ascii)
   |> Js.Json.parseExn
@@ -33,7 +12,7 @@ let getReadme = source => {
 
   let url = 
     switch source {
-    | Source.Github(user, repo) => {j|https://raw.githubusercontent.com/$user/$repo/master/README.md|j}
+    | Source.Github(owner, repo) => {j|https://raw.githubusercontent.com/$owner/$repo/master/README.md|j}
     };
 
   get(url) |> Future.flatMap(
@@ -47,7 +26,7 @@ let getStats = source => {
 
   let url = 
     switch source {
-    | Source.Github(user, repo) => {j|https://api.github.com/repos/$user/$repo|j}
+    | Source.Github(owner, repo) => {j|https://api.github.com/repos/$owner/$repo|j}
     };
 
   get(url) |> Future.flatMap(
@@ -56,8 +35,37 @@ let getStats = source => {
            |> Future.map(Json.Decode.(field("stargazers_count", int)));
 };
 
+let getRepositoryUrl =
+  fun | Source.Github(owner, repo) => {j|https://github.com/$owner/$repo|j}
+;
+
+let makePackage = (source: Source.t, manifest: Manifest.t, readme: string, stars: int): Package.t =>
+  {
+    "type"          : "unpublished",
+    "id"            : "unpublished/" ++ manifest.name,
+    "name"          : manifest.name,
+    "version"       : manifest.version,
+    "description"   : manifest.description  |> Option.getOr(""),
+    "author"        : manifest.author       |> Js.Nullable.from_opt,
+    "license"       : manifest.license      |> Js.Nullable.from_opt,
+    "keywords"      : manifest.keywords     |> Option.getOr([||])
+                                            |> Array.map(Js.String.toLowerCase),
+    "readme"        : readme,
+    "analyzed"      : Js.Date.make(),
+    "updated"       : Js.Date.make(),
+    "stars"         : Js.Nullable.return(stars),
+    "score"         : 0.,
+    "quality"       : 0.,
+    "popularity"    : 0.,
+    "maintenance"   : 0.,
+    "homepageUrl"   : manifest.homepage     |> Js.Nullable.from_opt,
+    "repositoryUrl" : Js.Nullable.return(getRepositoryUrl(source)),
+    "npmUrl"        : Js.Nullable.null,
+    "issuesUrl"     : manifest.bugsUrl      |> Js.Nullable.from_opt,
+    "docsUrl"       : Js.Nullable.null
+  };
+
 let () = {
-  open Rebase;
   open Resync;
 
   getSources("data/sources.json")
@@ -69,7 +77,7 @@ let () = {
     |> Future.whenCompleted(
         fun | Result.Ok((manifest, readme, stats)) => {
               let json =
-                makePackage(manifest, readme, stats)
+                makePackage(source, manifest, readme, stats)
                      |> Obj.magic
                      |> Js.Json.stringify;
 

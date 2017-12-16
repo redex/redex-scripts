@@ -37,10 +37,10 @@ function parseGitHubPath(path) {
   if (match.length !== 2) {
     return Pervasives.failwith("???");
   } else {
-    var user = match[0];
+    var owner = match[0];
     var repo = match[1];
     return /* Github */[
-            user,
+            owner,
             repo
           ];
   }

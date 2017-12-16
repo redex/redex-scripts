@@ -2,7 +2,6 @@
 'use strict';
 
 var Fs                = require("fs");
-var $$Array           = require("bs-platform/lib/js/array.js");
 var Curry             = require("bs-platform/lib/js/curry.js");
 var Rebase            = require("reason-rebase/src/rebase.js");
 var Resync            = require("refetch/src/Resync.js");
@@ -89,7 +88,7 @@ function decode(json) {
                       ]
                     ]
                   ], Json_decode.string), json),
-          /* readme */Json_decode.withDefault("", Json_decode.at(/* :: */[
+          /* readme */Json_decode.optional(Json_decode.at(/* :: */[
                     "collected",
                     /* :: */[
                       "metadata",
@@ -99,7 +98,7 @@ function decode(json) {
                       ]
                     ]
                   ], Json_decode.string), json),
-          /* keywords */Json_decode.withDefault(/* array */[], Json_decode.at(/* :: */[
+          /* keywords */Json_decode.optional(Json_decode.at(/* :: */[
                     "collected",
                     /* :: */[
                       "metadata",
@@ -121,16 +120,6 @@ function decode(json) {
                       ]
                     ]
                   ], Json_decode.$$int), json),
-          /* downloads */Curry._1(Json_decode.at(/* :: */[
-                    "evaluation",
-                    /* :: */[
-                      "popularity",
-                      /* :: */[
-                        "downloadsCount",
-                        /* [] */0
-                      ]
-                    ]
-                  ], Json_decode.$$float), json),
           /* score */Curry._1(Json_decode.at(/* :: */[
                     "score",
                     /* :: */[
@@ -167,7 +156,59 @@ function decode(json) {
                         /* [] */0
                       ]
                     ]
-                  ], Json_decode.$$float), json)
+                  ], Json_decode.$$float), json),
+          /* homepageUrl */Json_decode.optional(Json_decode.at(/* :: */[
+                    "collected",
+                    /* :: */[
+                      "metadata",
+                      /* :: */[
+                        "links",
+                        /* :: */[
+                          "homepage",
+                          /* [] */0
+                        ]
+                      ]
+                    ]
+                  ], Json_decode.string), json),
+          /* repositoryUrl */Json_decode.optional(Json_decode.at(/* :: */[
+                    "collected",
+                    /* :: */[
+                      "metadata",
+                      /* :: */[
+                        "links",
+                        /* :: */[
+                          "repository",
+                          /* [] */0
+                        ]
+                      ]
+                    ]
+                  ], Json_decode.string), json),
+          /* npmUrl */Json_decode.optional(Json_decode.at(/* :: */[
+                    "collected",
+                    /* :: */[
+                      "metadata",
+                      /* :: */[
+                        "links",
+                        /* :: */[
+                          "npm",
+                          /* [] */0
+                        ]
+                      ]
+                    ]
+                  ], Json_decode.string), json),
+          /* issuesUrl */Json_decode.optional(Json_decode.at(/* :: */[
+                    "collected",
+                    /* :: */[
+                      "metadata",
+                      /* :: */[
+                        "links",
+                        /* :: */[
+                          "bugs",
+                          /* [] */0
+                        ]
+                      ]
+                    ]
+                  ], Json_decode.string), json)
         ];
 }
 
@@ -209,16 +250,20 @@ function makePackage(data) {
           description: data[/* description */3],
           author: Js_null_undefined.from_opt(data[/* author */5]),
           license: Js_null_undefined.from_opt(data[/* license */6]),
-          keywords: $$Array.map(normalizeKeyword, data[/* keywords */8]),
-          readme: data[/* readme */7],
+          keywords: Rebase.$$Array[/* map */2](normalizeKeyword, Rebase.Option[/* getOr */14](/* array */[], data[/* keywords */8])),
+          readme: Rebase.Option[/* getOr */14]("", data[/* readme */7]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],
           stars: Js_null_undefined.from_opt(data[/* stars */9]),
-          downloads: data[/* downloads */10],
-          score: data[/* score */11],
-          quality: data[/* quality */12],
-          popularity: data[/* popularity */13],
-          maintenance: data[/* maintenance */14]
+          score: data[/* score */10],
+          quality: data[/* quality */11],
+          popularity: data[/* popularity */12],
+          maintenance: data[/* maintenance */13],
+          homepageUrl: Js_null_undefined.from_opt(data[/* homepageUrl */14]),
+          repositoryUrl: Js_null_undefined.from_opt(data[/* repositoryUrl */15]),
+          npmUrl: Js_null_undefined.from_opt(data[/* npmUrl */16]),
+          issuesUrl: Js_null_undefined.from_opt(data[/* issuesUrl */17]),
+          docsUrl: null
         };
 }
 

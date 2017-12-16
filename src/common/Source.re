@@ -1,6 +1,6 @@
 /*open Rebase;*/
 
-type unpublishedSource = 
+type t = 
   | Github(string, string);
 
 let looksLikeUrl = str =>
@@ -27,7 +27,7 @@ let looksLikeGitHubPath = str =>
 
 let parseGitHubPath = path =>
   switch (path |> Js.String.split("/")) {
-  | [|user, repo|]  => Github(user, repo)
+  | [|owner, repo|]  => Github(owner, repo)
   | _               => failwith("???")
   };
 

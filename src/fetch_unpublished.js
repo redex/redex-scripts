@@ -15,30 +15,6 @@ var Refetch__Response = require("refetch/src/Refetch__Response.js");
 require('isomorphic-fetch')
 ;
 
-function makePackage(manifest, readme, stars) {
-  return {
-          type: "unpublished",
-          id: "unpublished/" + manifest[/* name */0],
-          name: manifest[/* name */0],
-          version: manifest[/* version */1],
-          description: Rebase.Option[/* getOr */14]("", manifest[/* description */2]),
-          author: Js_null_undefined.from_opt(manifest[/* author */3]),
-          license: Js_null_undefined.from_opt(manifest[/* license */4]),
-          keywords: Rebase.$$Array[/* map */2]((function (prim) {
-                  return prim.toLowerCase();
-                }), manifest[/* keywords */5]),
-          readme: readme,
-          analyzed: new Date(),
-          updated: new Date(),
-          stars: stars,
-          downloads: 0,
-          score: 0,
-          quality: 0,
-          popularity: 0,
-          maintenance: 0
-        };
-}
-
 function getSources(sourceFilename) {
   return Json_decode.field("unpublished", (function (param) {
                 return Json_decode.array(Json_decode.string, param);
@@ -69,6 +45,38 @@ function getStats(source) {
                   }), Refetch.get(url)));
 }
 
+function getRepositoryUrl(param) {
+  return "https://github.com/" + (String(param[0]) + ("/" + (String(param[1]) + "")));
+}
+
+function makePackage(source, manifest, readme, stars) {
+  return {
+          type: "unpublished",
+          id: "unpublished/" + manifest[/* name */0],
+          name: manifest[/* name */0],
+          version: manifest[/* version */1],
+          description: Rebase.Option[/* getOr */14]("", manifest[/* description */2]),
+          author: Js_null_undefined.from_opt(manifest[/* author */3]),
+          license: Js_null_undefined.from_opt(manifest[/* license */4]),
+          keywords: Rebase.$$Array[/* map */2]((function (prim) {
+                  return prim.toLowerCase();
+                }), Rebase.Option[/* getOr */14](/* array */[], manifest[/* keywords */5])),
+          readme: readme,
+          analyzed: new Date(),
+          updated: new Date(),
+          stars: stars,
+          score: 0,
+          quality: 0,
+          popularity: 0,
+          maintenance: 0,
+          homepageUrl: Js_null_undefined.from_opt(manifest[/* homepage */7]),
+          repositoryUrl: getRepositoryUrl(source),
+          npmUrl: null,
+          issuesUrl: Js_null_undefined.from_opt(manifest[/* bugsUrl */9]),
+          docsUrl: null
+        };
+}
+
 Rebase.$$Array[/* forEach */8]((function (source) {
         return Resync.Future[/* whenCompleted */6]((function (param) {
                       if (param.tag) {
@@ -77,7 +85,7 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                       } else {
                         var match = param[0];
                         var manifest = match[0];
-                        var json = JSON.stringify(makePackage(manifest, match[1], match[2]));
+                        var json = JSON.stringify(makePackage(source, manifest, match[1], match[2]));
                         Fs.writeFileSync("data/generated/packages/unpublished/" + (encodeURIComponent(manifest[/* name */0]) + ".json"), json, "utf8");
                         return /* () */0;
                       }
@@ -101,8 +109,9 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                             }), Manifest.get(source))));
       }), Rebase.$$Array[/* map */2](Source.parse, getSources("data/sources.json")));
 
-exports.makePackage = makePackage;
-exports.getSources  = getSources;
-exports.getReadme   = getReadme;
-exports.getStats    = getStats;
+exports.getSources       = getSources;
+exports.getReadme        = getReadme;
+exports.getStats         = getStats;
+exports.getRepositoryUrl = getRepositoryUrl;
+exports.makePackage      = makePackage;
 /*  Not a pure module */

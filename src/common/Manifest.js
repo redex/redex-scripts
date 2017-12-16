@@ -17,19 +17,46 @@ function decode(json) {
           /* author */Json_decode.optional((function (param) {
                   return Json_decode.field("author", Json_decode.string, param);
                 }), json),
-          /* license */Json_decode.optional((function (param) {
-                  return Json_decode.field("license", Json_decode.string, param);
-                }), json),
-          /* keywords */Json_decode.withDefault(/* array */[], (function (param) {
+          /* license */Json_decode.optional(Json_decode.either(Json_decode.at(/* :: */[
+                        "license",
+                        /* :: */[
+                          "type",
+                          /* [] */0
+                        ]
+                      ], Json_decode.string), (function (param) {
+                      return Json_decode.field("license", Json_decode.string, param);
+                    })), json),
+          /* keywords */Json_decode.optional((function (param) {
                   return Json_decode.field("keywords", (function (param) {
                                 return Json_decode.array(Json_decode.string, param);
                               }), param);
                 }), json),
-          /* dependencies */Json_decode.withDefault({ }, (function (param) {
+          /* dependencies */Json_decode.optional((function (param) {
                   return Json_decode.field("dependencies", (function (param) {
                                 return Json_decode.dict(Json_decode.string, param);
                               }), param);
-                }), json)
+                }), json),
+          /* homepage */Json_decode.optional((function (param) {
+                  return Json_decode.field("homepage", Json_decode.string, param);
+                }), json),
+          /* repositoryUrl */Json_decode.optional(Json_decode.either(Json_decode.at(/* :: */[
+                        "repository",
+                        /* :: */[
+                          "url",
+                          /* [] */0
+                        ]
+                      ], Json_decode.string), (function (param) {
+                      return Json_decode.field("repository", Json_decode.string, param);
+                    })), json),
+          /* bugsUrl */Json_decode.optional(Json_decode.either(Json_decode.at(/* :: */[
+                        "bugs",
+                        /* :: */[
+                          "url",
+                          /* [] */0
+                        ]
+                      ], Json_decode.string), (function (param) {
+                      return Json_decode.field("bugs", Json_decode.string, param);
+                    })), json)
         ];
 }
 
