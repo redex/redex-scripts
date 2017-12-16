@@ -3,17 +3,17 @@
 
 var Fs            = require("fs");
 var $$Array       = require("bs-platform/lib/js/array.js");
+var Utils         = require("./common/Utils.js");
+var Config        = require("./common/Config.js");
 var Process       = require("process");
 var Caml_array    = require("bs-platform/lib/js/caml_array.js");
 var Algoliasearch = require("algoliasearch");
 
-var appId = "B1AVN0IGTU";
-
 var apiKey = Caml_array.caml_array_get(Process.argv, 2);
 
-var client = Algoliasearch(appId, apiKey);
+var client = Algoliasearch(Config.Algolia[/* appId */0], apiKey);
 
-var index = client.initIndex("re:libs");
+var index = client.initIndex(Config.Algolia[/* packageIndex */1]);
 
 $$Array.map((function (record) {
         index.addObject(record, (function (err, _) {
@@ -23,11 +23,10 @@ $$Array.map((function (record) {
         return /* () */0;
       }), $$Array.map((function (prim) {
             return JSON.parse(prim);
-          }), $$Array.map((function (filename) {
-                return Fs.readFileSync("data/generated/packages/" + filename, "utf8");
-              }), Fs.readdirSync("data/generated/packages"))));
+          }), $$Array.map((function (path) {
+                return Fs.readFileSync(path, "utf8");
+              }), Utils.Fs[/* readDirRecursively */0](Config.packageDir))));
 
-exports.appId  = appId;
 exports.apiKey = apiKey;
 exports.client = client;
 exports.index  = index;

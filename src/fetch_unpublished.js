@@ -2,6 +2,8 @@
 'use strict';
 
 var Fs                = require("fs");
+var Path              = require("path");
+var Config            = require("./common/Config.js");
 var Rebase            = require("reason-rebase/src/rebase.js");
 var Resync            = require("refetch/src/Resync.js");
 var Source            = require("./common/Source.js");
@@ -15,10 +17,10 @@ var Refetch__Response = require("refetch/src/Refetch__Response.js");
 require('isomorphic-fetch')
 ;
 
-function getSources(sourceFilename) {
+function getSources() {
   return Json_decode.field("unpublished", (function (param) {
                 return Json_decode.array(Json_decode.string, param);
-              }), JSON.parse(Fs.readFileSync(sourceFilename, "ascii")));
+              }), JSON.parse(Fs.readFileSync(Config.sourcesFile, "ascii")));
 }
 
 function getReadme(source) {
@@ -86,7 +88,8 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                         var match = param[0];
                         var manifest = match[0];
                         var json = JSON.stringify(makePackage(source, manifest, match[1], match[2]));
-                        Fs.writeFileSync("data/generated/packages/unpublished/" + (encodeURIComponent(manifest[/* name */0]) + ".json"), json, "utf8");
+                        var path = Path.join(Config.packageDir, "unpublished", encodeURIComponent(manifest[/* name */0]) + ".json");
+                        Fs.writeFileSync(path, json, "utf8");
                         return /* () */0;
                       }
                     }), Resync.Future[/* flatMap */9]((function (param) {
@@ -107,7 +110,7 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                                                   ];
                                           }), getReadme(source));
                             }), Manifest.get(source))));
-      }), Rebase.$$Array[/* map */2](Source.parse, getSources("data/sources.json")));
+      }), Rebase.$$Array[/* map */2](Source.parse, getSources(/* () */0)));
 
 exports.getSources       = getSources;
 exports.getReadme        = getReadme;

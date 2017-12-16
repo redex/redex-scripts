@@ -3,7 +3,9 @@
 
 var Fs                      = require("fs");
 var List                    = require("bs-platform/lib/js/list.js");
+var Path                    = require("path");
 var Utils                   = require("./common/Utils.js");
+var Config                  = require("./common/Config.js");
 var Rebase                  = require("reason-rebase/src/rebase.js");
 var Hashtbl                 = require("bs-platform/lib/js/hashtbl.js");
 var Js_dict                 = require("bs-platform/lib/js/js_dict.js");
@@ -11,7 +13,7 @@ var Json_decode             = require("bs-json/src/Json_decode.js");
 var Json_encode             = require("bs-json/src/Json_encode.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
-var packageDir = "data/generated/packages";
+var outputFile = Path.join(Config.outputDir, "keywords.json");
 
 function getKeywords(json) {
   return /* tuple */[
@@ -84,16 +86,16 @@ var json = JSON.stringify(Json_encode.list((function (prim) {
                             return JSON.parse(prim);
                           }), Rebase.$$Array[/* map */2]((function (path) {
                                 return Fs.readFileSync(path, "utf8");
-                              }), Rebase.$$Array[/* filter */10]((function (filename) {
-                                    return +filename.endsWith(".json");
-                                  }), Utils.Fs[/* readDirRecursively */0](packageDir)))))))));
+                              }), Rebase.$$Array[/* filter */10]((function (path) {
+                                    return +path.endsWith(".json");
+                                  }), Utils.Fs[/* readDirRecursively */0](Config.packageDir)))))))));
 
-Fs.writeFileSync("data/generated/keywords.json", json, "utf8");
+Fs.writeFileSync(outputFile, json, "utf8");
 
 var length = List.length;
 
 exports.length            = length;
-exports.packageDir        = packageDir;
+exports.outputFile        = outputFile;
 exports.getKeywords       = getKeywords;
 exports.makeInvertedIndex = makeInvertedIndex;
-/* json Not a pure module */
+/* outputFile Not a pure module */

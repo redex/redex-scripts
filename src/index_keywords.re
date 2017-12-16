@@ -1,7 +1,7 @@
 let length = List.length;
 open Rebase;
 
-let packageDir = "data/generated/packages";
+let outputFile = Node.Path.join2(Config.outputDir, "keywords.json");
 
 let getKeywords = json => Json.Decode.(
   (
@@ -27,8 +27,8 @@ let makeInvertedIndex = data => {
   Hashtbl.fold((k, v, acc) => [(k, v), ...acc], index, [])
 };
 
-Utils.Fs.readDirRecursively(packageDir)
-|> Array.filter(filename => filename |> Js.String.endsWith(".json"))
+Utils.Fs.readDirRecursively(Config.packageDir)
+|> Array.filter(path => path |> Js.String.endsWith(".json"))
 |> Array.map(path => Node.Fs.readFileSync(path, `utf8))
 |> Array.map(Js.Json.parseExn)
 |> Array.map(getKeywords)
@@ -40,4 +40,4 @@ Utils.Fs.readDirRecursively(packageDir)
 ]))
 |> Json.Encode.(list(dict))
 |> Js.Json.stringify
-|> json => Node.Fs.writeFileSync("data/generated/keywords.json", json, `utf8);
+|> json => Node.Fs.writeFileSync(outputFile, json, `utf8);

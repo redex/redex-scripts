@@ -1,8 +1,8 @@
 open! Rebase;
  
 [%%raw {|require('isomorphic-fetch')|}];
-let getSources = sourceFilename => 
-  Node.Fs.readFileSync(sourceFilename, `ascii)
+let getSources = () => 
+  Node.Fs.readFileSync(Config.sourcesFile, `ascii)
   |> Js.Json.parseExn
   |> Json.Decode.(field("unpublished", array(string)));
 
@@ -68,7 +68,7 @@ let makePackage = (source: Source.t, manifest: Manifest.t, readme: string, stars
 let () = {
   open Resync;
 
-  getSources("data/sources.json")
+  getSources()
   |> Array.map(Source.parse)
   |> Array.forEach(source =>
     Manifest.get(source)
@@ -81,7 +81,13 @@ let () = {
                      |> Obj.magic
                      |> Js.Json.stringify;
 
-              Node.Fs.writeFileSync("data/generated/packages/unpublished/" ++ Js.Global.encodeURIComponent(manifest.name) ++ ".json", json, `utf8);
+              let path = Node.Path.join([|
+                Config.packageDir,
+                "unpublished",
+                Js.Global.encodeURIComponent(manifest.name) ++ ".json"
+              |]);
+
+              Node.Fs.writeFileSync(path, json, `utf8);
             }
             | Result.Error(e) =>
               Js.log4("\n", source, "\n", e)

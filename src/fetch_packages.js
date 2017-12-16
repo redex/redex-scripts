@@ -2,7 +2,9 @@
 'use strict';
 
 var Fs                = require("fs");
+var Path              = require("path");
 var Curry             = require("bs-platform/lib/js/curry.js");
+var Config            = require("./common/Config.js");
 var Rebase            = require("reason-rebase/src/rebase.js");
 var Resync            = require("refetch/src/Resync.js");
 var Refetch           = require("refetch/src/Refetch.js");
@@ -267,10 +269,10 @@ function makePackage(data) {
         };
 }
 
-function getSources(sourceFilename) {
+function getSources() {
   return Json_decode.field("published", (function (param) {
                 return Json_decode.array(Json_decode.string, param);
-              }), JSON.parse(Fs.readFileSync(sourceFilename, "ascii")));
+              }), JSON.parse(Fs.readFileSync(Config.sourcesFile, "ascii")));
 }
 
 Rebase.$$Array[/* forEach */8]((function (source) {
@@ -281,11 +283,12 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                       } else {
                         var data = param[0];
                         var json = JSON.stringify(makePackage(data));
-                        Fs.writeFileSync("data/generated/packages/" + (encodeURIComponent(data[/* name */1]) + ".json"), json, "utf8");
+                        var path = Path.join(Config.packageDir, encodeURIComponent(data[/* name */1]) + ".json");
+                        Fs.writeFileSync(path, json, "utf8");
                         return /* () */0;
                       }
                     }), get(source));
-      }), getSources("data/sources.json"));
+      }), getSources(/* () */0));
 
 exports.NPMS             = NPMS;
 exports.normalizeKeyword = normalizeKeyword;

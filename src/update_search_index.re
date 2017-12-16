@@ -1,10 +1,9 @@
-let appId = "B1AVN0IGTU";
 let apiKey = Node.Process.argv[2]; 
 
-let client = Algolia.makeClient(appId, apiKey);
-let index = Algolia.initIndex("re:libs", client);
+let client = Algolia.makeClient(Config.Algolia.appId, apiKey);
+let index = Algolia.initIndex(Config.Algolia.packageIndex, client);
 
-Node.Fs.readdirSync("data/generated/packages")
-|> Array.map(filename => Node.Fs.readFileSync("data/generated/packages/" ++ filename, `utf8))
+Utils.Fs.readDirRecursively(Config.packageDir)
+|> Array.map(path => Node.Fs.readFileSync(path, `utf8))
 |> Array.map(Js.Json.parseExn)
 |> Array.map(record => Algolia.addObject(record, (err, _) => Js.log(err), index));
