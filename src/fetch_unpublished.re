@@ -49,7 +49,8 @@ let makePackage = (source: Source.t, manifest: Manifest.t, readme: string, stars
     "author"        : manifest.author       |> Js.Nullable.from_opt,
     "license"       : manifest.license      |> Js.Nullable.from_opt,
     "keywords"      : manifest.keywords     |> Option.getOr([||])
-                                            |> Array.map(Js.String.toLowerCase),
+                                            |> Array.map(Js.String.toLowerCase)
+                                            |> Utils.filterDuplicates,
     "readme"        : readme,
     "analyzed"      : Js.Date.make(),
     "updated"       : Js.Date.make(),

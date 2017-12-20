@@ -78,7 +78,8 @@ let makePackage = (data: NPMS.t): Package.t =>
     "author"        : data.author         |> Js.Nullable.from_opt,
     "license"       : data.license        |> Js.Nullable.from_opt,
     "keywords"      : data.keywords       |> Option.getOr([||])
-                                          |> Array.map(normalizeKeyword),
+                                          |> Array.map(normalizeKeyword)
+                                          |> Utils.filterDuplicates,
     "readme"        : data.readme         |> Option.getOr(""),
     "analyzed"      : data.analyzed,
     "updated"       : data.analyzed,

@@ -22,3 +22,11 @@ module Fs = {
       })
   };
 };
+
+let filterDuplicates = arr => {
+  let unique = [||];
+  let set = Hashtbl.create(Js.Array.length(arr));
+  arr |> Js.Array.forEach(x => Hashtbl.replace(set, x, ()));
+  set |> Hashtbl.iter((x, _) => Js.Array.push(x, unique) |> ignore);
+  unique
+};

@@ -4,6 +4,7 @@
 var Fs                = require("fs");
 var Path              = require("path");
 var Curry             = require("bs-platform/lib/js/curry.js");
+var Utils             = require("./common/Utils.js");
 var Config            = require("./common/Config.js");
 var Rebase            = require("reason-rebase/src/rebase.js");
 var Resync            = require("refetch/src/Resync.js");
@@ -252,7 +253,7 @@ function makePackage(data) {
           description: data[/* description */3],
           author: Js_null_undefined.from_opt(data[/* author */5]),
           license: Js_null_undefined.from_opt(data[/* license */6]),
-          keywords: Rebase.$$Array[/* map */2](normalizeKeyword, Rebase.Option[/* getOr */14](/* array */[], data[/* keywords */8])),
+          keywords: Utils.filterDuplicates(Rebase.$$Array[/* map */2](normalizeKeyword, Rebase.Option[/* getOr */14](/* array */[], data[/* keywords */8]))),
           readme: Rebase.Option[/* getOr */14]("", data[/* readme */7]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],

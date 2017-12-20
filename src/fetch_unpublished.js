@@ -3,6 +3,7 @@
 
 var Fs                = require("fs");
 var Path              = require("path");
+var Utils             = require("./common/Utils.js");
 var Config            = require("./common/Config.js");
 var Rebase            = require("reason-rebase/src/rebase.js");
 var Resync            = require("refetch/src/Resync.js");
@@ -60,9 +61,9 @@ function makePackage(source, manifest, readme, stars) {
           description: Rebase.Option[/* getOr */14]("", manifest[/* description */2]),
           author: Js_null_undefined.from_opt(manifest[/* author */3]),
           license: Js_null_undefined.from_opt(manifest[/* license */4]),
-          keywords: Rebase.$$Array[/* map */2]((function (prim) {
-                  return prim.toLowerCase();
-                }), Rebase.Option[/* getOr */14](/* array */[], manifest[/* keywords */5])),
+          keywords: Utils.filterDuplicates(Rebase.$$Array[/* map */2]((function (prim) {
+                      return prim.toLowerCase();
+                    }), Rebase.Option[/* getOr */14](/* array */[], manifest[/* keywords */5]))),
           readme: readme,
           analyzed: new Date(),
           updated: new Date(),
