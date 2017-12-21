@@ -101,7 +101,12 @@
     "szymonzmyslony/reason-react-native-navigation",
     "glennsl/bs-revamp",
     "wokalski/vow",
-    "glennsl/infinite-jest"
+    "glennsl/infinite-jest",
+    "jchavarri/bs-bn.js",
+    "Astrocoders/restyled",
+    "Astrocoders/bs-reason-apollo",
+    "Astrocoders/reform",
+    "state-machine-systems/JsonCodec"
   ],
 
   "not-even-package.json": [
