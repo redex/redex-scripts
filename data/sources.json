@@ -1,6 +1,5 @@
 {
   "published": [
-
     "bs-webapi",
     "bs-director",
     "bs-fetch",
@@ -60,7 +59,23 @@
     "re-respect",
 
     "bs-date-fns",
-    "bs-websockets"
+    "bs-websockets",
+
+    "json-r",
+    "bs-dataloader",
+    "bs-little-parser",
+    "re-classnames",
+    "rationale",
+    "bs-svg-attachment",
+    "bs-material-ui",
+    "bs-material-ui-icons",
+    "clj-collection-apis-reasonml",
+    "bs-react-fela",
+    "bs-knex",
+    "bs-promise-router",
+    "re-formality",
+    "bs-chalk",
+    "bs-spectacle"
   ],
 
   "unpublished": [
@@ -91,5 +106,57 @@
 
   "not-even-package.json": [
     "IwanKaramazow/transducers.re"
+  ],
+
+  "published-prematurely": [
+    "bs-aeson",
+    "bs-css-core",
+    "bs-string-map",
+    "bs-stdlib",
+    "bs-node-debug",
+    "bs-firebase",
+    "bs-amplitude",
+    "bs-graphql-scalar",
+    "bs-analytics-node",
+    "re-elm-app",
+    "re-localforage",
+    "bs-sentia-promise",
+    "bs-sentia-remote",
+    "bs-sentia-std",
+    "bs-sentia-tape",
+    "bs-sentia-result",
+    "sentia.bs.result",
+    "bs-styletron-react",
+    "bs-graphql",
+    "bs-graphql-tools",
+    "reason-nact-postgres",
+    "re-sync",
+    "bs-apollo-server-express",
+    "bs-mocha",
+    "reason-commons",
+    "bs-gcloud",
+    "bs-jsverify",
+    "bs-wonder-jest",
+    "bs-async",
+    "re-business",
+    "redataloader",
+    "bs-react-helmet",
+    "re-spring",
+    "breytt",
+    "bs-react-art",
+    "wonder-bs-sinon",
+    "reason-process",
+    "reason-path",
+    "reason-https",
+    "reason-http",
+    "reason-fs",
+    "reason-node"
+  ],
+
+  "rejected": [
+    "bs-node-fetch",
+    "bs-antd",
+    "bs-string",
+    "bs-readline-example"
   ]
 }
