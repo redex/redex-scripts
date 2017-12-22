@@ -9,7 +9,7 @@ var packageDir = Path.join(outputDir, "packages");
 
 var Algolia = /* module */[
   /* appId */"B1AVN0IGTU",
-  /* packageIndex */"re:libs"
+  /* packageIndex */"redex-packages"
 ];
 
 var sourcesFile = "data/sources.json";
