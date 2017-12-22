@@ -39,11 +39,19 @@ let getRepositoryUrl =
   fun | Source.Github(owner, repo) => {j|https://github.com/$owner/$repo|j}
 ;
 
+let makeName =
+  fun | Source.Github(owner, repo) => {j|$owner/$repo|j}
+;
+
+let makeId =
+  fun | Source.Github(owner, repo) => {j|unpublished/$owner/$repo|j}
+;
+
 let makePackage = (source: Source.t, manifest: Manifest.t, readme: string, stars: int): Package.t =>
   {
     "type"          : "unpublished",
-    "id"            : "unpublished/" ++ manifest.name,
-    "name"          : manifest.name,
+    "id"            : makeId(source),
+    "name"          : makeName(source),
     "version"       : manifest.version,
     "description"   : manifest.description  |> Option.getOr(""),
     "author"        : manifest.author       |> Js.Nullable.from_opt,
@@ -85,7 +93,7 @@ let () = {
               let path = Node.Path.join([|
                 Config.packageDir,
                 "unpublished",
-                Js.Global.encodeURIComponent(manifest.name) ++ ".json"
+                Js.Global.encodeURIComponent(makeId(source)) ++ ".json"
               |]);
 
               Node.Fs.writeFileSync(path, json, `utf8);

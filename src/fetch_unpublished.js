@@ -52,11 +52,19 @@ function getRepositoryUrl(param) {
   return "https://github.com/" + (String(param[0]) + ("/" + (String(param[1]) + "")));
 }
 
+function makeName(param) {
+  return "" + (String(param[0]) + ("/" + (String(param[1]) + "")));
+}
+
+function makeId(param) {
+  return "unpublished/" + (String(param[0]) + ("/" + (String(param[1]) + "")));
+}
+
 function makePackage(source, manifest, readme, stars) {
   return {
           type: "unpublished",
-          id: "unpublished/" + manifest[/* name */0],
-          name: manifest[/* name */0],
+          id: makeId(source),
+          name: makeName(source),
           version: manifest[/* version */1],
           description: Rebase.Option[/* getOr */14]("", manifest[/* description */2]),
           author: Js_null_undefined.from_opt(manifest[/* author */3]),
@@ -87,9 +95,8 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                         return /* () */0;
                       } else {
                         var match = param[0];
-                        var manifest = match[0];
-                        var json = JSON.stringify(makePackage(source, manifest, match[1], match[2]));
-                        var path = Path.join(Config.packageDir, "unpublished", encodeURIComponent(manifest[/* name */0]) + ".json");
+                        var json = JSON.stringify(makePackage(source, match[0], match[1], match[2]));
+                        var path = Path.join(Config.packageDir, "unpublished", encodeURIComponent(makeId(source)) + ".json");
                         Fs.writeFileSync(path, json, "utf8");
                         return /* () */0;
                       }
@@ -117,5 +124,7 @@ exports.getSources       = getSources;
 exports.getReadme        = getReadme;
 exports.getStats         = getStats;
 exports.getRepositoryUrl = getRepositoryUrl;
+exports.makeName         = makeName;
+exports.makeId           = makeId;
 exports.makePackage      = makePackage;
 /*  Not a pure module */
