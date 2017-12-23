@@ -75,7 +75,8 @@
     "bs-promise-router",
     "re-formality",
     "bs-chalk",
-    "bs-spectacle"
+    "bs-spectacle",
+		"bs-css"
   ],
 
   "unpublished": [
@@ -106,7 +107,8 @@
     "Astrocoders/restyled",
     "Astrocoders/bs-reason-apollo",
     "Astrocoders/reform",
-    "state-machine-systems/JsonCodec"
+    "state-machine-systems/JsonCodec",
+    "glennsl/quickiecheck"
   ],
 
   "not-even-package.json": [
