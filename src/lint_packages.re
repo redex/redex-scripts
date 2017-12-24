@@ -1,7 +1,8 @@
 open Rebase;
 
 let lints = [
-  ("Missing readme", package => package##readme == ""),
+  ("Missing description", package => package##description |> Js.String.trim == ""),
+  ("Missing readme", package => package##readme |> Js.String.trim == ""),
   ("Missing license", package => Js.Nullable.test(package##license)),
   ("Missing keywords", package => Array.length(package##keywords) == 0),
   ("Missing repository url", package => Js.Nullable.test(package##repositoryUrl)),

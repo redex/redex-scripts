@@ -8,55 +8,63 @@ var Config = require("./common/Config.js");
 var Rebase = require("reason-rebase/src/rebase.js");
 
 var lints_000 = /* tuple */[
-  "Missing readme",
+  "Missing description",
   (function ($$package) {
-      return +($$package.readme === "");
+      return +($$package.description.trim() === "");
     })
 ];
 
 var lints_001 = /* :: */[
   /* tuple */[
-    "Missing license",
+    "Missing readme",
     (function ($$package) {
-        return +($$package.license == null);
+        return +($$package.readme.trim() === "");
       })
   ],
   /* :: */[
     /* tuple */[
-      "Missing keywords",
+      "Missing license",
       (function ($$package) {
-          return +(Rebase.$$Array[/* length */12]($$package.keywords) === 0);
+          return +($$package.license == null);
         })
     ],
     /* :: */[
       /* tuple */[
-        "Missing repository url",
+        "Missing keywords",
         (function ($$package) {
-            return +($$package.repositoryUrl == null);
+            return +(Rebase.$$Array[/* length */12]($$package.keywords) === 0);
           })
       ],
       /* :: */[
         /* tuple */[
-          "Missing homepage url",
+          "Missing repository url",
           (function ($$package) {
-              return +($$package.homepageUrl == null);
+              return +($$package.repositoryUrl == null);
             })
         ],
         /* :: */[
           /* tuple */[
-            "Missing issues url",
+            "Missing homepage url",
             (function ($$package) {
-                return +($$package.issuesUrl == null);
+                return +($$package.homepageUrl == null);
               })
           ],
           /* :: */[
             /* tuple */[
-              "Readme > 10k bytes",
+              "Missing issues url",
               (function ($$package) {
-                  return +(Rebase.$$String[/* length */0]($$package.readme) > 10000);
+                  return +($$package.issuesUrl == null);
                 })
             ],
-            /* [] */0
+            /* :: */[
+              /* tuple */[
+                "Readme > 10k bytes",
+                (function ($$package) {
+                    return +(Rebase.$$String[/* length */0]($$package.readme) > 10000);
+                  })
+              ],
+              /* [] */0
+            ]
           ]
         ]
       ]
