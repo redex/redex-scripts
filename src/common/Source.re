@@ -39,3 +39,44 @@ let parse = str =>
   } else {
     failwith("Fuck if I know what this is: " ++ str);
   };
+
+let getRepositoryUrl =
+  fun | Github(owner, repo) => {j|https://github.com/$owner/$repo|j}
+;
+
+let makeName =
+  fun | Github(owner, repo) => {j|$owner/$repo|j}
+;
+
+let makeId =
+  fun | Github(owner, repo) => {j|unpublished/$owner/$repo|j}
+;
+
+let getReadme = source => {
+  open Refetch;
+  open Resync;
+
+  let url = 
+    switch source {
+    | Github(owner, repo) => {j|https://raw.githubusercontent.com/$owner/$repo/master/README.md|j}
+    };
+
+  get(url) |> Future.flatMap(
+              fun | Response.Ok(_, response) => Response.text(response)
+                  | _ => failwith("failed to get README"));
+};
+
+let getStats = source => {
+  open Refetch;
+  open Resync;
+
+  let url = 
+    switch source {
+    | Github(owner, repo) => {j|https://api.github.com/repos/$owner/$repo|j}
+    };
+
+  get(url) |> Future.flatMap(
+              fun | Response.Ok(_, response) => Response.json(response)
+                  | Response.Error(status, _) => failwith("failed to get stats: " ++ status.reason))
+           |> Future.map(Json.Decode.(field("stargazers_count", int)));
+};

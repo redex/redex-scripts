@@ -30,3 +30,8 @@ let filterDuplicates = arr => {
   set |> Hashtbl.iter((x, _) => Js.Array.push(x, unique) |> ignore);
   unique
 };
+
+module Future = {
+  let (>>=) = (this, f) => Resync.Future.flatMap(f, this);
+  let return = Resync.Future.from;
+};

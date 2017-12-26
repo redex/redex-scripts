@@ -4,6 +4,7 @@
 var Fs      = require("fs");
 var Path    = require("path");
 var Rebase  = require("reason-rebase/src/rebase.js");
+var Resync  = require("refetch/src/Resync.js");
 var Hashtbl = require("bs-platform/lib/js/hashtbl.js");
 
 function stick(x) {
@@ -38,7 +39,19 @@ function filterDuplicates(arr) {
   return unique;
 }
 
+function $great$great$eq($$this, f) {
+  return Resync.Future[/* flatMap */9](f, $$this);
+}
+
+var $$return = Resync.Future[/* from */3];
+
+var Future = /* module */[
+  /* >>= */$great$great$eq,
+  /* return */$$return
+];
+
 exports.stick            = stick;
 exports.Fs               = Fs$1;
 exports.filterDuplicates = filterDuplicates;
+exports.Future           = Future;
 /* fs Not a pure module */
