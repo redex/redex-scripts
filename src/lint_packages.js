@@ -2,115 +2,24 @@
 'use strict';
 
 var Fs     = require("fs");
-var Curry  = require("bs-platform/lib/js/curry.js");
+var Lint   = require("./common/Lint.js");
 var Utils  = require("./common/Utils.js");
 var Config = require("./common/Config.js");
 var Rebase = require("reason-rebase/src/rebase.js");
 
-var lints_000 = /* tuple */[
-  "Missing description",
-  (function ($$package) {
-      return +($$package.description.trim() === "");
-    })
-];
-
-var lints_001 = /* :: */[
-  /* tuple */[
-    "Missing readme",
-    (function ($$package) {
-        return +($$package.readme.trim() === "");
-      })
-  ],
-  /* :: */[
-    /* tuple */[
-      "Short readme",
-      (function ($$package) {
-          var l = $$package.readme.trim().length;
-          if (l > 0) {
-            return +(l < 400);
-          } else {
-            return /* false */0;
-          }
-        })
-    ],
-    /* :: */[
-      /* tuple */[
-        "Missing license",
-        (function ($$package) {
-            return +($$package.license == null);
-          })
-      ],
-      /* :: */[
-        /* tuple */[
-          "Missing keywords",
-          (function ($$package) {
-              return +(Rebase.$$Array[/* length */12]($$package.keywords) === 0);
-            })
-        ],
-        /* :: */[
-          /* tuple */[
-            "Missing repository url",
-            (function ($$package) {
-                return +($$package.repositoryUrl == null);
-              })
-          ],
-          /* :: */[
-            /* tuple */[
-              "Missing homepage url",
-              (function ($$package) {
-                  return +($$package.homepageUrl == null);
-                })
-            ],
-            /* :: */[
-              /* tuple */[
-                "Missing issues url",
-                (function ($$package) {
-                    return +($$package.issuesUrl == null);
-                  })
-              ],
-              /* :: */[
-                /* tuple */[
-                  "Readme > 10k bytes",
-                  (function ($$package) {
-                      return +(Rebase.$$String[/* length */0]($$package.readme) > 10000);
-                    })
-                ],
-                /* [] */0
-              ]
-            ]
-          ]
-        ]
-      ]
-    ]
-  ]
-];
-
-var lints = /* :: */[
-  lints_000,
-  lints_001
-];
-
 Rebase.$$Array[/* forEach */8]((function (param) {
         console.log("");
-        console.log(param[0].name);
+        console.log(param[0]);
         return Rebase.List[/* forEach */8]((function (error) {
                       console.log("  ", error);
                       return /* () */0;
                     }), param[1]);
       }), Rebase.$$Array[/* filter */10]((function (param) {
             return +(param[1] !== /* [] */0);
-          }), Rebase.$$Array[/* map */2]((function ($$package) {
-                var errors = Rebase.List[/* map */2](Rebase.Option[/* getOrRaise */15], Rebase.List[/* filter */10](Rebase.Option[/* isSome */11], Rebase.List[/* map */2]((function (param) {
-                                var match = Curry._1(param[1], $$package);
-                                if (match !== 0) {
-                                  return /* Some */[param[0]];
-                                } else {
-                                  return /* None */0;
-                                }
-                              }), lints)));
+          }), Rebase.$$Array[/* map */2]((function (p) {
                 return /* tuple */[
-                        $$package,
-                        errors
+                        p.name,
+                        Lint.lintPackage(p)
                       ];
               }), Rebase.$$Array[/* map */2]((function (prim) {
                     return prim;
@@ -120,5 +29,4 @@ Rebase.$$Array[/* forEach */8]((function (param) {
                             return Fs.readFileSync(path, "utf8");
                           }), Utils.Fs[/* readDirRecursively */0](Config.packageDir)))))));
 
-exports.lints = lints;
 /*  Not a pure module */
