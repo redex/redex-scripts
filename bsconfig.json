@@ -10,5 +10,5 @@
   }],
   "bsc-flags": ["-bs-super-errors"],
   "refmt": 3,
-  "bs-dependencies": ["bs-json", "refetch", "reason-rebase"]
+  "bs-dependencies": ["bs-json", "refetch", "@glennsl/rebase"]
 }

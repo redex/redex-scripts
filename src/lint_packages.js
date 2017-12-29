@@ -5,7 +5,7 @@ var Fs     = require("fs");
 var Lint   = require("./common/Lint.js");
 var Utils  = require("./common/Utils.js");
 var Config = require("./common/Config.js");
-var Rebase = require("reason-rebase/src/rebase.js");
+var Rebase = require("@glennsl/rebase/src/rebase.bs.js");
 
 Rebase.$$Array[/* forEach */8]((function (param) {
         console.log("");

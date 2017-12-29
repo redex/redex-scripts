@@ -2,11 +2,10 @@
 'use strict';
 
 var Fs                      = require("fs");
-var List                    = require("bs-platform/lib/js/list.js");
 var Path                    = require("path");
 var Utils                   = require("./common/Utils.js");
 var Config                  = require("./common/Config.js");
-var Rebase                  = require("reason-rebase/src/rebase.js");
+var Rebase                  = require("@glennsl/rebase/src/rebase.bs.js");
 var Hashtbl                 = require("bs-platform/lib/js/hashtbl.js");
 var Js_dict                 = require("bs-platform/lib/js/js_dict.js");
 var Json_decode             = require("bs-json/src/Json_decode.js");
@@ -69,7 +68,7 @@ var json = JSON.stringify(Json_encode.list((function (prim) {
                             /* :: */[
                               /* tuple */[
                                 "count",
-                                List.length(packages)
+                                Rebase.List[/* length */13](packages)
                               ],
                               /* :: */[
                                 /* tuple */[
@@ -92,9 +91,6 @@ var json = JSON.stringify(Json_encode.list((function (prim) {
 
 Fs.writeFileSync(outputFile, json, "utf8");
 
-var length = List.length;
-
-exports.length            = length;
 exports.outputFile        = outputFile;
 exports.getKeywords       = getKeywords;
 exports.makeInvertedIndex = makeInvertedIndex;

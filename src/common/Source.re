@@ -1,4 +1,4 @@
-/*open Rebase;*/
+open Rebase;
 
 type t = 
   | Github(string, string);
@@ -18,7 +18,7 @@ let parseUrl = url => {
       failwith("What the hell kind of a URL is this: " ++ url);
     };
 
-    Github(segments[length - 2], segments[length - 1])
+    Github(segments |> Array.getOrRaise(length - 2), segments |> Array.getOrRaise(length - 1))
   }
 };
 

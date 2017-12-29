@@ -2,7 +2,7 @@
 'use strict';
 
 var Utils             = require("./Utils.js");
-var Rebase            = require("reason-rebase/src/rebase.js");
+var Rebase            = require("@glennsl/rebase/src/rebase.bs.js");
 var Source            = require("./Source.js");
 var Js_null_undefined = require("bs-platform/lib/js/js_null_undefined.js");
 

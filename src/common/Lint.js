@@ -2,7 +2,7 @@
 'use strict';
 
 var Curry  = require("bs-platform/lib/js/curry.js");
-var Rebase = require("reason-rebase/src/rebase.js");
+var Rebase = require("@glennsl/rebase/src/rebase.bs.js");
 
 var lints_000 = /* tuple */[
   "Missing description",

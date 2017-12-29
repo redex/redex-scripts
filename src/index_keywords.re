@@ -1,4 +1,3 @@
-let length = List.length;
 open Rebase;
 
 let outputFile = Node.Path.join2(Config.outputDir, "keywords.json");
@@ -35,7 +34,7 @@ Utils.Fs.readDirRecursively(Config.packageDir)
 |> makeInvertedIndex
 |> List.map(((keyword, packages)) => Js.Dict.fromList(Json.Encode.[
   ("name", keyword |> string),
-  ("count", length(packages) |> int),
+  ("count", List.length(packages) |> int),
   ("packages", packages |> list(string))
 ]))
 |> Json.Encode.(list(dict))
