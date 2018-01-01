@@ -72,22 +72,23 @@ function fromPublished(data) {
           name: data[/* name */1],
           version: data[/* version */2],
           description: data[/* description */3],
-          author: Js_null_undefined.from_opt(data[/* author */5]),
-          license: Js_null_undefined.from_opt(data[/* license */6]),
-          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], data[/* keywords */8])),
-          readme: Rebase.Option[/* getOr */16]("", data[/* readme */7]),
+          deprecated: Js_null_undefined.from_opt(data[/* deprecated */5]),
+          author: Js_null_undefined.from_opt(data[/* author */6]),
+          license: Js_null_undefined.from_opt(data[/* license */7]),
+          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], data[/* keywords */9])),
+          readme: Rebase.Option[/* getOr */16]("", data[/* readme */8]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],
-          stars: Js_null_undefined.from_opt(data[/* stars */9]),
-          score: data[/* score */10],
-          quality: data[/* quality */11],
-          popularity: data[/* popularity */12],
-          maintenance: data[/* maintenance */13],
-          homepageUrl: Js_null_undefined.from_opt(data[/* homepageUrl */14]),
-          repositoryUrl: Js_null_undefined.from_opt(data[/* repositoryUrl */15]),
-          npmUrl: Js_null_undefined.from_opt(data[/* npmUrl */16]),
-          issuesUrl: Js_null_undefined.from_opt(data[/* issuesUrl */17]),
-          docsUrl: null
+          stars: Js_null_undefined.from_opt(data[/* stars */10]),
+          score: data[/* score */11],
+          quality: data[/* quality */12],
+          popularity: data[/* popularity */13],
+          maintenance: data[/* maintenance */14],
+          homepageUrl: Js_null_undefined.from_opt(data[/* homepageUrl */15]),
+          repositoryUrl: Js_null_undefined.from_opt(data[/* repositoryUrl */16]),
+          npmUrl: Js_null_undefined.from_opt(data[/* npmUrl */17]),
+          issuesUrl: Js_null_undefined.from_opt(data[/* issuesUrl */18]),
+          docsUrl: undefined
         };
 }
 
@@ -98,6 +99,7 @@ function fromUnpublished(source, manifest, readme, stars) {
           name: Source.makeName(source),
           version: manifest[/* version */1],
           description: Rebase.Option[/* getOr */16]("", manifest[/* description */2]),
+          deprecated: undefined,
           author: Js_null_undefined.from_opt(manifest[/* author */3]),
           license: Js_null_undefined.from_opt(manifest[/* license */4]),
           keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], manifest[/* keywords */5])),
@@ -111,9 +113,9 @@ function fromUnpublished(source, manifest, readme, stars) {
           maintenance: 0,
           homepageUrl: Js_null_undefined.from_opt(manifest[/* homepage */7]),
           repositoryUrl: Source.getRepositoryUrl(source),
-          npmUrl: null,
+          npmUrl: undefined,
           issuesUrl: Js_null_undefined.from_opt(manifest[/* bugsUrl */9]),
-          docsUrl: null
+          docsUrl: undefined
         };
 }
 

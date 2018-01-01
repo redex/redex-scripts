@@ -72,7 +72,15 @@ var lints_001 = /* :: */[
                       return +(Rebase.$$String[/* length */1]($$package.readme) > 10000);
                     })
                 ],
-                /* [] */0
+                /* :: */[
+                  /* tuple */[
+                    "Deprecated",
+                    (function ($$package) {
+                        return 1 - +($$package.deprecated == null);
+                      })
+                  ],
+                  /* [] */0
+                ]
               ]
             ]
           ]

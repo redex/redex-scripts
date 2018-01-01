@@ -10,9 +10,10 @@ let lints = [
   ("Missing homepage url", package => Js.Nullable.test(package##homepageUrl)),
   ("Missing issues url", package => Js.Nullable.test(package##issuesUrl)),
   ("Readme > 10k bytes", package => String.length(package##readme) > 10000),
+  ("Deprecated", package => !Js.Nullable.test(package##deprecated)),
 ];
 
-let lintPackage = package =>
+let lintPackage: Package.t => list(string) = package =>
   lints |> List.map(((message, test)) => test(package) ? Some(message) : None)
         |> List.filter(Option.isSome)
         |> List.map(Option.getOrRaise);

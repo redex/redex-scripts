@@ -59,6 +59,16 @@ function decode(json) {
                                     return new Date(prim);
                                   }), Json_decode.string, param);
                     })), json),
+          /* deprecated */Json_decode.optional(Json_decode.at(/* :: */[
+                    "collected",
+                    /* :: */[
+                      "metadata",
+                      /* :: */[
+                        "deprecated",
+                        /* [] */0
+                      ]
+                    ]
+                  ], Json_decode.string), json),
           /* author */Json_decode.optional(Json_decode.at(/* :: */[
                     "collected",
                     /* :: */[

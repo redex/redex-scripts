@@ -9,7 +9,8 @@
     "reglinterface",
     "bs-react-pdf",
     "bs-node-http",
-    "bs-react-test-renderer"
+    "bs-react-test-renderer",
+    "bs-json"
   ],
 
   "unpublished": [

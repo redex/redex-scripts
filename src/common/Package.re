@@ -7,6 +7,7 @@ type t = {.
   "name"          : string,
   "version"       : string,
   "description"   : string,
+  "deprecated"    : Js.nullable(string),
   "author"        : Js.nullable(string),
   "license"       : Js.nullable(string),
   "keywords"      : array(string),
@@ -60,6 +61,7 @@ let fromPublished = (data: NPMS.t): t =>
     "name"          : data.name,
     "version"       : data.version,
     "description"   : data.description,
+    "deprecated"    : data.deprecated     |> Js.Nullable.from_opt,
     "author"        : data.author         |> Js.Nullable.from_opt,
     "license"       : data.license        |> Js.Nullable.from_opt,
     "keywords"      : data.keywords       |> Option.getOr([||])
@@ -76,7 +78,7 @@ let fromPublished = (data: NPMS.t): t =>
     "repositoryUrl" : data.repositoryUrl  |> Js.Nullable.from_opt,
     "npmUrl"        : data.npmUrl         |> Js.Nullable.from_opt,
     "issuesUrl"     : data.issuesUrl      |> Js.Nullable.from_opt,
-    "docsUrl"       : Js.Nullable.null
+    "docsUrl"       : Js.Nullable.undefined
   };
 
 let fromUnpublished = (source: Source.t, manifest: Manifest.t, readme: string, stars: int): t =>
@@ -86,6 +88,7 @@ let fromUnpublished = (source: Source.t, manifest: Manifest.t, readme: string, s
     "name"          : Source.makeName(source),
     "version"       : manifest.version,
     "description"   : manifest.description  |> Option.getOr(""),
+    "deprecated"    : Js.Nullable.undefined,
     "author"        : manifest.author       |> Js.Nullable.from_opt,
     "license"       : manifest.license      |> Js.Nullable.from_opt,
     "keywords"      : manifest.keywords     |> Option.getOr([||])
@@ -100,7 +103,7 @@ let fromUnpublished = (source: Source.t, manifest: Manifest.t, readme: string, s
     "maintenance"   : 0.,
     "homepageUrl"   : manifest.homepage     |> Js.Nullable.from_opt,
     "repositoryUrl" : Js.Nullable.return(Source.getRepositoryUrl(source)),
-    "npmUrl"        : Js.Nullable.null,
+    "npmUrl"        : Js.Nullable.undefined,
     "issuesUrl"     : manifest.bugsUrl      |> Js.Nullable.from_opt,
-    "docsUrl"       : Js.Nullable.null
+    "docsUrl"       : Js.Nullable.undefined
   };
