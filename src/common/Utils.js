@@ -24,7 +24,28 @@ function readDirRecursively(dir) {
               }), Fs.readdirSync(dir));
 }
 
-var Fs$1 = /* module */[/* readDirRecursively */readDirRecursively];
+function ensureDirExists(path) {
+  path.split(Path.sep).reduce((function (acc, dir) {
+          var path = Path.join(acc, dir);
+          if (!Fs.existsSync(path)) {
+            Fs.mkdirSync(path);
+          }
+          return path;
+        }), "");
+  return /* () */0;
+}
+
+function writeFile(path, contents) {
+  ensureDirExists(Path.dirname(path));
+  Fs.writeFileSync(path, contents, "utf8");
+  return /* () */0;
+}
+
+var Fs$1 = /* module */[
+  /* readDirRecursively */readDirRecursively,
+  /* ensureDirExists */ensureDirExists,
+  /* writeFile */writeFile
+];
 
 function filterDuplicates(arr) {
   var unique = /* array */[];

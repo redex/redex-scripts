@@ -9,6 +9,7 @@ module Fs = {
   type stats;
 
   [@bs.module "fs"] external statSync : string => stats = "";
+  [@bs.module "fs"] external mkdirSync : string => unit = "";
   [@bs.send] external isDirectory : stats => bool = "";
 
   let rec readDirRecursively = dir => {
@@ -21,6 +22,25 @@ module Fs = {
         }
       })
   };
+
+  let ensureDirExists = path =>
+    path |> Js.String.split(Node.Path.sep)
+         |> Js.Array.reduce((acc, dir) => {
+            let path = Node.Path.join2(acc, dir);
+
+            if (!Node.Fs.existsSync(path)) {
+              mkdirSync(path);
+            };
+
+            path
+         }, "") |> ignore;
+
+  let writeFile = (path, contents) => {
+    path |> Node.Path.dirname
+         |> ensureDirExists;
+
+    Node.Fs.writeFileSync(path, contents, `utf8);
+  }
 };
 
 let filterDuplicates = arr => {

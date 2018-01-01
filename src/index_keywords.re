@@ -39,4 +39,4 @@ Utils.Fs.readDirRecursively(Config.packageDir)
 ]))
 |> Json.Encode.(list(dict))
 |> Js.Json.stringify
-|> json => Node.Fs.writeFileSync(outputFile, json, `utf8);
+|> json => Utils.Fs.writeFile(outputFile, json);

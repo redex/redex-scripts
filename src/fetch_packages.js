@@ -4,6 +4,7 @@
 var Fs          = require("fs");
 var NPMS        = require("./common/NPMS.js");
 var Path        = require("path");
+var Utils       = require("./common/Utils.js");
 var Config      = require("./common/Config.js");
 var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync      = require("refetch/src/Resync.js");
@@ -28,8 +29,7 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                         var data = param[0];
                         var json = JSON.stringify(Package.fromPublished(data));
                         var path = Path.join(Config.packageDir, encodeURIComponent(data[/* name */1]) + ".json");
-                        Fs.writeFileSync(path, json, "utf8");
-                        return /* () */0;
+                        return Utils.Fs[/* writeFile */2](path, json);
                       }
                     }), NPMS.get(source));
       }), getSources(/* () */0));

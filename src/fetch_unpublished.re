@@ -30,7 +30,7 @@ let () = {
           Js.Global.encodeURIComponent(Source.makeId(source)) ++ ".json"
         |]);
 
-        return(Node.Fs.writeFileSync(path, json, `utf8))
+        return(Utils.Fs.writeFile(path, json))
     }
   ) |> Future.whenCompleted(
       fun | Ok(())   => ()

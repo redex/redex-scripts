@@ -35,7 +35,7 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                                         return Utils.Future[/* >>= */0](Source.getStats(source), (function (stats) {
                                                       var json = JSON.stringify(Package.fromUnpublished(source, manifest, readme, stats));
                                                       var path = Path.join(Config.packageDir, "unpublished", encodeURIComponent(Source.makeId(source)) + ".json");
-                                                      return Curry._1(Utils.Future[/* return */1], (Fs.writeFileSync(path, json, "utf8"), /* () */0));
+                                                      return Curry._1(Utils.Future[/* return */1], Utils.Fs[/* writeFile */2](path, json));
                                                     }));
                                       }));
                         })));

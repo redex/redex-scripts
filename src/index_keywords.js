@@ -89,7 +89,7 @@ var json = JSON.stringify(Json_encode.list((function (prim) {
                                     return +path.endsWith(".json");
                                   }), Utils.Fs[/* readDirRecursively */0](Config.packageDir)))))))));
 
-Fs.writeFileSync(outputFile, json, "utf8");
+Utils.Fs[/* writeFile */2](outputFile, json);
 
 exports.outputFile        = outputFile;
 exports.getKeywords       = getKeywords;

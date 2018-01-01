@@ -26,7 +26,7 @@ let () = {
                 Js.Global.encodeURIComponent(data.name) ++ ".json"
               |]);
 
-              Node.Fs.writeFileSync(path, json, `utf8);
+              Utils.Fs.writeFile(path, json);
             }
             | Error(e) =>
               Js.log4("\n", source, "\n", e)
