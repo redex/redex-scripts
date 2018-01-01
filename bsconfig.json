@@ -1,5 +1,5 @@
 {
-  "name": "reindex",
+  "name": "redex-scripts",
   "package-specs": [{
     "module": "commonjs",
     "in-source": true
@@ -8,7 +8,10 @@
     "dir": "src",
     "subdirs": true
   }],
-  "bsc-flags": ["-bs-super-errors"],
+  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
   "refmt": 3,
-  "bs-dependencies": ["@glennsl/bs-json", "refetch", "@glennsl/rebase"]
+  "bs-dependencies": ["@glennsl/bs-json", "refetch", "@glennsl/rebase"],
+  "js-post-build": {
+    "cmd": "/usr/bin/sed -i '1 i\\#!/usr/bin/env node'"
+  }
 }

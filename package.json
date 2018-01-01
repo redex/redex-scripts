@@ -1,10 +1,18 @@
 {
-  "name": "reindex",
+  "name": "redex-scripts",
   "version": "0.1.0",
   "scripts": {
     "clean": "bsb -clean-world",
     "build": "bsb -make-world",
     "start": "bsb -make-world -w"
+  },
+  "bin": {
+    "fetch_packages":       "src/fetch_packages.js",
+    "fetch_unpublished":    "src/fetch_unpublished.js",
+    "index_keywords":       "src/index_keywords.js",
+    "lint_packages":        "src/lint_packages.js",
+    "lint_remote":          "src/lint_remote.js",
+    "update_search_index":  "src/update_search_index.js"
   },
   "keywords": [
     "BuckleScript"
