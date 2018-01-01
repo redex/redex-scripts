@@ -5,3 +5,4 @@ npm-debug.log
 /lib
 /node_modules/
 data/generated
+config_secret.js
