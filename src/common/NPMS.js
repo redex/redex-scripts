@@ -5,7 +5,7 @@ var Curry             = require("bs-platform/lib/js/curry.js");
 var Resync            = require("refetch/src/Resync.js");
 var Refetch           = require("refetch/src/Refetch.js");
 var Pervasives        = require("bs-platform/lib/js/pervasives.js");
-var Json_decode       = require("bs-json/src/Json_decode.js");
+var Json_decode       = require("@glennsl/bs-json/src/Json_decode.js");
 var Refetch__Response = require("refetch/src/Refetch__Response.js");
 
 function decode(json) {
@@ -214,9 +214,9 @@ function get(packageName) {
                       var status = param[0];
                       return Resync.Future[/* map */8]((function (r) {
                                     return Pervasives.failwith("failed to get data from npms.io: " + (status[/* reason */1] + (", " + r)));
-                                  }), Refetch__Response.text(param[1]));
+                                  }), Curry._1(Refetch__Response.text, param[1]));
                     } else {
-                      return Refetch__Response.json(param[1]);
+                      return Curry._1(Refetch__Response.json, param[1]);
                     }
                   }), Refetch.get(url)));
 }

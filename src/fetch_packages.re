@@ -15,7 +15,7 @@ let () = {
   |> Array.forEach(source =>
     NPMS.get(source)
     |> Future.whenCompleted(
-        fun | Result.Ok(data) => {
+        fun | Ok(data) => {
               let json =
                 data |> Package.fromPublished
                      |> Obj.magic
@@ -28,7 +28,7 @@ let () = {
 
               Node.Fs.writeFileSync(path, json, `utf8);
             }
-            | Result.Error(e) =>
+            | Error(e) =>
               Js.log4("\n", source, "\n", e)
         )
     );

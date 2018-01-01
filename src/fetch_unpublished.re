@@ -33,8 +33,8 @@ let () = {
         return(Node.Fs.writeFileSync(path, json, `utf8))
     }
   ) |> Future.whenCompleted(
-      fun | Result.Ok(())   => ()
-          | Result.Error(e) => Js.log4("\n", source, "\n", e)
+      fun | Ok(())   => ()
+          | Error(e) => Js.log4("\n", source, "\n", e)
     )
   );
 };

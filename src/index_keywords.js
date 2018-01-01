@@ -5,11 +5,11 @@ var Fs                      = require("fs");
 var Path                    = require("path");
 var Utils                   = require("./common/Utils.js");
 var Config                  = require("./common/Config.js");
-var Rebase                  = require("@glennsl/rebase/src/rebase.bs.js");
+var Rebase                  = require("@glennsl/rebase/src/Rebase.bs.js");
 var Hashtbl                 = require("bs-platform/lib/js/hashtbl.js");
 var Js_dict                 = require("bs-platform/lib/js/js_dict.js");
-var Json_decode             = require("bs-json/src/Json_decode.js");
-var Json_encode             = require("bs-json/src/Json_encode.js");
+var Json_decode             = require("@glennsl/bs-json/src/Json_decode.js");
+var Json_encode             = require("@glennsl/bs-json/src/Json_encode.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
 var outputFile = Path.join(Config.outputDir, "keywords.json");
@@ -24,7 +24,7 @@ function getKeywords(json) {
 }
 
 function makeInvertedIndex(data) {
-  var index = Hashtbl.create(/* None */0, Rebase.$$Array[/* length */12](data));
+  var index = Hashtbl.create(/* None */0, Rebase.$$Array[/* length */16](data));
   Rebase.$$Array[/* forEach */8]((function (param) {
           var id = param[0];
           return Rebase.$$Array[/* forEach */8]((function (keyword) {
@@ -58,7 +58,7 @@ function makeInvertedIndex(data) {
 
 var json = JSON.stringify(Json_encode.list((function (prim) {
             return prim;
-          }), Rebase.List[/* map */2]((function (param) {
+          }), Rebase.List[/* map */0]((function (param) {
                 var packages = param[1];
                 return Js_dict.fromList(/* :: */[
                             /* tuple */[
@@ -68,7 +68,7 @@ var json = JSON.stringify(Json_encode.list((function (prim) {
                             /* :: */[
                               /* tuple */[
                                 "count",
-                                Rebase.List[/* length */13](packages)
+                                Rebase.List[/* length */19](packages)
                               ],
                               /* :: */[
                                 /* tuple */[
@@ -81,9 +81,9 @@ var json = JSON.stringify(Json_encode.list((function (prim) {
                               ]
                             ]
                           ]);
-              }), makeInvertedIndex(Rebase.$$Array[/* map */2](getKeywords, Rebase.$$Array[/* map */2]((function (prim) {
+              }), makeInvertedIndex(Rebase.$$Array[/* map */0](getKeywords, Rebase.$$Array[/* map */0]((function (prim) {
                             return JSON.parse(prim);
-                          }), Rebase.$$Array[/* map */2]((function (path) {
+                          }), Rebase.$$Array[/* map */0]((function (path) {
                                 return Fs.readFileSync(path, "utf8");
                               }), Rebase.$$Array[/* filter */10]((function (path) {
                                     return +path.endsWith(".json");

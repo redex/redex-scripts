@@ -15,10 +15,10 @@
     "bs-platform": "^2.1.0"
   },
   "dependencies": {
-    "algoliasearch": "^3.24.7",
-    "bs-json": "^0.2.4",
+    "@glennsl/rebase": "^0.2.0",
+    "algoliasearch": "^3.24.9",
+    "@glennsl/bs-json": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "@glennsl/rebase": "^0.1.4",
     "refetch": "github:glennsl/refetch"
   }
 }

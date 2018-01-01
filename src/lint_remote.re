@@ -22,11 +22,11 @@ let () = {
     };
 
   package |> Future.whenCompleted(
-    fun | Result.Ok(package) => {
+    fun | Ok(package) => {
           let errors = Lint.lintPackage(package);
           errors |> List.forEach(error => Js.log2("  ", error));
         }
-        | Result.Error(e) =>
+        | Error(e) =>
           Js.log4("\n", source, "\n", e)
   );
 };

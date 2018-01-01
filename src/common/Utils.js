@@ -3,7 +3,7 @@
 
 var Fs      = require("fs");
 var Path    = require("path");
-var Rebase  = require("@glennsl/rebase/src/rebase.bs.js");
+var Rebase  = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync  = require("refetch/src/Resync.js");
 var Hashtbl = require("bs-platform/lib/js/hashtbl.js");
 

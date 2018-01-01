@@ -2,7 +2,7 @@
 'use strict';
 
 var Curry  = require("bs-platform/lib/js/curry.js");
-var Rebase = require("@glennsl/rebase/src/rebase.bs.js");
+var Rebase = require("@glennsl/rebase/src/Rebase.bs.js");
 
 var lints_000 = /* tuple */[
   "Missing description",
@@ -41,7 +41,7 @@ var lints_001 = /* :: */[
         /* tuple */[
           "Missing keywords",
           (function ($$package) {
-              return +(Rebase.$$Array[/* length */12]($$package.keywords) === 0);
+              return +(Rebase.$$Array[/* length */16]($$package.keywords) === 0);
             })
         ],
         /* :: */[
@@ -69,7 +69,7 @@ var lints_001 = /* :: */[
                 /* tuple */[
                   "Readme > 10k bytes",
                   (function ($$package) {
-                      return +(Rebase.$$String[/* length */0]($$package.readme) > 10000);
+                      return +(Rebase.$$String[/* length */1]($$package.readme) > 10000);
                     })
                 ],
                 /* [] */0
@@ -88,7 +88,7 @@ var lints = /* :: */[
 ];
 
 function lintPackage($$package) {
-  return Rebase.List[/* map */2](Rebase.Option[/* getOrRaise */15], Rebase.List[/* filter */10](Rebase.Option[/* isSome */11], Rebase.List[/* map */2]((function (param) {
+  return Rebase.List[/* map */0](Rebase.Option[/* getOrRaise */17], Rebase.List[/* filter */10](Rebase.Option[/* isSome */13], Rebase.List[/* map */0]((function (param) {
                         var match = Curry._1(param[1], $$package);
                         if (match !== 0) {
                           return /* Some */[param[0]];

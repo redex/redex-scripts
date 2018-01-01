@@ -6,12 +6,12 @@ var Path        = require("path");
 var Curry       = require("bs-platform/lib/js/curry.js");
 var Utils       = require("./common/Utils.js");
 var Config      = require("./common/Config.js");
-var Rebase      = require("@glennsl/rebase/src/rebase.bs.js");
+var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync      = require("refetch/src/Resync.js");
 var Source      = require("./common/Source.js");
 var Package     = require("./common/Package.js");
 var Manifest    = require("./common/Manifest.js");
-var Json_decode = require("bs-json/src/Json_decode.js");
+var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
 
 require('isomorphic-fetch')
 ;
@@ -39,7 +39,7 @@ Rebase.$$Array[/* forEach */8]((function (source) {
                                                     }));
                                       }));
                         })));
-      }), Rebase.$$Array[/* map */2](Source.parse, getSources(/* () */0)));
+      }), Rebase.$$Array[/* map */0](Source.parse, getSources(/* () */0)));
 
 exports.getSources = getSources;
 /*  Not a pure module */

@@ -5,10 +5,10 @@ var Fs          = require("fs");
 var NPMS        = require("./common/NPMS.js");
 var Path        = require("path");
 var Config      = require("./common/Config.js");
-var Rebase      = require("@glennsl/rebase/src/rebase.bs.js");
+var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync      = require("refetch/src/Resync.js");
 var Package     = require("./common/Package.js");
-var Json_decode = require("bs-json/src/Json_decode.js");
+var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
 
 require('isomorphic-fetch')
 ;
