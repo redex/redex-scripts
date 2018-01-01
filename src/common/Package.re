@@ -28,11 +28,30 @@ type t = {.
 external unsafeDecode : Js.Json.t => t = "%identity";
 external encode : t => Js.Json.t = "%identity";
 
-let normalizeKeyword = keyword =>
-  switch (Js.String.toLowerCase(keyword)) {
-  | "reasonml"  => "reason"
-  | keyword     => keyword
-  };
+let mapKeywordSynonym =
+  fun | "reasonml"    => "reason"
+      | "bsb"         => "bucklescript"
+      | "bs-platform" => "bucklescript"
+      | "test"        => "testing"
+      | "tdd"         => "testing"
+      | "regex"       => "regular expressions"
+      | "reasonreact" => "reason-react"
+      | "next"        => "next.js"
+      | "d3"          => "d3.js"
+      | "d3js"        => "d3.js"
+      | keyword       => keyword;
+
+let ignoreKeyword =
+  fun | "reason"  => true
+      | "data"    => true
+      | k         when String.startsWith("bs-", k) => true
+      | _         => false;
+
+let normalizeKeywords =
+  Fn.( Array.map(Js.String.toLocaleLowerCase)
+    >> Array.map(mapKeywordSynonym)
+    >> Array.filter(not << ignoreKeyword)
+    >> Utils.filterDuplicates);
 
 let fromPublished = (data: NPMS.t): t =>
   {
@@ -44,8 +63,7 @@ let fromPublished = (data: NPMS.t): t =>
     "author"        : data.author         |> Js.Nullable.from_opt,
     "license"       : data.license        |> Js.Nullable.from_opt,
     "keywords"      : data.keywords       |> Option.getOr([||])
-                                          |> Array.map(normalizeKeyword)
-                                          |> Utils.filterDuplicates,
+                                          |> normalizeKeywords,
     "readme"        : data.readme         |> Option.getOr(""),
     "analyzed"      : data.analyzed,
     "updated"       : data.analyzed,
@@ -71,8 +89,7 @@ let fromUnpublished = (source: Source.t, manifest: Manifest.t, readme: string, s
     "author"        : manifest.author       |> Js.Nullable.from_opt,
     "license"       : manifest.license      |> Js.Nullable.from_opt,
     "keywords"      : manifest.keywords     |> Option.getOr([||])
-                                            |> Array.map(normalizeKeyword)
-                                            |> Utils.filterDuplicates,
+                                            |> normalizeKeywords,
     "readme"        : readme,
     "analyzed"      : Js.Date.make(),
     "updated"       : Js.Date.make(),
