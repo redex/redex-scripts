@@ -98,7 +98,9 @@ var Published = /* module */[/* fromJson */fromJson];
 function fromJson$1(key, json) {
   return /* record */[
           /* id */key,
-          /* repository */Repository.parse(key),
+          /* repository */Json_decode.field("repository", (function (param) {
+                  return Json_decode.map(Repository.parse, Json_decode.string, param);
+                }), json),
           /* packageType */Json_decode.field("type", packageType, json),
           /* condition */Json_decode.field("condition", condition, json),
           /* platforms */Json_decode.field("platforms", (function (param) {

@@ -34,13 +34,13 @@ function parseUrl(url) {
 }
 
 function looksLikeGitHubPath(str) {
-  return +(Rebase.$$Array[/* length */16](str.split("/")) === 2);
+  return +str.startsWith("github:");
 }
 
 function parseGitHubPath(path) {
-  var match = path.split("/");
+  var match = path.replace("github:", "").split("/");
   if (match.length !== 2) {
-    return Pervasives.failwith("???");
+    return Pervasives.failwith("Not a vlid Github path: " + path);
   } else {
     var owner = match[0];
     var repo = match[1];
@@ -54,7 +54,7 @@ function parseGitHubPath(path) {
 function parse(str) {
   if (looksLikeUrl(str)) {
     return parseUrl(str);
-  } else if (looksLikeGitHubPath(str)) {
+  } else if (str.startsWith("github:")) {
     return parseGitHubPath(str);
   } else {
     return Pervasives.failwith("Fuck if I know what this is: " + str);

@@ -68,25 +68,25 @@
 
   "unpublished": {
     "af/bs-d3": {
-      "source": "github",
+      "repository": "github:af/bs-d3",
       "type": "binding",
       "condition": "maintained",
       "platforms": ["browser"]
     },
     "glennsl/bs-revamp": {
-      "source": "github",
+      "repository": "github:glennsl/bs-revamp",
       "type": "library",
       "condition": "maintained",
       "platforms": ["browser", "node"]
     },
     "reasonml-community/bs-immutablejs": {
-      "source": "github",
+      "repository": "github:reasonml-community/bs-immutablejs",
       "type": "binding",
       "condition": "maintained",
       "platforms": ["browser", "node"]
     },
     "glennsl/refetch": {
-      "source": "github",
+      "repository": "github:glennsl/refetch",
       "type": "binding",
       "condition": "maintained",
       "platforms": ["browser", "node"]

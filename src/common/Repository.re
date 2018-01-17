@@ -23,12 +23,12 @@ let parseUrl = url => {
 };
 
 let looksLikeGitHubPath = str =>
-  Js.String.split("/", str) |> Array.length === 2;
+  str |> Js.String.startsWith("github:");
 
 let parseGitHubPath = path =>
-  switch (path |> Js.String.split("/")) {
-  | [|owner, repo|]  => Github(owner, repo)
-  | _               => failwith("???")
+  switch (path |> Js.String.replace("github:", "") |> Js.String.split("/")) {
+  | [|owner, repo|]   => Github(owner, repo)
+  | _                 => failwith("Not a vlid Github path: " ++ path)
   };
 
 let parse = str =>

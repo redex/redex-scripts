@@ -83,7 +83,7 @@ module Unpublished = {
 
   let fromJson = (key, json) => Json.Decode.{
     id:           key,
-    repository:   key |> Repository.parse,
+    repository:   json |> field("repository", string |> map(Repository.parse)),
     packageType:  json |> field("type", Decode.packageType),
     condition:    json |> field("condition", Decode.condition),
     platforms:    json |> field("platforms", list(Decode.platform)),
