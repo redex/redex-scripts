@@ -14,7 +14,7 @@ let () = {
               let json =
                 data |> Package.fromPublished
                      |> Package.toJson
-                     |> Js.Json.stringify;
+                     |> Json.stringify;
 
               let path = Node.Path.join([|
                 Config.packageDir,

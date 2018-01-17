@@ -2,6 +2,7 @@
 'use strict';
 
 var Fs            = require("fs");
+var Json          = require("@glennsl/bs-json/src/Json.js");
 var $$Array       = require("bs-platform/lib/js/array.js");
 var Utils         = require("./common/Utils.bs.js");
 var Config        = require("./common/Config.bs.js");
@@ -29,9 +30,7 @@ $$Array.map((function (record) {
                       }, record);
           }), $$Array.map((function (prim) {
                 return prim;
-              }), $$Array.map((function (prim) {
-                    return JSON.parse(prim);
-                  }), $$Array.map((function (path) {
+              }), $$Array.map(Json.parseOrRaise, $$Array.map((function (path) {
                         return Fs.readFileSync(path, "utf8");
                       }), Utils.Fs[/* readDirRecursively */0](Config.packageDir))))));
 

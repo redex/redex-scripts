@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+var Json       = require("@glennsl/bs-json/src/Json.js");
 var Path       = require("path");
 var Curry      = require("bs-platform/lib/js/curry.js");
 var Utils      = require("./common/Utils.bs.js");
@@ -27,7 +28,7 @@ Rebase.List[/* forEach */8]((function (source) {
                     }), Utils.Future[/* >>= */0](Manifest.get(repo), (function (manifest) {
                           return Utils.Future[/* >>= */0](Repository.getReadme(repo), (function (readme) {
                                         return Utils.Future[/* >>= */0](Repository.getStats(repo), (function (stats) {
-                                                      var json = JSON.stringify(Package.fromUnpublished(repo, manifest, readme, stats));
+                                                      var json = Json.stringify(Package.fromUnpublished(repo, manifest, readme, stats));
                                                       var path = Path.join(Config.packageDir, "unpublished", encodeURIComponent(Repository.makeId(repo)) + ".json");
                                                       return Curry._1(Utils.Future[/* return */1], Utils.Fs[/* writeFile */2](path, json));
                                                     }));

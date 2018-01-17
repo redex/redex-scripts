@@ -58,7 +58,7 @@ var partial_arg$3 = Rebase.$$Array[/* filter */10];
 
 var normalizeKeywords = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], (function (param) {
                 return partial_arg((function (prim) {
-                              return prim.toLocaleLowerCase();
+                              return prim.toLowerCase();
                             }), param);
               }), (function (param) {
                 return partial_arg$1(mapKeywordSynonym, param);

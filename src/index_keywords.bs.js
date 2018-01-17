@@ -2,6 +2,7 @@
 'use strict';
 
 var Fs                      = require("fs");
+var Json                    = require("@glennsl/bs-json/src/Json.js");
 var Path                    = require("path");
 var Utils                   = require("./common/Utils.bs.js");
 var Config                  = require("./common/Config.bs.js");
@@ -56,7 +57,7 @@ function makeInvertedIndex(data) {
               }), index, /* [] */0);
 }
 
-var json = JSON.stringify(Json_encode.list((function (prim) {
+var json = Json.stringify(Json_encode.list((function (prim) {
             return prim;
           }), Rebase.List[/* map */0]((function (param) {
                 var packages = param[1];
@@ -81,12 +82,10 @@ var json = JSON.stringify(Json_encode.list((function (prim) {
                               ]
                             ]
                           ]);
-              }), makeInvertedIndex(Rebase.$$Array[/* map */0](getKeywords, Rebase.$$Array[/* map */0]((function (prim) {
-                            return JSON.parse(prim);
-                          }), Rebase.$$Array[/* map */0]((function (path) {
+              }), makeInvertedIndex(Rebase.$$Array[/* map */0](getKeywords, Rebase.$$Array[/* map */0](Json.parseOrRaise, Rebase.$$Array[/* map */0]((function (path) {
                                 return Fs.readFileSync(path, "utf8");
                               }), Rebase.$$Array[/* filter */10]((function (path) {
-                                    return +path.endsWith(".json");
+                                    return Rebase.$$String[/* endsWith */4](".json", path);
                                   }), Utils.Fs[/* readDirRecursively */0](Config.packageDir)))))))));
 
 Utils.Fs[/* writeFile */2](outputFile, json);

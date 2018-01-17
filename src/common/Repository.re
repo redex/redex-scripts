@@ -4,11 +4,11 @@ type t =
   | Github(string, string);
 
 let looksLikeUrl = str =>
-  Js.String.startsWith("http://", str) || 
-  Js.String.startsWith("https://", str);
+  String.startsWith("http://", str) || 
+  String.startsWith("https://", str);
 
 let parseUrl = url => {
-  if (!(url |> Js.String.includes("github.com"))) {
+  if (!(url |> String.includes("github.com"))) {
     failwith("Unknown URL: " ++ url);
   } else {
     let segments = Js.String.split("/", url);
@@ -23,7 +23,7 @@ let parseUrl = url => {
 };
 
 let looksLikeGitHubPath = str =>
-  str |> Js.String.startsWith("github:");
+  str |> String.startsWith("github:");
 
 let parseGitHubPath = path =>
   switch (path |> Js.String.replace("github:", "") |> Js.String.split("/")) {

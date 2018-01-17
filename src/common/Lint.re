@@ -1,14 +1,14 @@
 open Rebase;
 
 let lints = [
-  package => package##description |> Js.String.trim == ""
+  package => package##description |> String.trim == ""
     ? Some("Missing description") : None,
 
-  package => package##readme |> Js.String.trim == ""
+  package => package##readme |> String.trim == ""
     ? Some("Missing readme") : None,
 
   package => {
-    let l = package##readme |> Js.String.trim |> Js.String.length;
+    let l = package##readme |> String.trim |> String.length;
     l > 0 && l < 400
       ? Some("Short readme") : None
   },

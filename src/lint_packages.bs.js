@@ -2,6 +2,7 @@
 'use strict';
 
 var Fs     = require("fs");
+var Json   = require("@glennsl/bs-json/src/Json.js");
 var Lint   = require("./common/Lint.bs.js");
 var Utils  = require("./common/Utils.bs.js");
 var Config = require("./common/Config.bs.js");
@@ -23,9 +24,7 @@ Rebase.$$Array[/* forEach */8]((function (param) {
                       ];
               }), Rebase.$$Array[/* map */0]((function (prim) {
                     return prim;
-                  }), Rebase.$$Array[/* map */0]((function (prim) {
-                        return JSON.parse(prim);
-                      }), Rebase.$$Array[/* map */0]((function (path) {
+                  }), Rebase.$$Array[/* map */0](Json.parseOrRaise, Rebase.$$Array[/* map */0]((function (path) {
                             return Fs.readFileSync(path, "utf8");
                           }), Utils.Fs[/* readDirRecursively */0](Config.packageDir)))))));
 

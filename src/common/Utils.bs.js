@@ -20,13 +20,13 @@ function readDirRecursively(dir) {
 }
 
 function ensureDirExists(path) {
-  path.split(Path.sep).reduce((function (acc, dir) {
+  Rebase.$$Array[/* reduce */3]((function (acc, dir) {
           var path = Path.join(acc, dir);
           if (!Fs.existsSync(path)) {
             Fs.mkdirSync(path);
           }
           return path;
-        }), "");
+        }), "", path.split(Path.sep));
   return /* () */0;
 }
 
@@ -44,10 +44,10 @@ var Fs$1 = /* module */[
 
 function filterDuplicates(arr) {
   var unique = /* array */[];
-  var set = Hashtbl.create(/* None */0, arr.length);
-  arr.forEach((function (x) {
+  var set = Hashtbl.create(/* None */0, Rebase.$$Array[/* length */16](arr));
+  Rebase.$$Array[/* forEach */8]((function (x) {
           return Hashtbl.replace(set, x, /* () */0);
-        }));
+        }), arr);
   Hashtbl.iter((function (x, _) {
           unique.push(x);
           return /* () */0;

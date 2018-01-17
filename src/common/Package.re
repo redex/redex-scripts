@@ -50,7 +50,7 @@ let ignoreKeyword =
       | _         => false;
 
 let normalizeKeywords =
-  Fn.( Array.map(Js.String.toLocaleLowerCase)
+  Fn.( Array.map(Js.String.toLowerCase)
     >> Array.map(mapKeywordSynonym)
     >> Array.filter(not << ignoreKeyword)
     >> Utils.filterDuplicates);

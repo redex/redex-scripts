@@ -21,7 +21,7 @@ var source = Caml_array.caml_array_get(Process.argv, 2);
 
 var eventuallyPackage;
 
-if (source.startsWith("github:")) {
+if (Rebase.$$String[/* startsWith */3]("github:", source)) {
   var repo = Repository.parse(source);
   eventuallyPackage = Utils.Future[/* >>= */0](Manifest.get(repo), (function (manifest) {
           return Utils.Future[/* >>= */0](Repository.getReadme(repo), (function (readme) {
@@ -43,7 +43,7 @@ Resync.Future[/* whenCompleted */6]((function (param) {
         } else {
           var $$package = param[0];
           var truncatedPackage = Rebase.$$String[/* length */1]($$package.readme) > 1000 ? Object.assign($$package, {
-                  readme: $$package.readme.slice(0, 1000) + "..."
+                  readme: Rebase.$$String[/* sub */9](0, 1000, $$package.readme) + "..."
                 }) : $$package;
           console.log("\n", JSON.stringify(truncatedPackage, (null), 2));
           var errors = Lint.lintPackage($$package);

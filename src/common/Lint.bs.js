@@ -6,7 +6,7 @@ var Rebase       = require("@glennsl/rebase/src/Rebase.bs.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 
 function lints_000($$package) {
-  var match = +($$package.description.trim() === "");
+  var match = +(Rebase.$$String[/* trim */8]($$package.description) === "");
   if (match !== 0) {
     return /* Some */["Missing description"];
   } else {
@@ -16,7 +16,7 @@ function lints_000($$package) {
 
 var lints_001 = /* :: */[
   (function ($$package) {
-      var match = +($$package.readme.trim() === "");
+      var match = +(Rebase.$$String[/* trim */8]($$package.readme) === "");
       if (match !== 0) {
         return /* Some */["Missing readme"];
       } else {
@@ -25,7 +25,7 @@ var lints_001 = /* :: */[
     }),
   /* :: */[
     (function ($$package) {
-        var l = $$package.readme.trim().length;
+        var l = Rebase.$$String[/* length */1](Rebase.$$String[/* trim */8]($$package.readme));
         var match = +(l > 0 && l < 400);
         if (match !== 0) {
           return /* Some */["Short readme"];

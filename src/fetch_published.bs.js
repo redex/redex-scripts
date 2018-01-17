@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+var Json    = require("@glennsl/bs-json/src/Json.js");
 var NPMS    = require("./common/NPMS.bs.js");
 var Path    = require("path");
 var Utils   = require("./common/Utils.bs.js");
@@ -20,7 +21,7 @@ Rebase.List[/* forEach */8]((function (source) {
                         return /* () */0;
                       } else {
                         var data = param[0];
-                        var json = JSON.stringify(Package.fromPublished(data));
+                        var json = Json.stringify(Package.fromPublished(data));
                         var path = Path.join(Config.packageDir, encodeURIComponent(data[/* name */1]) + ".json");
                         return Utils.Fs[/* writeFile */2](path, json);
                       }

@@ -16,7 +16,7 @@ let () = {
         let json =
           Package.fromUnpublished(repo, manifest, readme, stats)
           |> Package.toJson
-          |> Js.Json.stringify;
+          |> Json.stringify;
 
         let path = Node.Path.join([|
           Config.packageDir,

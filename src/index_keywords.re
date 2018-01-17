@@ -27,9 +27,9 @@ let makeInvertedIndex = data => {
 };
 
 Utils.Fs.readDirRecursively(Config.packageDir)
-|> Array.filter(path => path |> Js.String.endsWith(".json"))
+|> Array.filter(path => path |> String.endsWith(".json"))
 |> Array.map(path => Node.Fs.readFileSync(path, `utf8))
-|> Array.map(Js.Json.parseExn)
+|> Array.map(Json.parseOrRaise)
 |> Array.map(getKeywords)
 |> makeInvertedIndex
 |> List.map(((keyword, packages)) => Js.Dict.fromList(Json.Encode.[
@@ -38,5 +38,5 @@ Utils.Fs.readDirRecursively(Config.packageDir)
   ("packages", packages |> list(string))
 ]))
 |> Json.Encode.(list(dict))
-|> Js.Json.stringify
+|> Json.stringify
 |> json => Utils.Fs.writeFile(outputFile, json);

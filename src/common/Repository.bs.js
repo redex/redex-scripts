@@ -10,15 +10,15 @@ var Json_decode       = require("@glennsl/bs-json/src/Json_decode.js");
 var Refetch__Response = require("refetch/src/Refetch__Response.js");
 
 function looksLikeUrl(str) {
-  if (str.startsWith("http://")) {
+  if (Rebase.$$String[/* startsWith */3]("http://", str)) {
     return /* true */1;
   } else {
-    return +str.startsWith("https://");
+    return Rebase.$$String[/* startsWith */3]("https://", str);
   }
 }
 
 function parseUrl(url) {
-  if (url.includes("github.com")) {
+  if (Rebase.$$String[/* includes */2]("github.com", url)) {
     var segments = url.split("/");
     var length = Rebase.$$Array[/* length */16](segments);
     if (length < 2) {
@@ -34,7 +34,7 @@ function parseUrl(url) {
 }
 
 function looksLikeGitHubPath(str) {
-  return +str.startsWith("github:");
+  return Rebase.$$String[/* startsWith */3]("github:", str);
 }
 
 function parseGitHubPath(path) {
@@ -54,7 +54,7 @@ function parseGitHubPath(path) {
 function parse(str) {
   if (looksLikeUrl(str)) {
     return parseUrl(str);
-  } else if (str.startsWith("github:")) {
+  } else if (Rebase.$$String[/* startsWith */3]("github:", str)) {
     return parseGitHubPath(str);
   } else {
     return Pervasives.failwith("Fuck if I know what this is: " + str);

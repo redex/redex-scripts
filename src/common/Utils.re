@@ -20,7 +20,7 @@ module Fs = {
 
   let ensureDirExists = path =>
     path |> Js.String.split(Node.Path.sep)
-         |> Js.Array.reduce((acc, dir) => {
+         |> Array.reduce((acc, dir) => {
             let path = Node.Path.join2(acc, dir);
 
             if (!Node.Fs.existsSync(path)) {
@@ -40,8 +40,8 @@ module Fs = {
 
 let filterDuplicates = arr => {
   let unique = [||];
-  let set = Hashtbl.create(Js.Array.length(arr));
-  arr |> Js.Array.forEach(x => Hashtbl.replace(set, x, ()));
+  let set = Hashtbl.create(Array.length(arr));
+  arr |> Array.forEach(x => Hashtbl.replace(set, x, ()));
   set |> Hashtbl.iter((x, _) => Js.Array.push(x, unique) |> ignore);
   unique
 };

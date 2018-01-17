@@ -10,7 +10,7 @@ let () = {
   open Resync;
 
   let eventuallyPackage =
-    if (source |> Js.String.startsWith("github:")) {
+    if (source |> String.startsWith("github:")) {
       let repo = Repository.parse(source);
       Utils.Future.(
         Manifest.get(repo)            >>= manifest
@@ -26,7 +26,7 @@ let () = {
     fun | Ok(package) => {
           let truncatedPackage =
             if (String.length(package##readme) > 1000) {
-              Js.Obj.assign(package, { "readme": (package##readme |> Js.String.slice(~from=0, ~to_=1000)) ++ "..." })
+              Js.Obj.assign(package, { "readme": (package##readme |> String.sub(~from=0, ~length=1000)) ++ "..." })
             } else {
               package
             };
