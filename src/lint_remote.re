@@ -10,6 +10,7 @@ let () = {
 
   let package =
     if (source |> Js.String.includes("/")) {
+    if (source |> Js.String.startsWith("github:")) {
       let repo = Repository.parse(source);
       Utils.Future.(
         Manifest.get(repo)            >>= manifest
