@@ -61,7 +61,7 @@ function parse(str) {
   }
 }
 
-function getRepositoryUrl(param) {
+function getUrl(param) {
   return "https://github.com/" + (String(param[0]) + ("/" + (String(param[1]) + "")));
 }
 
@@ -102,7 +102,7 @@ exports.parseUrl            = parseUrl;
 exports.looksLikeGitHubPath = looksLikeGitHubPath;
 exports.parseGitHubPath     = parseGitHubPath;
 exports.parse               = parse;
-exports.getRepositoryUrl    = getRepositoryUrl;
+exports.getUrl              = getUrl;
 exports.makeName            = makeName;
 exports.makeId              = makeId;
 exports.getReadme           = getReadme;

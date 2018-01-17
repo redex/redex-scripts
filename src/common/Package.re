@@ -81,11 +81,11 @@ let fromPublished = (data: NPMS.t): t =>
     "docsUrl"       : Js.Nullable.undefined
   };
 
-let fromUnpublished = (source: Source.t, manifest: Manifest.t, readme: string, stars: int): t =>
+let fromUnpublished = (repo: Repository.t, manifest: Manifest.t, readme: string, stars: int): t =>
   {
     "type"          : "unpublished",
-    "id"            : Source.makeId(source),
-    "name"          : Source.makeName(source),
+    "id"            : Repository.makeId(repo),
+    "name"          : Repository.makeName(repo),
     "version"       : manifest.version,
     "description"   : manifest.description  |> Option.getOr(""),
     "deprecated"    : Js.Nullable.undefined,
@@ -102,7 +102,7 @@ let fromUnpublished = (source: Source.t, manifest: Manifest.t, readme: string, s
     "popularity"    : 0.,
     "maintenance"   : 0.,
     "homepageUrl"   : manifest.homepage     |> Js.Nullable.from_opt,
-    "repositoryUrl" : Js.Nullable.return(Source.getRepositoryUrl(source)),
+    "repositoryUrl" : Js.Nullable.return(Repository.getUrl(repo)),
     "npmUrl"        : Js.Nullable.undefined,
     "issuesUrl"     : manifest.bugsUrl      |> Js.Nullable.from_opt,
     "docsUrl"       : Js.Nullable.undefined

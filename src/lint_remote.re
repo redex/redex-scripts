@@ -10,12 +10,12 @@ let () = {
 
   let package =
     if (source |> Js.String.includes("/")) {
-      let source = Source.parse(source);
+      let repo = Repository.parse(source);
       Utils.Future.(
-        Manifest.get(source)        >>= manifest
-        => Source.getReadme(source) >>= readme
-        => Source.getStats(source)  >>= stats
-        => return(Package.fromUnpublished(source, manifest, readme, stats))
+        Manifest.get(repo)            >>= manifest
+        => Repository.getReadme(repo) >>= readme
+        => Repository.getStats(repo)  >>= stats
+        => return(Package.fromUnpublished(repo, manifest, readme, stats))
       )
     } else {
       NPMS.get(source) |> Future.map(Package.fromPublished);

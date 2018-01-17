@@ -12,29 +12,29 @@ let () = {
   open Resync;
 
   getSources()
-  |> Array.map(Source.parse)
-  |> Array.forEach(source =>
+  |> Array.map(Repository.parse)
+  |> Array.forEach(repo =>
     Utils.Future.(
-      Manifest.get(source)        >>= manifest
-      => Source.getReadme(source) >>= readme
-      => Source.getStats(source)  >>= stats
+      Manifest.get(repo)            >>= manifest
+      => Repository.getReadme(repo) >>= readme
+      => Repository.getStats(repo)  >>= stats
       => {
         let json =
-          Package.fromUnpublished(source, manifest, readme, stats)
+          Package.fromUnpublished(repo, manifest, readme, stats)
           |> Package.encode
           |> Js.Json.stringify;
 
         let path = Node.Path.join([|
           Config.packageDir,
           "unpublished",
-          Js.Global.encodeURIComponent(Source.makeId(source)) ++ ".json"
+          Js.Global.encodeURIComponent(Repository.makeId(repo)) ++ ".json"
         |]);
 
         return(Utils.Fs.writeFile(path, json))
     }
   ) |> Future.whenCompleted(
       fun | Ok(())   => ()
-          | Error(e) => Js.log4("\n", source, "\n", e)
+          | Error(e) => Js.log4("\n", repo, "\n", e)
     )
   );
 };

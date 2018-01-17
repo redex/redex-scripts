@@ -31,13 +31,13 @@ let decode = json => Json.Decode.{
                             field("bugs", string))),
 };
 
-let get = source => {
+let get = repo => {
   open Refetch;
   open Resync;
 
   let url = 
-    switch source {
-    | Source.Github(user, repo) => {j|https://raw.githubusercontent.com/$user/$repo/master/package.json|j}
+    switch repo {
+    | Repository.Github(user, repo) => {j|https://raw.githubusercontent.com/$user/$repo/master/package.json|j}
     };
 
   get(url) |> Future.flatMap(

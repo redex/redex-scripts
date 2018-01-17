@@ -4,7 +4,7 @@
 var Curry             = require("bs-platform/lib/js/curry.js");
 var Utils             = require("./Utils.js");
 var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
-var Source            = require("./Source.js");
+var Repository        = require("./Repository.js");
 var Js_null_undefined = require("bs-platform/lib/js/js_null_undefined.js");
 
 function mapKeywordSynonym(keyword) {
@@ -92,11 +92,11 @@ function fromPublished(data) {
         };
 }
 
-function fromUnpublished(source, manifest, readme, stars) {
+function fromUnpublished(repo, manifest, readme, stars) {
   return {
           type: "unpublished",
-          id: Source.makeId(source),
-          name: Source.makeName(source),
+          id: Repository.makeId(repo),
+          name: Repository.makeName(repo),
           version: manifest[/* version */1],
           description: Rebase.Option[/* getOr */16]("", manifest[/* description */2]),
           deprecated: undefined,
@@ -112,7 +112,7 @@ function fromUnpublished(source, manifest, readme, stars) {
           popularity: 0,
           maintenance: 0,
           homepageUrl: Js_null_undefined.from_opt(manifest[/* homepage */7]),
-          repositoryUrl: Source.getRepositoryUrl(source),
+          repositoryUrl: Repository.getUrl(repo),
           npmUrl: undefined,
           issuesUrl: Js_null_undefined.from_opt(manifest[/* bugsUrl */9]),
           docsUrl: undefined

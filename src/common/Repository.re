@@ -40,7 +40,7 @@ let parse = str =>
     failwith("Fuck if I know what this is: " ++ str);
   };
 
-let getRepositoryUrl =
+let getUrl =
   fun | Github(owner, repo) => {j|https://github.com/$owner/$repo|j}
 ;
 

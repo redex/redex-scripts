@@ -61,8 +61,8 @@ function decode(json) {
         ];
 }
 
-function get(source) {
-  var url = "https://raw.githubusercontent.com/" + (String(source[0]) + ("/" + (String(source[1]) + "/master/package.json")));
+function get(repo) {
+  var url = "https://raw.githubusercontent.com/" + (String(repo[0]) + ("/" + (String(repo[1]) + "/master/package.json")));
   return Resync.Future[/* map */8](decode, Resync.Future[/* flatMap */9]((function (param) {
                     if (param.tag) {
                       return Pervasives.failwith("failed to get package.json");

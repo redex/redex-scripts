@@ -7,11 +7,11 @@ var Curry      = require("bs-platform/lib/js/curry.js");
 var Utils      = require("./common/Utils.js");
 var Rebase     = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync     = require("refetch/src/Resync.js");
-var Source     = require("./common/Source.js");
 var Package    = require("./common/Package.js");
 var Process    = require("process");
 var Manifest   = require("./common/Manifest.js");
 var Caml_array = require("bs-platform/lib/js/caml_array.js");
+var Repository = require("./common/Repository.js");
 
 require('isomorphic-fetch')
 ;
@@ -21,11 +21,11 @@ var source = Caml_array.caml_array_get(Process.argv, 2);
 var $$package;
 
 if (source.includes("/")) {
-  var source$1 = Source.parse(source);
-  $$package = Utils.Future[/* >>= */0](Manifest.get(source$1), (function (manifest) {
-          return Utils.Future[/* >>= */0](Source.getReadme(source$1), (function (readme) {
-                        return Utils.Future[/* >>= */0](Source.getStats(source$1), (function (stats) {
-                                      return Curry._1(Utils.Future[/* return */1], Package.fromUnpublished(source$1, manifest, readme, stats));
+  var repo = Repository.parse(source);
+  $$package = Utils.Future[/* >>= */0](Manifest.get(repo), (function (manifest) {
+          return Utils.Future[/* >>= */0](Repository.getReadme(repo), (function (readme) {
+                        return Utils.Future[/* >>= */0](Repository.getStats(repo), (function (stats) {
+                                      return Curry._1(Utils.Future[/* return */1], Package.fromUnpublished(repo, manifest, readme, stats));
                                     }));
                       }));
         }));
