@@ -3,8 +3,8 @@
 
 var Fs                      = require("fs");
 var Path                    = require("path");
-var Utils                   = require("./common/Utils.js");
-var Config                  = require("./common/Config.js");
+var Utils                   = require("./common/Utils.bs.js");
+var Config                  = require("./common/Config.bs.js");
 var Rebase                  = require("@glennsl/rebase/src/Rebase.bs.js");
 var Hashtbl                 = require("bs-platform/lib/js/hashtbl.js");
 var Js_dict                 = require("bs-platform/lib/js/js_dict.js");

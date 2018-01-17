@@ -2,9 +2,9 @@
 'use strict';
 
 var Fs     = require("fs");
-var Lint   = require("./common/Lint.js");
-var Utils  = require("./common/Utils.js");
-var Config = require("./common/Config.js");
+var Lint   = require("./common/Lint.bs.js");
+var Utils  = require("./common/Utils.bs.js");
+var Config = require("./common/Config.bs.js");
 var Rebase = require("@glennsl/rebase/src/Rebase.bs.js");
 
 Rebase.$$Array[/* forEach */8]((function (param) {

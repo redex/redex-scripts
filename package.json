@@ -7,12 +7,12 @@
     "start": "bsb -make-world -w"
   },
   "bin": {
-    "fetch_packages":       "src/fetch_packages.js",
-    "fetch_unpublished":    "src/fetch_unpublished.js",
-    "index_keywords":       "src/index_keywords.js",
-    "lint_packages":        "src/lint_packages.js",
-    "lint_remote":          "src/lint_remote.js",
-    "update_search_index":  "src/update_search_index.js"
+    "fetch_packages": "src/fetch_packages.bs.js",
+    "fetch_unpublished": "src/fetch_unpublished.bs.js",
+    "index_keywords": "src/index_keywords.bs.js",
+    "lint_packages": "src/lint_packages.bs.js",
+    "lint_remote": "src/lint_remote.bs.js",
+    "update_search_index": "src/update_search_index.bs.js"
   },
   "keywords": [
     "BuckleScript"

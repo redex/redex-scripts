@@ -13,5 +13,6 @@
   "bs-dependencies": ["@glennsl/bs-json", "refetch", "@glennsl/rebase"],
   "js-post-build": {
     "cmd": "/usr/bin/sed -i '1 i\\#!/usr/bin/env node'"
-  }
+  },
+  "suffix": ".bs.js"
 }

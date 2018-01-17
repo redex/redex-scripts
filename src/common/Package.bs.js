@@ -2,9 +2,9 @@
 'use strict';
 
 var Curry             = require("bs-platform/lib/js/curry.js");
-var Utils             = require("./Utils.js");
+var Utils             = require("./Utils.bs.js");
 var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
-var Repository        = require("./Repository.js");
+var Repository        = require("./Repository.bs.js");
 var Js_null_undefined = require("bs-platform/lib/js/js_null_undefined.js");
 
 function mapKeywordSynonym(keyword) {

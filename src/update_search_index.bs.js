@@ -3,8 +3,8 @@
 
 var Fs            = require("fs");
 var $$Array       = require("bs-platform/lib/js/array.js");
-var Utils         = require("./common/Utils.js");
-var Config        = require("./common/Config.js");
+var Utils         = require("./common/Utils.bs.js");
+var Config        = require("./common/Config.bs.js");
 var Algoliasearch = require("algoliasearch");
 
 var client = Algoliasearch(Config.Algolia[/* appId */0], Config.Algolia[/* apiKey */2]);

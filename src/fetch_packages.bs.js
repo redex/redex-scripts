@@ -2,13 +2,13 @@
 'use strict';
 
 var Fs          = require("fs");
-var NPMS        = require("./common/NPMS.js");
+var NPMS        = require("./common/NPMS.bs.js");
 var Path        = require("path");
-var Utils       = require("./common/Utils.js");
-var Config      = require("./common/Config.js");
+var Utils       = require("./common/Utils.bs.js");
+var Config      = require("./common/Config.bs.js");
 var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync      = require("refetch/src/Resync.js");
-var Package     = require("./common/Package.js");
+var Package     = require("./common/Package.bs.js");
 var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
 
 require('isomorphic-fetch')

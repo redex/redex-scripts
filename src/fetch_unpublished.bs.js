@@ -4,13 +4,13 @@
 var Fs          = require("fs");
 var Path        = require("path");
 var Curry       = require("bs-platform/lib/js/curry.js");
-var Utils       = require("./common/Utils.js");
-var Config      = require("./common/Config.js");
+var Utils       = require("./common/Utils.bs.js");
+var Config      = require("./common/Config.bs.js");
 var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync      = require("refetch/src/Resync.js");
-var Package     = require("./common/Package.js");
-var Manifest    = require("./common/Manifest.js");
-var Repository  = require("./common/Repository.js");
+var Package     = require("./common/Package.bs.js");
+var Manifest    = require("./common/Manifest.bs.js");
+var Repository  = require("./common/Repository.bs.js");
 var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
 
 require('isomorphic-fetch')
