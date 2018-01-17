@@ -25,14 +25,14 @@ module Decode = {
         | "library"     => Library
         | "tool"        => Tool
         | "boilerplate" => Boilerplate
-        | other         => failwith("Unknown package type: " ++ other)
+        | other         => raise(DecodeError("Unknown package type: " ++ other))
   );
 
   let condition = string |> map(
     fun | "maintained"  => Maintained
         | "neglected"   => Neglected
         | "deprecated"  => Deprecated
-        | other         => failwith("Unknown condition: " ++ other)
+        | other         => raise(DecodeError("Unknown condition: " ++ other))
   );
 
   let platform = string |> map(
@@ -40,14 +40,17 @@ module Decode = {
         | "node"                  => Node
         | "native"                => Native
         | "platform-independent"  => PlatformIndependent
-        | other                   => failwith("Unknown platform: " ++ other)
+        | other                   => raise(DecodeError("Unknown platform: " ++ other))
   );
 
   let collection = decoder =>
     Json.Decode.(
       dict(Fn.id) |> map(Fn.(
         Js.Dict.entries
-        >> Array.map(decoder |> Fn.uncurry)
+        >> Array.map(((key, json)) =>
+            try (decoder(key, json)) {
+            | DecodeError(msg) => raise(DecodeError(msg ++ "\n\tat " ++ key))
+            })
         >> List.fromArray
       ))
     );
@@ -69,6 +72,13 @@ module Published = {
     platforms:    json |> field("platforms", list(Decode.platform)),
     comment:      json |> optional(field("comment", string))
   };
+
+let get = () => 
+  Node.Fs.readFileSync(Config.sourcesFile, `ascii)
+  |> Json.parseOrRaise
+  |> Json.Decode.(field("published", Decode.collection(fromJson)));
+
+
 };
 
 module Unpublished = {
@@ -89,4 +99,9 @@ module Unpublished = {
     platforms:    json |> field("platforms", list(Decode.platform)),
     comment:      json |> optional(field("comment", string))
   };
+
+  let get = () => 
+    Node.Fs.readFileSync(Config.sourcesFile, `ascii)
+    |> Json.parseOrRaise
+    |> Json.Decode.(field("unpublished", Decode.collection(fromJson)));
 };

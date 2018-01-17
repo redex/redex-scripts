@@ -3,16 +3,10 @@ open Source.Unpublished;
 
 [%%raw {|require('isomorphic-fetch')|}];
 
-let getSources = () => 
-  Node.Fs.readFileSync(Config.sourcesFile, `ascii)
-  |> Js.Json.parseExn
-  |> Json.Decode.(field("unpublished", Source.Decode.collection(Source.Unpublished.fromJson)));
-
-
 let () = {
   open Resync;
 
-  getSources()
+  Source.Unpublished.get()
   |> List.forEach(({ repository: repo} as source) =>
     Utils.Future.(
       Manifest.get(repo)            >>= manifest

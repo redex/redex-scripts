@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 'use strict';
 
+var Fs          = require("fs");
+var Json        = require("@glennsl/bs-json/src/Json.js");
 var Curry       = require("bs-platform/lib/js/curry.js");
+var Config      = require("./Config.bs.js");
+var Js_exn      = require("bs-platform/lib/js/js_exn.js");
 var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Js_dict     = require("bs-platform/lib/js/js_dict.js");
-var Pervasives  = require("bs-platform/lib/js/pervasives.js");
 var Repository  = require("./Repository.bs.js");
 var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
 
@@ -20,7 +23,10 @@ function packageType(param) {
                   case "tool" : 
                       return /* Tool */2;
                   default:
-                    return Pervasives.failwith("Unknown package type: " + other);
+                    throw [
+                          Json_decode.DecodeError,
+                          "Unknown package type: " + other
+                        ];
                 }
               }), Json_decode.string, param);
 }
@@ -35,7 +41,10 @@ function condition(param) {
                   case "neglected" : 
                       return /* Neglected */1;
                   default:
-                    return Pervasives.failwith("Unknown condition: " + other);
+                    throw [
+                          Json_decode.DecodeError,
+                          "Unknown condition: " + other
+                        ];
                 }
               }), Json_decode.string, param);
 }
@@ -52,7 +61,10 @@ function platform(param) {
                   case "platform-independent" : 
                       return /* PlatformIndependent */3;
                   default:
-                    return Pervasives.failwith("Unknown platform: " + other);
+                    throw [
+                          Json_decode.DecodeError,
+                          "Unknown platform: " + other
+                        ];
                 }
               }), Json_decode.string, param);
 }
@@ -62,13 +74,28 @@ function collection(decoder) {
   var partial_arg$1 = function (param) {
     return Json_decode.dict(partial_arg, param);
   };
-  var partial_arg$2 = Curry._1(Rebase.Fn[/* uncurry */4], decoder);
-  var partial_arg$3 = Rebase.$$Array[/* map */0];
-  var partial_arg$4 = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], Js_dict.entries, (function (param) {
-              return partial_arg$3(partial_arg$2, param);
+  var partial_arg$2 = Rebase.$$Array[/* map */0];
+  var partial_arg$3 = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], Js_dict.entries, (function (param) {
+              return partial_arg$2((function (param) {
+                            var key = param[0];
+                            try {
+                              return Curry._2(decoder, key, param[1]);
+                            }
+                            catch (raw_exn){
+                              var exn = Js_exn.internalToOCamlException(raw_exn);
+                              if (exn[0] === Json_decode.DecodeError) {
+                                throw [
+                                      Json_decode.DecodeError,
+                                      exn[1] + ("\n\tat " + key)
+                                    ];
+                              } else {
+                                throw exn;
+                              }
+                            }
+                          }), param);
             })), Rebase.List[/* fromArray */12]);
   return (function (param) {
-      return Json_decode.map(partial_arg$4, partial_arg$1, param);
+      return Json_decode.map(partial_arg$3, partial_arg$1, param);
     });
 }
 
@@ -93,7 +120,14 @@ function fromJson(key, json) {
         ];
 }
 
-var Published = /* module */[/* fromJson */fromJson];
+function get() {
+  return Json_decode.field("published", collection(fromJson), Json.parseOrRaise(Fs.readFileSync(Config.sourcesFile, "ascii")));
+}
+
+var Published = /* module */[
+  /* fromJson */fromJson,
+  /* get */get
+];
 
 function fromJson$1(key, json) {
   return /* record */[
@@ -112,9 +146,16 @@ function fromJson$1(key, json) {
         ];
 }
 
-var Unpublished = /* module */[/* fromJson */fromJson$1];
+function get$1() {
+  return Json_decode.field("unpublished", collection(fromJson$1), Json.parseOrRaise(Fs.readFileSync(Config.sourcesFile, "ascii")));
+}
+
+var Unpublished = /* module */[
+  /* fromJson */fromJson$1,
+  /* get */get$1
+];
 
 exports.Decode      = Decode;
 exports.Published   = Published;
 exports.Unpublished = Unpublished;
-/* Js_dict Not a pure module */
+/* fs Not a pure module */

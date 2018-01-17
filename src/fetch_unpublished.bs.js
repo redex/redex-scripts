@@ -1,25 +1,19 @@
 #!/usr/bin/env node
 'use strict';
 
-var Fs          = require("fs");
-var Path        = require("path");
-var Curry       = require("bs-platform/lib/js/curry.js");
-var Utils       = require("./common/Utils.bs.js");
-var Config      = require("./common/Config.bs.js");
-var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync      = require("refetch/src/Resync.js");
-var Source      = require("./common/Source.bs.js");
-var Package     = require("./common/Package.bs.js");
-var Manifest    = require("./common/Manifest.bs.js");
-var Repository  = require("./common/Repository.bs.js");
-var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
+var Path       = require("path");
+var Curry      = require("bs-platform/lib/js/curry.js");
+var Utils      = require("./common/Utils.bs.js");
+var Config     = require("./common/Config.bs.js");
+var Rebase     = require("@glennsl/rebase/src/Rebase.bs.js");
+var Resync     = require("refetch/src/Resync.js");
+var Source     = require("./common/Source.bs.js");
+var Package    = require("./common/Package.bs.js");
+var Manifest   = require("./common/Manifest.bs.js");
+var Repository = require("./common/Repository.bs.js");
 
 require('isomorphic-fetch')
 ;
-
-function getSources() {
-  return Json_decode.field("unpublished", Source.Decode[/* collection */3](Source.Unpublished[/* fromJson */0]), JSON.parse(Fs.readFileSync(Config.sourcesFile, "ascii")));
-}
 
 Rebase.List[/* forEach */8]((function (source) {
         var repo = source[/* repository */1];
@@ -39,7 +33,6 @@ Rebase.List[/* forEach */8]((function (source) {
                                                     }));
                                       }));
                         })));
-      }), getSources(/* () */0));
+      }), Source.Unpublished[/* get */1](/* () */0));
 
-exports.getSources = getSources;
 /*  Not a pure module */

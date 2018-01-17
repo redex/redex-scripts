@@ -3,16 +3,10 @@ open Source.Published;
 
 [%%raw {|require('isomorphic-fetch')|}];
 
-let getSources = () => 
-  Node.Fs.readFileSync(Config.sourcesFile, `ascii)
-  |> Js.Json.parseExn
-  |> Json.Decode.(field("published", Source.Decode.collection(Source.Published.fromJson)));
-
-
 let () = {
   open Resync;
 
-  getSources()
+  Source.Published.get()
   |> List.forEach(source =>
     NPMS.get(source.id)
     |> Future.whenCompleted(
