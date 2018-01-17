@@ -20,7 +20,7 @@ type t = {
   issuesUrl     : option(string),
 };
 
-let decode = json => Json.Decode.{
+let fromJson = json => Json.Decode.{
   analyzed      : json |> field("analyzedAt", string |> map(Js.Date.fromString)),
   name          : json |> at(["collected", "metadata", "name"], string),
   version       : json |> at(["collected", "metadata", "version"], string),
@@ -55,5 +55,5 @@ let get = (packageName: string) => {
                     Response.text(response)
                     |> Future.map(
                       r => failwith("failed to get data from npms.io: " ++ status.reason ++ ", " ++ r)))
-          |> Future.map(decode)
+          |> Future.map(fromJson)
 };

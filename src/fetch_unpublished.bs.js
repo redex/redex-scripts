@@ -18,7 +18,7 @@ require('isomorphic-fetch')
 ;
 
 function getSources() {
-  return Json_decode.field("unpublished", Source.decodeCollection(Source.Unpublished[/* decode */0]), JSON.parse(Fs.readFileSync(Config.sourcesFile, "ascii")));
+  return Json_decode.field("unpublished", Source.Decode[/* collection */3](Source.Unpublished[/* fromJson */0]), JSON.parse(Fs.readFileSync(Config.sourcesFile, "ascii")));
 }
 
 Rebase.List[/* forEach */8]((function (source) {

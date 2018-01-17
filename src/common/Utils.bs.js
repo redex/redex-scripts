@@ -7,11 +7,6 @@ var Rebase  = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync  = require("refetch/src/Resync.js");
 var Hashtbl = require("bs-platform/lib/js/hashtbl.js");
 
-function stick(x) {
-  console.log(x);
-  return x;
-}
-
 function readDirRecursively(dir) {
   return Rebase.$$Array[/* flatMap */5]((function (filename) {
                 var path = Path.join(dir, filename);
@@ -71,7 +66,6 @@ var Future = /* module */[
   /* return */$$return
 ];
 
-exports.stick            = stick;
 exports.Fs               = Fs$1;
 exports.filterDuplicates = filterDuplicates;
 exports.Future           = Future;

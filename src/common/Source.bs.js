@@ -57,46 +57,7 @@ function platform(param) {
               }), Json_decode.string, param);
 }
 
-var Decode = /* module */[
-  /* packageType */packageType,
-  /* condition */condition,
-  /* platform */platform
-];
-
-function decode(key, json) {
-  return /* record */[
-          /* id */key,
-          /* packageType */Json_decode.field("type", packageType, json),
-          /* condition */Json_decode.field("condition", condition, json),
-          /* platforms */Json_decode.field("platforms", (function (param) {
-                  return Json_decode.list(platform, param);
-                }), json),
-          /* comment */Json_decode.optional((function (param) {
-                  return Json_decode.field("comment", Json_decode.string, param);
-                }), json)
-        ];
-}
-
-var Published = /* module */[/* decode */decode];
-
-function decode$1(key, json) {
-  return /* record */[
-          /* id */key,
-          /* repository */Repository.parse(key),
-          /* packageType */Json_decode.field("type", packageType, json),
-          /* condition */Json_decode.field("condition", condition, json),
-          /* platforms */Json_decode.field("platforms", (function (param) {
-                  return Json_decode.list(platform, param);
-                }), json),
-          /* comment */Json_decode.optional((function (param) {
-                  return Json_decode.field("comment", Json_decode.string, param);
-                }), json)
-        ];
-}
-
-var Unpublished = /* module */[/* decode */decode$1];
-
-function decodeCollection(decoder) {
+function collection(decoder) {
   var partial_arg = Rebase.Fn[/* id */0];
   var partial_arg$1 = function (param) {
     return Json_decode.dict(partial_arg, param);
@@ -111,8 +72,47 @@ function decodeCollection(decoder) {
     });
 }
 
-exports.Decode           = Decode;
-exports.Published        = Published;
-exports.Unpublished      = Unpublished;
-exports.decodeCollection = decodeCollection;
+var Decode = /* module */[
+  /* packageType */packageType,
+  /* condition */condition,
+  /* platform */platform,
+  /* collection */collection
+];
+
+function fromJson(key, json) {
+  return /* record */[
+          /* id */key,
+          /* packageType */Json_decode.field("type", packageType, json),
+          /* condition */Json_decode.field("condition", condition, json),
+          /* platforms */Json_decode.field("platforms", (function (param) {
+                  return Json_decode.list(platform, param);
+                }), json),
+          /* comment */Json_decode.optional((function (param) {
+                  return Json_decode.field("comment", Json_decode.string, param);
+                }), json)
+        ];
+}
+
+var Published = /* module */[/* fromJson */fromJson];
+
+function fromJson$1(key, json) {
+  return /* record */[
+          /* id */key,
+          /* repository */Repository.parse(key),
+          /* packageType */Json_decode.field("type", packageType, json),
+          /* condition */Json_decode.field("condition", condition, json),
+          /* platforms */Json_decode.field("platforms", (function (param) {
+                  return Json_decode.list(platform, param);
+                }), json),
+          /* comment */Json_decode.optional((function (param) {
+                  return Json_decode.field("comment", Json_decode.string, param);
+                }), json)
+        ];
+}
+
+var Unpublished = /* module */[/* fromJson */fromJson$1];
+
+exports.Decode      = Decode;
+exports.Published   = Published;
+exports.Unpublished = Unpublished;
 /* Js_dict Not a pure module */

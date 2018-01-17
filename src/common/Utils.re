@@ -1,10 +1,5 @@
 open Rebase;
 
-let stick = x => {
-  Js.log(x);
-  x
-};
-
 module Fs = {
   type stats;
 

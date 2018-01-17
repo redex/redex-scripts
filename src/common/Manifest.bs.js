@@ -8,7 +8,7 @@ var Pervasives        = require("bs-platform/lib/js/pervasives.js");
 var Json_decode       = require("@glennsl/bs-json/src/Json_decode.js");
 var Refetch__Response = require("refetch/src/Refetch__Response.js");
 
-function decode(json) {
+function fromJson(json) {
   return /* record */[
           /* name */Json_decode.field("name", Json_decode.string, json),
           /* version */Json_decode.field("version", Json_decode.string, json),
@@ -63,7 +63,7 @@ function decode(json) {
 
 function get(repo) {
   var url = "https://raw.githubusercontent.com/" + (String(repo[0]) + ("/" + (String(repo[1]) + "/master/package.json")));
-  return Resync.Future[/* map */8](decode, Resync.Future[/* flatMap */9]((function (param) {
+  return Resync.Future[/* map */8](fromJson, Resync.Future[/* flatMap */9]((function (param) {
                     if (param.tag) {
                       return Pervasives.failwith("failed to get package.json");
                     } else {
@@ -72,6 +72,6 @@ function get(repo) {
                   }), Refetch.get(url)));
 }
 
-exports.decode = decode;
-exports.get    = get;
+exports.fromJson = fromJson;
+exports.get      = get;
 /* Refetch Not a pure module */

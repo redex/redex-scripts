@@ -8,7 +8,7 @@ var Pervasives        = require("bs-platform/lib/js/pervasives.js");
 var Json_decode       = require("@glennsl/bs-json/src/Json_decode.js");
 var Refetch__Response = require("refetch/src/Refetch__Response.js");
 
-function decode(json) {
+function fromJson(json) {
   return /* record */[
           /* analyzed */Json_decode.field("analyzedAt", (function (param) {
                   return Json_decode.map((function (prim) {
@@ -219,7 +219,7 @@ function decode(json) {
 function get(packageName) {
   var escapedName = encodeURIComponent(packageName);
   var url = "https://api.npms.io/v2/package/" + (String(escapedName) + "");
-  return Resync.Future[/* map */8](decode, Resync.Future[/* flatMap */9]((function (param) {
+  return Resync.Future[/* map */8](fromJson, Resync.Future[/* flatMap */9]((function (param) {
                     if (param.tag) {
                       var status = param[0];
                       return Resync.Future[/* map */8]((function (r) {
@@ -231,6 +231,6 @@ function get(packageName) {
                   }), Refetch.get(url)));
 }
 
-exports.decode = decode;
-exports.get    = get;
+exports.fromJson = fromJson;
+exports.get      = get;
 /* Refetch Not a pure module */

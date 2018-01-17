@@ -6,7 +6,7 @@ open Source.Unpublished;
 let getSources = () => 
   Node.Fs.readFileSync(Config.sourcesFile, `ascii)
   |> Js.Json.parseExn
-  |> Json.Decode.(field("unpublished", Source.decodeCollection(Source.Unpublished.decode)));
+  |> Json.Decode.(field("unpublished", Source.Decode.collection(Source.Unpublished.fromJson)));
 
 
 let () = {

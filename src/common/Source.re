@@ -42,6 +42,15 @@ module Decode = {
         | "platform-independent"  => PlatformIndependent
         | other                   => failwith("Unknown platform: " ++ other)
   );
+
+  let collection = decoder =>
+    Json.Decode.(
+      dict(Fn.id) |> map(Fn.(
+        Js.Dict.entries
+        >> Array.map(decoder |> Fn.uncurry)
+        >> List.fromArray
+      ))
+    );
 };
 
 module Published = {
@@ -53,7 +62,7 @@ module Published = {
     comment: option(string)
   };
 
-  let decode = (key, json) => Json.Decode.{
+  let fromJson = (key, json) => Json.Decode.{
     id:           key,
     packageType:  json |> field("type", Decode.packageType),
     condition:    json |> field("condition", Decode.condition),
@@ -72,7 +81,7 @@ module Unpublished = {
     comment: option(string)
   };
 
-  let decode = (key, json) => Json.Decode.{
+  let fromJson = (key, json) => Json.Decode.{
     id:           key,
     repository:   key |> Repository.parse,
     packageType:  json |> field("type", Decode.packageType),
@@ -81,12 +90,3 @@ module Unpublished = {
     comment:      json |> optional(field("comment", string))
   };
 };
-
-let decodeCollection = decoder =>
-  Json.Decode.(
-    dict(Fn.id) |> map(Fn.(
-      Js.Dict.entries
-      >> Array.map(decoder |> Fn.uncurry)
-      >> List.fromArray
-    ))
-  );

@@ -12,7 +12,7 @@ type t = {
 
 };
 
-let decode = json => Json.Decode.{
+let fromJson = json => Json.Decode.{
   name          : json |> field("name", string),
   version       : json |> field("version", string),
   description   : json |> optional(field("description", string)),
@@ -43,5 +43,5 @@ let get = repo => {
   get(url) |> Future.flatMap(
               fun | Response.Ok(_, response) => Response.json(response)
                   | _ => failwith("failed to get package.json"))
-           |> Future.map(decode)
+           |> Future.map(fromJson)
 };
