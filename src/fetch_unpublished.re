@@ -21,7 +21,7 @@ let () = {
       => {
         let json =
           Package.fromUnpublished(repo, manifest, readme, stats)
-          |> Package.encode
+          |> Package.toJson
           |> Js.Json.stringify;
 
         let path = Node.Path.join([|

@@ -26,8 +26,8 @@ type t = {.
   "docsUrl"       : Js.nullable(string),
 };
 
-external unsafeDecode : Js.Json.t => t = "%identity";
-external encode : t => Js.Json.t = "%identity";
+external unsafeFromJson : Js.Json.t => t = "%identity";
+external toJson : t => Js.Json.t = "%identity";
 
 let mapKeywordSynonym =
   fun | "reasonml"    => "reason"

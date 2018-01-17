@@ -4,7 +4,7 @@ let index = Algolia.initIndex(Config.Algolia.packageIndex, client);
 Utils.Fs.readDirRecursively(Config.packageDir)
 |> Array.map(path => Node.Fs.readFileSync(path, `utf8))
 |> Array.map(Js.Json.parseExn)
-|> Array.map(Package.unsafeDecode)
+|> Array.map(Package.unsafeFromJson)
 |> Array.map(record => Js.Obj.assign({ "objectID": record##id }, record))
 |> Array.map(record =>
   index |> Algolia.addObject(record, (err, _) =>

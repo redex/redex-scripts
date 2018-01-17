@@ -19,7 +19,7 @@ let () = {
         fun | Ok(data) => {
               let json =
                 data |> Package.fromPublished
-                     |> Obj.magic
+                     |> Package.toJson
                      |> Js.Json.stringify;
 
               let path = Node.Path.join([|
