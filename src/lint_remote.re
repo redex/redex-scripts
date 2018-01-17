@@ -1,5 +1,6 @@
-
 [%%raw {|require('isomorphic-fetch')|}];
+
+[@bs.val] external stringify : 'a => ([@bs.as {json|null|json}] _) => int => string = "JSON.stringify";
 
 let source = Node.Process.argv[2];
 
@@ -8,8 +9,7 @@ let () = {
   open Rebase;
   open Resync;
 
-  let package =
-    if (source |> Js.String.includes("/")) {
+  let eventuallyPackage =
     if (source |> Js.String.startsWith("github:")) {
       let repo = Repository.parse(source);
       Utils.Future.(
@@ -22,12 +22,32 @@ let () = {
       NPMS.get(source) |> Future.map(Package.fromPublished);
     };
 
-  package |> Future.whenCompleted(
+  eventuallyPackage |> Future.whenCompleted(
     fun | Ok(package) => {
+          let truncatedPackage =
+            if (String.length(package##readme) > 1000) {
+              Js.Obj.assign(package, { "readme": (package##readme |> Js.String.slice(~from=0, ~to_=1000)) ++ "..." })
+            } else {
+              package
+            };
+          Js.log2("\n", stringify(truncatedPackage, 2));
+
           let errors = Lint.lintPackage(package);
-          errors |> List.forEach(error => Js.log2("  ", error));
+          if (errors |> List.isEmpty) {
+            Js.log("\027[32;1m");
+            Js.log("No problems! :)");
+            Js.log("\027[0m");
+          } else {
+            Js.log("\027[31;1m");
+            Js.log((string_of_int(errors |> List.length)) ++ " problems:");
+            errors |> List.forEach(error => Js.log2("  ", error));
+            Js.log("\027[0m");
+          }
         }
-        | Error(e) =>
-          Js.log4("\n", source, "\n", e)
+        | Error(e) => {
+          Js.log("\027[33;1m");
+          Js.log4("\n", source, "\n", e);
+          Js.log("\027[0m");
+        }
   );
 };
