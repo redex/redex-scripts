@@ -19,8 +19,9 @@ function mapKeywordSynonym(keyword) {
         return "next.js";
     case "reasonml" : 
         return "reason";
+    case "reason-react" : 
     case "reasonreact" : 
-        return "reason-react";
+        return "react";
     case "regex" : 
         return "regular expressions";
     case "tdd" : 

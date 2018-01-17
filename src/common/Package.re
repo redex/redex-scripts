@@ -30,17 +30,18 @@ external unsafeFromJson : Js.Json.t => t = "%identity";
 external toJson : t => Js.Json.t = "%identity";
 
 let mapKeywordSynonym =
-  fun | "reasonml"    => "reason"
-      | "bsb"         => "bucklescript"
-      | "bs-platform" => "bucklescript"
-      | "test"        => "testing"
-      | "tdd"         => "testing"
-      | "regex"       => "regular expressions"
-      | "reasonreact" => "reason-react"
-      | "next"        => "next.js"
-      | "d3"          => "d3.js"
-      | "d3js"        => "d3.js"
-      | keyword       => keyword;
+  fun | "reasonml"      => "reason"
+      | "bsb"           => "bucklescript"
+      | "bs-platform"   => "bucklescript"
+      | "test"          => "testing"
+      | "tdd"           => "testing"
+      | "regex"         => "regular expressions"
+      | "reasonreact"   => "react"
+      | "reason-react"  => "react"
+      | "next"          => "next.js"
+      | "d3"            => "d3.js"
+      | "d3js"          => "d3.js"
+      | keyword         => keyword;
 
 let ignoreKeyword =
   fun | "reason"  => true
