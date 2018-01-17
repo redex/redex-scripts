@@ -19,6 +19,9 @@ let lints = [
   package => Array.length(package##keywords) == 0
     ? Some("Missing keywords") : None,
 
+  package => package##keywords |> Array.exists(k => k |> String.startsWith("bs-"))
+    ? Some("Keyword starting with 'bs-'") : None,
+
   package => Js.Nullable.test(package##repositoryUrl)
     ? Some("Missing repository url") : None,
 

@@ -53,47 +53,59 @@ var lints_001 = /* :: */[
           }),
         /* :: */[
           (function ($$package) {
-              var match = +($$package.repositoryUrl == null);
+              var match = Rebase.$$Array[/* exists */9]((function (k) {
+                      return Rebase.$$String[/* startsWith */3]("bs-", k);
+                    }), $$package.keywords);
               if (match !== 0) {
-                return /* Some */["Missing repository url"];
+                return /* Some */["Keyword starting with 'bs-'"];
               } else {
                 return /* None */0;
               }
             }),
           /* :: */[
             (function ($$package) {
-                var match = +($$package.homepageUrl == null);
+                var match = +($$package.repositoryUrl == null);
                 if (match !== 0) {
-                  return /* Some */["Missing homepage url"];
+                  return /* Some */["Missing repository url"];
                 } else {
                   return /* None */0;
                 }
               }),
             /* :: */[
               (function ($$package) {
-                  var match = +($$package.issuesUrl == null);
+                  var match = +($$package.homepageUrl == null);
                   if (match !== 0) {
-                    return /* Some */["Missing issues url"];
+                    return /* Some */["Missing homepage url"];
                   } else {
                     return /* None */0;
                   }
                 }),
               /* :: */[
                 (function ($$package) {
-                    var match = +(Rebase.$$String[/* length */1]($$package.readme) > 10000);
+                    var match = +($$package.issuesUrl == null);
                     if (match !== 0) {
-                      return /* Some */["Readme > 10k bytes"];
+                      return /* Some */["Missing issues url"];
                     } else {
                       return /* None */0;
                     }
                   }),
                 /* :: */[
                   (function ($$package) {
-                      return Rebase.Option[/* map */0]((function (message) {
-                                    return "Deprecated - " + message;
-                                  }), Js_primitive.null_undefined_to_opt($$package.deprecated));
+                      var match = +(Rebase.$$String[/* length */1]($$package.readme) > 10000);
+                      if (match !== 0) {
+                        return /* Some */["Readme > 10k bytes"];
+                      } else {
+                        return /* None */0;
+                      }
                     }),
-                  /* [] */0
+                  /* :: */[
+                    (function ($$package) {
+                        return Rebase.Option[/* map */0]((function (message) {
+                                      return "Deprecated - " + message;
+                                    }), Js_primitive.null_undefined_to_opt($$package.deprecated));
+                      }),
+                    /* [] */0
+                  ]
                 ]
               ]
             ]
