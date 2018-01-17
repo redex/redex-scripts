@@ -7,7 +7,7 @@
     "start": "bsb -make-world -w"
   },
   "bin": {
-    "fetch_packages": "src/fetch_packages.bs.js",
+    "fetch_published": "src/fetch_published.bs.js",
     "fetch_unpublished": "src/fetch_unpublished.bs.js",
     "index_keywords": "src/index_keywords.bs.js",
     "lint_packages": "src/lint_packages.bs.js",
