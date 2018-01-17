@@ -1,19 +1,19 @@
 open! Rebase;
+open Source.Unpublished;
 
 [%%raw {|require('isomorphic-fetch')|}];
 
 let getSources = () => 
   Node.Fs.readFileSync(Config.sourcesFile, `ascii)
   |> Js.Json.parseExn
-  |> Json.Decode.(field("unpublished", array(string)));
+  |> Json.Decode.(field("unpublished", Source.decodeCollection(Source.Unpublished.decode)));
 
 
 let () = {
   open Resync;
 
   getSources()
-  |> Array.map(Repository.parse)
-  |> Array.forEach(repo =>
+  |> List.forEach(({ repository: repo} as source) =>
     Utils.Future.(
       Manifest.get(repo)            >>= manifest
       => Repository.getReadme(repo) >>= readme

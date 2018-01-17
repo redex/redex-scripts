@@ -1,22 +1,95 @@
 {
-  "published": [
-    "@bs-blueprintjs/core",
-    "bs-axios",
-    "bs-batteries",
-    "bs-director",
-    "bs-next",
-    "re-respect",
-    "reglinterface",
-    "bs-react-pdf",
-    "bs-node-http",
-    "bs-react-test-renderer",
-    "bs-json"
-  ],
+  "published": {
+    "@bs-blueprintjs/core": {
+      "type": "binding",
+      "condition": "neglected",
+      "platforms": ["browser"],
+      "comment": "missing readme, keywords"
+    },
+    "bs-axios": {
+      "type": "binding",
+      "condition": "maintained",
+      "platforms": ["browser", "node"],
+      "comment": "no readme"
+    },
+    "bs-batteries": {
+      "type": "library",
+      "condition": "neglected",
+      "platforms": ["platform-independent"],
+      "comment": "short readme"
+    },
+    "bs-director": {
+      "type": "binding",
+      "condition": "neglected",
+      "platforms": ["browser"],
+      "comment": "missing repository url"
+    },
+    "bs-next": {
+      "type": "binding",
+      "condition": "maintained",
+      "platforms": ["node"]
+    },
+    "re-respect": {
+      "type": "library",
+      "condition": "maintained",
+      "platforms": ["node"]
+    },
+    "reglinterface": {
+      "type": "library",
+      "condition": "neglected",
+      "platforms": ["browser", "native"],
+      "comment": "missing readme, license, keywords, repository url"
+    },
+    "bs-react-pdf": {
+      "type": "binding",
+      "condition": "maintained",
+      "platforms": ["browser", "node"],
+      "comment": "no readme"
+    },
+    "bs-node-http": {
+      "type": "binding",
+      "condition": "neglected",
+      "platforms": ["node"],
+      "comment": "missing repository url"
+    },
+    "bs-react-test-renderer": {
+      "type": "binding",
+      "condition": "neglected",
+      "platforms": ["node"],
+      "comment": "missing keywords"
+    },
+    "bs-json": {
+      "type": "library",
+      "condition": "deprecated",
+      "platforms": ["browser", "node"],
+      "comment": "moved to @glennsl/bs-json"
+    }
+  },
 
-  "unpublished": [
-    "af/bs-d3",
-    "glennsl/bs-revamp",
-    "reasonml-community/bs-immutablejs",
-    "glennsl/refetch"
-  ]
+  "unpublished": {
+    "af/bs-d3": {
+      "source": "github",
+      "type": "binding",
+      "condition": "maintained",
+      "platforms": ["browser"]
+    },
+    "glennsl/bs-revamp": {
+      "source": "github",
+      "type": "library",
+      "condition": "maintained",
+      "platforms": ["browser", "node"]
+    },
+    "reasonml-community/bs-immutablejs": {
+      "source": "github",
+      "type": "binding",
+      "condition": "maintained",
+      "platforms": ["browser", "node"]
+    },
+    "glennsl/refetch": {
+      "source": "github",
+      "type": "binding",
+      "condition": "maintained",
+      "platforms": ["browser", "node"]
+    }
+  }
 }

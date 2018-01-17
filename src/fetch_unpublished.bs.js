@@ -8,6 +8,7 @@ var Utils       = require("./common/Utils.bs.js");
 var Config      = require("./common/Config.bs.js");
 var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync      = require("refetch/src/Resync.js");
+var Source      = require("./common/Source.bs.js");
 var Package     = require("./common/Package.bs.js");
 var Manifest    = require("./common/Manifest.bs.js");
 var Repository  = require("./common/Repository.bs.js");
@@ -17,12 +18,11 @@ require('isomorphic-fetch')
 ;
 
 function getSources() {
-  return Json_decode.field("unpublished", (function (param) {
-                return Json_decode.array(Json_decode.string, param);
-              }), JSON.parse(Fs.readFileSync(Config.sourcesFile, "ascii")));
+  return Json_decode.field("unpublished", Source.decodeCollection(Source.Unpublished[/* decode */0]), JSON.parse(Fs.readFileSync(Config.sourcesFile, "ascii")));
 }
 
-Rebase.$$Array[/* forEach */8]((function (repo) {
+Rebase.List[/* forEach */8]((function (source) {
+        var repo = source[/* repository */1];
         return Resync.Future[/* whenCompleted */6]((function (param) {
                       if (param.tag) {
                         console.log("\n", repo, "\n", param[0]);
@@ -39,7 +39,7 @@ Rebase.$$Array[/* forEach */8]((function (repo) {
                                                     }));
                                       }));
                         })));
-      }), Rebase.$$Array[/* map */0](Repository.parse, getSources(/* () */0)));
+      }), getSources(/* () */0));
 
 exports.getSources = getSources;
 /*  Not a pure module */
