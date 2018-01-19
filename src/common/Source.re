@@ -59,7 +59,8 @@ module Published = {
     id: string,
     packageType,
     condition,
-    platforms: list(platform),
+    platforms: array(platform),
+    keywords: option(array(string)),
     comment: option(string)
   };
 
@@ -67,7 +68,8 @@ module Published = {
     id:           key,
     packageType:  json |> field("type", Decode.packageType),
     condition:    json |> field("condition", Decode.condition),
-    platforms:    json |> field("platforms", list(Decode.platform)),
+    platforms:    json |> field("platforms", array(Decode.platform)),
+    keywords:     json |> optional(field("keywords", array(string))),
     comment:      json |> optional(field("comment", string))
   };
 
@@ -85,7 +87,8 @@ module Unpublished = {
     repository: Repository.t,
     packageType,
     condition,
-    platforms: list(platform),
+    platforms: array(platform),
+    keywords: option(array(string)),
     comment: option(string)
   };
 
@@ -94,7 +97,8 @@ module Unpublished = {
     repository:   json |> field("repository", string |> map(Repository.parse)),
     packageType:  json |> field("type", Decode.packageType),
     condition:    json |> field("condition", Decode.condition),
-    platforms:    json |> field("platforms", list(Decode.platform)),
+    platforms:    json |> field("platforms", array(Decode.platform)),
+    keywords:     json |> optional(field("keywords", array(string))),
     comment:      json |> optional(field("comment", string))
   };
 

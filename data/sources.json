@@ -4,6 +4,7 @@
       "type": "binding",
       "condition": "neglected",
       "platforms": ["browser"],
+      "keywords": ["react", "ui-library"],
       "comment": "missing readme, keywords"
     },
     "bs-axios": {
@@ -38,6 +39,7 @@
       "type": "library",
       "condition": "neglected",
       "platforms": ["browser", "native"],
+      "keywords": ["opengl"],
       "comment": "missing readme, license, keywords, repository url"
     },
     "bs-react-pdf": {
@@ -56,6 +58,7 @@
       "type": "binding",
       "condition": "neglected",
       "platforms": ["node"],
+      "keywords": ["testing", "react"],
       "comment": "missing keywords"
     },
     "bs-json": {

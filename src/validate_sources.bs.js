@@ -12,14 +12,14 @@ var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exception
 
 try {
   Rebase.List[/* forEach */8]((function (source) {
-          if (Rebase.List[/* length */19](source[/* platforms */3])) {
+          if (Rebase.$$Array[/* length */16](source[/* platforms */3])) {
             return 0;
           } else {
             return Pervasives.failwith("No platforms specified\n\tat " + source[/* id */0]);
           }
         }), Source.Published[/* get */1](/* () */0));
   Rebase.List[/* forEach */8]((function (source) {
-          if (Rebase.List[/* length */19](source[/* platforms */4])) {
+          if (Rebase.$$Array[/* length */16](source[/* platforms */4])) {
             return 0;
           } else {
             return Pervasives.failwith("No platforms specified\n\tat " + source[/* id */0]);

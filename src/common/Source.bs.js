@@ -112,7 +112,12 @@ function fromJson(key, json) {
           /* packageType */Json_decode.field("type", packageType, json),
           /* condition */Json_decode.field("condition", condition, json),
           /* platforms */Json_decode.field("platforms", (function (param) {
-                  return Json_decode.list(platform, param);
+                  return Json_decode.array(platform, param);
+                }), json),
+          /* keywords */Json_decode.optional((function (param) {
+                  return Json_decode.field("keywords", (function (param) {
+                                return Json_decode.array(Json_decode.string, param);
+                              }), param);
                 }), json),
           /* comment */Json_decode.optional((function (param) {
                   return Json_decode.field("comment", Json_decode.string, param);
@@ -138,7 +143,12 @@ function fromJson$1(key, json) {
           /* packageType */Json_decode.field("type", packageType, json),
           /* condition */Json_decode.field("condition", condition, json),
           /* platforms */Json_decode.field("platforms", (function (param) {
-                  return Json_decode.list(platform, param);
+                  return Json_decode.array(platform, param);
+                }), json),
+          /* keywords */Json_decode.optional((function (param) {
+                  return Json_decode.field("keywords", (function (param) {
+                                return Json_decode.array(Json_decode.string, param);
+                              }), param);
                 }), json),
           /* comment */Json_decode.optional((function (param) {
                   return Json_decode.field("comment", Json_decode.string, param);
