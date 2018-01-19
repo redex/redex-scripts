@@ -19,6 +19,12 @@ let lints = [
   package => Array.length(package##keywords) == 0
     ? Some("Missing keywords") : None,
 
+  package => {
+    let sorted = package##keywords |> Js.Array.copy |> Js.Array.sortInPlace;
+    sorted |> Js.Array.somei((x, i) => x === Array.unsafeGetUnchecked(i - 1, sorted))
+      ? Some("Duplicate keywords") : None
+  },
+
   package => package##keywords |> Array.exists(k => k |> String.startsWith("bs-"))
     ? Some("Keyword starting with 'bs-'") : None,
 
