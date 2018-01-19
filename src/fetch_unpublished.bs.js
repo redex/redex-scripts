@@ -16,8 +16,8 @@ var Repository = require("./common/Repository.bs.js");
 require('isomorphic-fetch')
 ;
 
-Rebase.List[/* forEach */8]((function (source) {
-        var repo = source[/* repository */1];
+Rebase.List[/* forEach */8]((function (param) {
+        var repo = param[/* repository */1];
         return Resync.Future[/* whenCompleted */6]((function (param) {
                       if (param.tag) {
                         console.log("\n", repo, "\n", param[0]);

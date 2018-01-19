@@ -7,7 +7,7 @@ let () = {
   open Resync;
 
   Source.Unpublished.get()
-  |> List.forEach(({ repository: repo} as source) =>
+  |> List.forEach(({ repository: repo}) =>
     Utils.Future.(
       Manifest.get(repo)            >>= manifest
       => Repository.getReadme(repo) >>= readme

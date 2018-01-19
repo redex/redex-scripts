@@ -18,7 +18,7 @@ type platform =
   | PlatformIndependent;
 
 module Decode = {
-  open Json.Decode;
+  open! Json.Decode;
 
   let packageType = string |> map(
     fun | "binding"     => Binding
@@ -44,16 +44,14 @@ module Decode = {
   );
 
   let collection = decoder =>
-    Json.Decode.(
-      dict(Fn.id) |> map(Fn.(
-        Js.Dict.entries
-        >> Array.map(((key, json)) =>
-            try (decoder(key, json)) {
-            | DecodeError(msg) => raise(DecodeError(msg ++ "\n\tat " ++ key))
-            })
-        >> List.fromArray
-      ))
-    );
+    dict(Fn.id) |> map(Fn.(
+      Js.Dict.entries
+      >> Array.map(((key, json)) =>
+          try (decoder(key, json)) {
+          | DecodeError(msg) => raise(DecodeError(msg ++ "\n\tat " ++ key))
+          })
+      >> List.fromArray
+    ));
 };
 
 module Published = {
