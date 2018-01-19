@@ -2,24 +2,43 @@
 
 [@bs.val] external stringify : 'a => ([@bs.as {json|null|json}] _) => int => string = "JSON.stringify";
 
-let source = Node.Process.argv[2];
-
 
 let () = {
   open Rebase;
   open Resync;
 
+  let name = Node.Process.argv[2] |> Option.getOrRaise;
+
   let eventuallyPackage =
-    if (source |> String.startsWith("github:")) {
-      let repo = Repository.parse(source);
+    if (name |> String.startsWith("github:")) {
+      let repo = Repository.parse(name);
+      let source = Source.Unpublished.{
+        id: name,
+        repository: repo,
+        packageType: Binding,
+        condition: Maintained,
+        platforms: [|Any|],
+        keywords: None,
+        comment: None
+      };
+
       Utils.Future.(
         Manifest.get(repo)            >>= manifest
         => Repository.getReadme(repo) >>= readme
         => Repository.getStats(repo)  >>= stats
-        => return(Package.fromUnpublished(repo, manifest, readme, stats))
+        => return(Package.fromUnpublished(source, manifest, readme, stats))
       )
     } else {
-      NPMS.get(source) |> Future.map(Package.fromPublished);
+      let source = Source.Published.{
+        id: name,
+        packageType: Binding,
+        condition: Maintained,
+        platforms: [|Any|],
+        keywords: None,
+        comment: None
+      };
+
+      NPMS.get(name) |> Future.map(Package.fromPublished(source));
     };
 
   eventuallyPackage |> Future.whenCompleted(
@@ -46,7 +65,7 @@ let () = {
         }
         | Error(e) => {
           Js.log("\027[33;1m");
-          Js.log4("\n", source, "\n", e);
+          Js.log4("\n", name, "\n", e);
           Js.log("\027[0m");
         }
   );

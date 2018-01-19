@@ -7,14 +7,14 @@ let () = {
   open Resync;
 
   Source.Unpublished.get()
-  |> List.forEach(({ repository: repo}) =>
+  |> List.forEach(({ repository: repo} as source) =>
     Utils.Future.(
       Manifest.get(repo)            >>= manifest
       => Repository.getReadme(repo) >>= readme
       => Repository.getStats(repo)  >>= stats
       => {
         let json =
-          Package.fromUnpublished(repo, manifest, readme, stats)
+          Package.fromUnpublished(source, manifest, readme, stats)
           |> Package.toJson
           |> Json.stringify;
 

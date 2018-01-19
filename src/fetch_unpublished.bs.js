@@ -16,8 +16,8 @@ var Repository = require("./common/Repository.bs.js");
 require('isomorphic-fetch')
 ;
 
-Rebase.List[/* forEach */8]((function (param) {
-        var repo = param[/* repository */1];
+Rebase.List[/* forEach */8]((function (source) {
+        var repo = source[/* repository */1];
         return Resync.Future[/* whenCompleted */6]((function (param) {
                       if (param.tag) {
                         console.log("\n", repo, "\n", param[0]);
@@ -28,7 +28,7 @@ Rebase.List[/* forEach */8]((function (param) {
                     }), Utils.Future[/* >>= */0](Manifest.get(repo), (function (manifest) {
                           return Utils.Future[/* >>= */0](Repository.getReadme(repo), (function (readme) {
                                         return Utils.Future[/* >>= */0](Repository.getStats(repo), (function (stats) {
-                                                      var json = Json.stringify(Package.fromUnpublished(repo, manifest, readme, stats));
+                                                      var json = Json.stringify(Package.fromUnpublished(source, manifest, readme, stats));
                                                       var path = Path.join(Config.packageDir, "unpublished", encodeURIComponent(Repository.makeId(repo)) + ".json");
                                                       return Curry._1(Utils.Future[/* return */1], Utils.Fs[/* writeFile */2](path, json));
                                                     }));

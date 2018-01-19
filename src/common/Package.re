@@ -55,7 +55,7 @@ let normalizeKeywords =
     >> Array.filter(not << ignoreKeyword)
     >> Utils.filterDuplicates);
 
-let fromPublished = (data: NPMS.t): t =>
+let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
   {
     "type"          : "published",
     "id"            : data.name,
@@ -65,7 +65,8 @@ let fromPublished = (data: NPMS.t): t =>
     "deprecated"    : data.deprecated     |> Js.Nullable.from_opt,
     "author"        : data.author         |> Js.Nullable.from_opt,
     "license"       : data.license        |> Js.Nullable.from_opt,
-    "keywords"      : data.keywords       |> Option.getOr([||])
+    "keywords"      : source.keywords     |> Option.or_(data.keywords)
+                                          |> Option.getOr([||])
                                           |> normalizeKeywords,
     "readme"        : data.readme         |> Option.getOr(""),
     "analyzed"      : data.analyzed,
@@ -82,17 +83,18 @@ let fromPublished = (data: NPMS.t): t =>
     "docsUrl"       : Js.Nullable.undefined
   };
 
-let fromUnpublished = (repo: Repository.t, manifest: Manifest.t, readme: string, stars: int): t =>
+let fromUnpublished = (source: Source.Unpublished.t, manifest: Manifest.t, readme: string, stars: int): t =>
   {
     "type"          : "unpublished",
-    "id"            : Repository.makeId(repo),
-    "name"          : Repository.makeName(repo),
+    "id"            : Repository.makeId(source.repository),
+    "name"          : Repository.makeName(source.repository),
     "version"       : manifest.version,
     "description"   : manifest.description  |> Option.getOr(""),
     "deprecated"    : Js.Nullable.undefined,
     "author"        : manifest.author       |> Js.Nullable.from_opt,
     "license"       : manifest.license      |> Js.Nullable.from_opt,
-    "keywords"      : manifest.keywords     |> Option.getOr([||])
+    "keywords"      : source.keywords       |> Option.or_(manifest.keywords)
+                                            |> Option.getOr([||])
                                             |> normalizeKeywords,
     "readme"        : readme,
     "analyzed"      : Js.Date.make(),
@@ -103,7 +105,7 @@ let fromUnpublished = (repo: Repository.t, manifest: Manifest.t, readme: string,
     "popularity"    : 0.,
     "maintenance"   : 0.,
     "homepageUrl"   : manifest.homepage     |> Js.Nullable.from_opt,
-    "repositoryUrl" : Js.Nullable.return(Repository.getUrl(repo)),
+    "repositoryUrl" : Js.Nullable.return(Repository.getUrl(source.repository)),
     "npmUrl"        : Js.Nullable.undefined,
     "issuesUrl"     : manifest.bugsUrl      |> Js.Nullable.from_opt,
     "docsUrl"       : Js.Nullable.undefined

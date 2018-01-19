@@ -12,9 +12,9 @@ let () = {
     |> Future.whenCompleted(
         fun | Ok(data) => {
               let json =
-                data |> Package.fromPublished
-                     |> Package.toJson
-                     |> Json.stringify;
+                Package.fromPublished(source, data)
+                |> Package.toJson
+                |> Json.stringify;
 
               let path = Node.Path.join([|
                 Config.packageDir,

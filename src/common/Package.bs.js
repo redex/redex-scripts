@@ -66,7 +66,7 @@ var normalizeKeywords = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> 
             return partial_arg$3(partial_arg$2, param);
           })), Utils.filterDuplicates);
 
-function fromPublished(data) {
+function fromPublished(source, data) {
   return {
           type: "published",
           id: data[/* name */1],
@@ -76,7 +76,7 @@ function fromPublished(data) {
           deprecated: Js_null_undefined.from_opt(data[/* deprecated */5]),
           author: Js_null_undefined.from_opt(data[/* author */6]),
           license: Js_null_undefined.from_opt(data[/* license */7]),
-          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], data[/* keywords */9])),
+          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](data[/* keywords */9], source[/* keywords */4]))),
           readme: Rebase.Option[/* getOr */16]("", data[/* readme */8]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],
@@ -93,17 +93,17 @@ function fromPublished(data) {
         };
 }
 
-function fromUnpublished(repo, manifest, readme, stars) {
+function fromUnpublished(source, manifest, readme, stars) {
   return {
           type: "unpublished",
-          id: Repository.makeId(repo),
-          name: Repository.makeName(repo),
+          id: Repository.makeId(source[/* repository */1]),
+          name: Repository.makeName(source[/* repository */1]),
           version: manifest[/* version */1],
           description: Rebase.Option[/* getOr */16]("", manifest[/* description */2]),
           deprecated: undefined,
           author: Js_null_undefined.from_opt(manifest[/* author */3]),
           license: Js_null_undefined.from_opt(manifest[/* license */4]),
-          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], manifest[/* keywords */5])),
+          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](manifest[/* keywords */5], source[/* keywords */5]))),
           readme: readme,
           analyzed: new Date(),
           updated: new Date(),
@@ -113,7 +113,7 @@ function fromUnpublished(repo, manifest, readme, stars) {
           popularity: 0,
           maintenance: 0,
           homepageUrl: Js_null_undefined.from_opt(manifest[/* homepage */7]),
-          repositoryUrl: Repository.getUrl(repo),
+          repositoryUrl: Repository.getUrl(source[/* repository */1]),
           npmUrl: undefined,
           issuesUrl: Js_null_undefined.from_opt(manifest[/* bugsUrl */9]),
           docsUrl: undefined

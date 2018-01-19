@@ -21,7 +21,7 @@ Rebase.List[/* forEach */8]((function (source) {
                         return /* () */0;
                       } else {
                         var data = param[0];
-                        var json = Json.stringify(Package.fromPublished(data));
+                        var json = Json.stringify(Package.fromPublished(source, data));
                         var path = Path.join(Config.packageDir, encodeURIComponent(data[/* name */1]) + ".json");
                         return Utils.Fs[/* writeFile */2](path, json);
                       }

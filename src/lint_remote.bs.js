@@ -10,34 +10,54 @@ var Resync     = require("refetch/src/Resync.js");
 var Package    = require("./common/Package.bs.js");
 var Process    = require("process");
 var Manifest   = require("./common/Manifest.bs.js");
-var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Repository = require("./common/Repository.bs.js");
 
 require('isomorphic-fetch')
 ;
 
-var source = Caml_array.caml_array_get(Process.argv, 2);
+var name = Rebase.Option[/* getOrRaise */17](Rebase.$$Array[/* get */17](Process.argv, 2));
 
 var eventuallyPackage;
 
-if (Rebase.$$String[/* startsWith */3]("github:", source)) {
-  var repo = Repository.parse(source);
+if (Rebase.$$String[/* startsWith */3]("github:", name)) {
+  var repo = Repository.parse(name);
+  var source_004 = /* platforms : int array */[/* Any */3];
+  var source = /* record */[
+    /* id */name,
+    /* repository */repo,
+    /* packageType : Binding */0,
+    /* condition : Maintained */0,
+    source_004,
+    /* keywords : None */0,
+    /* comment : None */0
+  ];
   eventuallyPackage = Utils.Future[/* >>= */0](Manifest.get(repo), (function (manifest) {
           return Utils.Future[/* >>= */0](Repository.getReadme(repo), (function (readme) {
                         return Utils.Future[/* >>= */0](Repository.getStats(repo), (function (stats) {
-                                      return Curry._1(Utils.Future[/* return */1], Package.fromUnpublished(repo, manifest, readme, stats));
+                                      return Curry._1(Utils.Future[/* return */1], Package.fromUnpublished(source, manifest, readme, stats));
                                     }));
                       }));
         }));
 } else {
-  eventuallyPackage = Resync.Future[/* map */8](Package.fromPublished, NPMS.get(source));
+  var source_003 = /* platforms : int array */[/* Any */3];
+  var source$1 = /* record */[
+    /* id */name,
+    /* packageType : Binding */0,
+    /* condition : Maintained */0,
+    source_003,
+    /* keywords : None */0,
+    /* comment : None */0
+  ];
+  eventuallyPackage = Resync.Future[/* map */8]((function (param) {
+          return Package.fromPublished(source$1, param);
+        }), NPMS.get(name));
 }
 
 Resync.Future[/* whenCompleted */6]((function (param) {
         if (param.tag) {
           console.log("\x1b[33;1m");
-          console.log("\n", source, "\n", param[0]);
+          console.log("\n", name, "\n", param[0]);
           console.log("\x1b[0m");
           return /* () */0;
         } else {
@@ -65,5 +85,4 @@ Resync.Future[/* whenCompleted */6]((function (param) {
         }
       }), eventuallyPackage);
 
-exports.source = source;
 /*  Not a pure module */
