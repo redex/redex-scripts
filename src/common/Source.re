@@ -77,8 +77,6 @@ let get = () =>
   Node.Fs.readFileSync(Config.sourcesFile, `ascii)
   |> Json.parseOrRaise
   |> Json.Decode.(field("published", Decode.collection(fromJson)));
-
-
 };
 
 module Unpublished = {
