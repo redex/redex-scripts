@@ -15,7 +15,7 @@ type platform =
   | Browser
   | Node
   | Native
-  | PlatformIndependent;
+  | Any;
 
 module Decode = {
   open! Json.Decode;
@@ -36,11 +36,11 @@ module Decode = {
   );
 
   let platform = string |> map(
-    fun | "browser"               => Browser
-        | "node"                  => Node
-        | "native"                => Native
-        | "platform-independent"  => PlatformIndependent
-        | other                   => raise(DecodeError("Unknown platform: " ++ other))
+    fun | "browser" => Browser
+        | "node"    => Node
+        | "native"  => Native
+        | "any"     => Any
+        | other     => raise(DecodeError("Unknown platform: " ++ other))
   );
 
   let collection = decoder =>

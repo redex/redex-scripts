@@ -52,14 +52,14 @@ function condition(param) {
 function platform(param) {
   return Json_decode.map((function (other) {
                 switch (other) {
+                  case "any" : 
+                      return /* Any */3;
                   case "browser" : 
                       return /* Browser */0;
                   case "native" : 
                       return /* Native */2;
                   case "node" : 
                       return /* Node */1;
-                  case "platform-independent" : 
-                      return /* PlatformIndependent */3;
                   default:
                     throw [
                           Json_decode.DecodeError,

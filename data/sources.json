@@ -16,7 +16,7 @@
     "bs-batteries": {
       "type": "library",
       "condition": "neglected",
-      "platforms": ["platform-independent"],
+      "platforms": ["any"],
       "comment": "short readme"
     },
     "bs-director": {
