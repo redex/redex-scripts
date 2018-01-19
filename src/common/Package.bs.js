@@ -7,7 +7,47 @@ var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
 var Repository        = require("./Repository.bs.js");
 var Js_null_undefined = require("bs-platform/lib/js/js_null_undefined.js");
 
-function mapKeywordSynonym(keyword) {
+function _encodePackageType(param) {
+  switch (param) {
+    case 0 : 
+        return "binding";
+    case 1 : 
+        return "library";
+    case 2 : 
+        return "tool";
+    case 3 : 
+        return "boilerplate";
+    
+  }
+}
+
+function _encodeCondition(param) {
+  switch (param) {
+    case 0 : 
+        return "maintained";
+    case 1 : 
+        return "neglected";
+    case 2 : 
+        return "deprecated";
+    
+  }
+}
+
+function _encodePlatform(param) {
+  switch (param) {
+    case 0 : 
+        return "browser";
+    case 1 : 
+        return "node";
+    case 2 : 
+        return "native";
+    case 3 : 
+        return "any";
+    
+  }
+}
+
+function _mapKeywordSynonym(keyword) {
   switch (keyword) {
     case "bs-platform" : 
     case "bsb" : 
@@ -32,7 +72,7 @@ function mapKeywordSynonym(keyword) {
   }
 }
 
-function ignoreKeyword(k) {
+function _ignoreKeyword(k) {
   switch (k) {
     case "data" : 
     case "reason" : 
@@ -52,16 +92,16 @@ var partial_arg$1 = Rebase.$$Array[/* map */0];
 
 var partial_arg$2 = Curry._2(Rebase.Fn[/* << */5], (function (prim) {
         return 1 - prim;
-      }), ignoreKeyword);
+      }), _ignoreKeyword);
 
 var partial_arg$3 = Rebase.$$Array[/* filter */10];
 
-var normalizeKeywords = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], (function (param) {
+var _normalizeKeywords = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >> */6], (function (param) {
                 return partial_arg((function (prim) {
                               return prim.toLowerCase();
                             }), param);
               }), (function (param) {
-                return partial_arg$1(mapKeywordSynonym, param);
+                return partial_arg$1(_mapKeywordSynonym, param);
               })), (function (param) {
             return partial_arg$3(partial_arg$2, param);
           })), Utils.filterDuplicates);
@@ -72,11 +112,14 @@ function fromPublished(source, data) {
           id: data[/* name */1],
           name: data[/* name */1],
           version: data[/* version */2],
+          packageType: _encodePackageType(source[/* packageType */1]),
+          condition: _encodeCondition(source[/* condition */2]),
+          platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */3]),
           description: data[/* description */3],
           deprecated: Js_null_undefined.from_opt(data[/* deprecated */5]),
           author: Js_null_undefined.from_opt(data[/* author */6]),
           license: Js_null_undefined.from_opt(data[/* license */7]),
-          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](data[/* keywords */9], source[/* keywords */4]))),
+          keywords: Curry._1(_normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](data[/* keywords */9], source[/* keywords */4]))),
           readme: Rebase.Option[/* getOr */16]("", data[/* readme */8]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],
@@ -99,11 +142,14 @@ function fromUnpublished(source, manifest, readme, stars) {
           id: Repository.makeId(source[/* repository */1]),
           name: Repository.makeName(source[/* repository */1]),
           version: manifest[/* version */1],
+          packageType: _encodePackageType(source[/* packageType */2]),
+          condition: _encodeCondition(source[/* condition */3]),
+          platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */4]),
           description: Rebase.Option[/* getOr */16]("", manifest[/* description */2]),
           deprecated: undefined,
           author: Js_null_undefined.from_opt(manifest[/* author */3]),
           license: Js_null_undefined.from_opt(manifest[/* license */4]),
-          keywords: Curry._1(normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](manifest[/* keywords */5], source[/* keywords */5]))),
+          keywords: Curry._1(_normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](manifest[/* keywords */5], source[/* keywords */5]))),
           readme: readme,
           analyzed: new Date(),
           updated: new Date(),
@@ -120,9 +166,12 @@ function fromUnpublished(source, manifest, readme, stars) {
         };
 }
 
-exports.mapKeywordSynonym = mapKeywordSynonym;
-exports.ignoreKeyword     = ignoreKeyword;
-exports.normalizeKeywords = normalizeKeywords;
-exports.fromPublished     = fromPublished;
-exports.fromUnpublished   = fromUnpublished;
-/* normalizeKeywords Not a pure module */
+exports._encodePackageType = _encodePackageType;
+exports._encodeCondition   = _encodeCondition;
+exports._encodePlatform    = _encodePlatform;
+exports._mapKeywordSynonym = _mapKeywordSynonym;
+exports._ignoreKeyword     = _ignoreKeyword;
+exports._normalizeKeywords = _normalizeKeywords;
+exports.fromPublished      = fromPublished;
+exports.fromUnpublished    = fromUnpublished;
+/* _normalizeKeywords Not a pure module */

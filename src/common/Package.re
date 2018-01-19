@@ -1,4 +1,5 @@
 open Rebase;
+open Source;
 
 type t = {.
   "type"          : string,
@@ -6,6 +7,9 @@ type t = {.
 
   "name"          : string,
   "version"       : string,
+  "packageType"   : string,
+  "condition"     : string,
+  "platforms"     : array(string),
   "description"   : string,
   "deprecated"    : Js.nullable(string),
   "author"        : Js.nullable(string),
@@ -29,7 +33,26 @@ type t = {.
 external unsafeFromJson : Js.Json.t => t = "%identity";
 external toJson : t => Js.Json.t = "%identity";
 
-let mapKeywordSynonym =
+
+let _encodePackageType =
+  fun | Binding     => "binding"
+      | Library     => "library"
+      | Tool        => "tool"
+      | Boilerplate => "boilerplate"
+;
+let _encodeCondition =
+  fun | Maintained  => "maintained"
+      | Neglected   => "neglected"
+      | Deprecated  => "deprecated"
+;
+let _encodePlatform =
+  fun | Browser => "browser"
+      | Node    => "node"
+      | Native  => "native"
+      | Any     => "any"
+;
+
+let _mapKeywordSynonym =
   fun | "reasonml"      => "reason"
       | "bsb"           => "bucklescript"
       | "bs-platform"   => "bucklescript"
@@ -43,16 +66,16 @@ let mapKeywordSynonym =
       | "d3js"          => "d3.js"
       | keyword         => keyword;
 
-let ignoreKeyword =
+let _ignoreKeyword =
   fun | "reason"  => true
       | "data"    => true
       | k         when String.startsWith("bs-", k) => true
       | _         => false;
 
-let normalizeKeywords =
+let _normalizeKeywords =
   Fn.( Array.map(Js.String.toLowerCase)
-    >> Array.map(mapKeywordSynonym)
-    >> Array.filter(not << ignoreKeyword)
+    >> Array.map(_mapKeywordSynonym)
+    >> Array.filter(not << _ignoreKeyword)
     >> Utils.filterDuplicates);
 
 let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
@@ -61,13 +84,16 @@ let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
     "id"            : data.name,
     "name"          : data.name,
     "version"       : data.version,
+    "packageType"   : source.packageType  |> _encodePackageType,
+    "condition"     : source.condition    |> _encodeCondition,
+    "platforms"     : source.platforms    |> Array.map(_encodePlatform),
     "description"   : data.description,
     "deprecated"    : data.deprecated     |> Js.Nullable.from_opt,
     "author"        : data.author         |> Js.Nullable.from_opt,
     "license"       : data.license        |> Js.Nullable.from_opt,
     "keywords"      : source.keywords     |> Option.or_(data.keywords)
                                           |> Option.getOr([||])
-                                          |> normalizeKeywords,
+                                          |> _normalizeKeywords,
     "readme"        : data.readme         |> Option.getOr(""),
     "analyzed"      : data.analyzed,
     "updated"       : data.analyzed,
@@ -89,13 +115,16 @@ let fromUnpublished = (source: Source.Unpublished.t, manifest: Manifest.t, readm
     "id"            : Repository.makeId(source.repository),
     "name"          : Repository.makeName(source.repository),
     "version"       : manifest.version,
+    "packageType"   : source.packageType    |> _encodePackageType,
+    "condition"     : source.condition      |> _encodeCondition,
+    "platforms"     : source.platforms      |> Array.map(_encodePlatform),
     "description"   : manifest.description  |> Option.getOr(""),
     "deprecated"    : Js.Nullable.undefined,
     "author"        : manifest.author       |> Js.Nullable.from_opt,
     "license"       : manifest.license      |> Js.Nullable.from_opt,
     "keywords"      : source.keywords       |> Option.or_(manifest.keywords)
                                             |> Option.getOr([||])
-                                            |> normalizeKeywords,
+                                            |> _normalizeKeywords,
     "readme"        : readme,
     "analyzed"      : Js.Date.make(),
     "updated"       : Js.Date.make(),
