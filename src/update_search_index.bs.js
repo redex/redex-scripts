@@ -2,7 +2,7 @@
 'use strict';
 
 var Fs            = require("fs");
-var Json          = require("@glennsl/bs-json/src/Json.js");
+var Json          = require("@glennsl/bs-json/src/Json.bs.js");
 var $$Array       = require("bs-platform/lib/js/array.js");
 var Utils         = require("./common/Utils.bs.js");
 var Config        = require("./common/Config.bs.js");

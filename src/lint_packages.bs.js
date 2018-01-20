@@ -2,7 +2,7 @@
 'use strict';
 
 var Fs     = require("fs");
-var Json   = require("@glennsl/bs-json/src/Json.js");
+var Json   = require("@glennsl/bs-json/src/Json.bs.js");
 var Lint   = require("./common/Lint.bs.js");
 var Utils  = require("./common/Utils.bs.js");
 var Config = require("./common/Config.bs.js");

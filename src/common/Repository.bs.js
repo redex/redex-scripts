@@ -6,7 +6,7 @@ var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
 var Resync            = require("refetch/src/Resync.js");
 var Refetch           = require("refetch/src/Refetch.js");
 var Pervasives        = require("bs-platform/lib/js/pervasives.js");
-var Json_decode       = require("@glennsl/bs-json/src/Json_decode.js");
+var Json_decode       = require("@glennsl/bs-json/src/Json_decode.bs.js");
 var Refetch__Response = require("refetch/src/Refetch__Response.js");
 
 function looksLikeUrl(str) {

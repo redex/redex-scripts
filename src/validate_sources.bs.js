@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 'use strict';
 
-var Json                    = require("@glennsl/bs-json/src/Json.js");
+var Json                    = require("@glennsl/bs-json/src/Json.bs.js");
 var Js_exn                  = require("bs-platform/lib/js/js_exn.js");
 var Rebase                  = require("@glennsl/rebase/src/Rebase.bs.js");
 var Source                  = require("./common/Source.bs.js");
 var Process                 = require("process");
 var Pervasives              = require("bs-platform/lib/js/pervasives.js");
-var Json_decode             = require("@glennsl/bs-json/src/Json_decode.js");
+var Json_decode             = require("@glennsl/bs-json/src/Json_decode.bs.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
 function assertNotEmpty(array, msg) {

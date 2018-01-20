@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-var Json    = require("@glennsl/bs-json/src/Json.js");
+var Json    = require("@glennsl/bs-json/src/Json.bs.js");
 var NPMS    = require("./common/NPMS.bs.js");
 var Path    = require("path");
 var Utils   = require("./common/Utils.bs.js");

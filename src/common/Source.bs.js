@@ -2,14 +2,14 @@
 'use strict';
 
 var Fs          = require("fs");
-var Json        = require("@glennsl/bs-json/src/Json.js");
+var Json        = require("@glennsl/bs-json/src/Json.bs.js");
 var Curry       = require("bs-platform/lib/js/curry.js");
 var Config      = require("./Config.bs.js");
 var Js_exn      = require("bs-platform/lib/js/js_exn.js");
 var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
 var Js_dict     = require("bs-platform/lib/js/js_dict.js");
 var Repository  = require("./Repository.bs.js");
-var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
+var Json_decode = require("@glennsl/bs-json/src/Json_decode.bs.js");
 
 function category(param) {
   return Json_decode.map((function (other) {

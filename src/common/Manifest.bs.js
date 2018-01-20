@@ -5,7 +5,7 @@ var Curry             = require("bs-platform/lib/js/curry.js");
 var Resync            = require("refetch/src/Resync.js");
 var Refetch           = require("refetch/src/Refetch.js");
 var Pervasives        = require("bs-platform/lib/js/pervasives.js");
-var Json_decode       = require("@glennsl/bs-json/src/Json_decode.js");
+var Json_decode       = require("@glennsl/bs-json/src/Json_decode.bs.js");
 var Refetch__Response = require("refetch/src/Refetch__Response.js");
 
 function fromJson(json) {
