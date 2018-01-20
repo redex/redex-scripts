@@ -7,7 +7,7 @@ type t = {.
 
   "name"          : string,
   "version"       : string,
-  "packageType"   : string,
+  "category"   : string,
   "condition"     : string,
   "platforms"     : array(string),
   "description"   : string,
@@ -34,7 +34,7 @@ external unsafeFromJson : Js.Json.t => t = "%identity";
 external toJson : t => Js.Json.t = "%identity";
 
 
-let _encodePackageType =
+let _encodecategory =
   fun | Binding     => "binding"
       | Library     => "library"
       | Tool        => "tool"
@@ -84,7 +84,7 @@ let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
     "id"            : data.name,
     "name"          : data.name,
     "version"       : data.version,
-    "packageType"   : source.packageType  |> _encodePackageType,
+    "category"      : source.category     |> _encodecategory,
     "condition"     : source.condition    |> _encodeCondition,
     "platforms"     : source.platforms    |> Array.map(_encodePlatform),
     "description"   : data.description,
@@ -115,7 +115,7 @@ let fromUnpublished = (source: Source.Unpublished.t, manifest: Manifest.t, readm
     "id"            : Repository.makeId(source.repository),
     "name"          : Repository.makeName(source.repository),
     "version"       : manifest.version,
-    "packageType"   : source.packageType    |> _encodePackageType,
+    "category"      : source.category       |> _encodecategory,
     "condition"     : source.condition      |> _encodeCondition,
     "platforms"     : source.platforms      |> Array.map(_encodePlatform),
     "description"   : manifest.description  |> Option.getOr(""),

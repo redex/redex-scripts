@@ -1,6 +1,6 @@
 open Rebase;
 
-type packageType =
+type category =
   | Binding
   | Library
   | Tool
@@ -20,7 +20,7 @@ type platform =
 module Decode = {
   open! Json.Decode;
 
-  let packageType = string |> map(
+  let category = string |> map(
     fun | "binding"     => Binding
         | "library"     => Library
         | "tool"        => Tool
@@ -57,7 +57,7 @@ module Decode = {
 module Published = {
   type t = {
     id: string,
-    packageType,
+    category,
     condition,
     platforms: array(platform),
     keywords: option(array(string)),
@@ -65,12 +65,12 @@ module Published = {
   };
 
   let fromJson = (key, json) => Json.Decode.{
-    id:           key,
-    packageType:  json |> field("type", Decode.packageType),
-    condition:    json |> field("condition", Decode.condition),
-    platforms:    json |> field("platforms", array(Decode.platform)),
-    keywords:     json |> optional(field("keywords", array(string))),
-    comment:      json |> optional(field("comment", string))
+    id:         key,
+    category:   json |> field("category", Decode.category),
+    condition:  json |> field("condition", Decode.condition),
+    platforms:  json |> field("platforms", array(Decode.platform)),
+    keywords:   json |> optional(field("keywords", array(string))),
+    comment:    json |> optional(field("comment", string))
   };
 
 let get = () => 
@@ -83,7 +83,7 @@ module Unpublished = {
   type t = {
     id: string,
     repository: Repository.t,
-    packageType,
+    category,
     condition,
     platforms: array(platform),
     keywords: option(array(string)),
@@ -91,13 +91,13 @@ module Unpublished = {
   };
 
   let fromJson = (key, json) => Json.Decode.{
-    id:           key,
-    repository:   json |> field("repository", string |> map(Repository.parse)),
-    packageType:  json |> field("type", Decode.packageType),
-    condition:    json |> field("condition", Decode.condition),
-    platforms:    json |> field("platforms", array(Decode.platform)),
-    keywords:     json |> optional(field("keywords", array(string))),
-    comment:      json |> optional(field("comment", string))
+    id:         key,
+    repository: json |> field("repository", string |> map(Repository.parse)),
+    category:   json |> field("category", Decode.category),
+    condition:  json |> field("condition", Decode.condition),
+    platforms:  json |> field("platforms", array(Decode.platform)),
+    keywords:   json |> optional(field("keywords", array(string))),
+    comment:    json |> optional(field("comment", string))
   };
 
   let get = () => 

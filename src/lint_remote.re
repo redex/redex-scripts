@@ -15,7 +15,7 @@ let () = {
       let source = Source.Unpublished.{
         id: name,
         repository: repo,
-        packageType: Binding,
+        category: Binding,
         condition: Maintained,
         platforms: [|Any|],
         keywords: None,
@@ -31,7 +31,7 @@ let () = {
     } else {
       let source = Source.Published.{
         id: name,
-        packageType: Binding,
+        category: Binding,
         condition: Maintained,
         platforms: [|Any|],
         keywords: None,

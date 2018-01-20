@@ -26,7 +26,7 @@ if (Rebase.$$String[/* startsWith */3]("github:", name)) {
   var source = /* record */[
     /* id */name,
     /* repository */repo,
-    /* packageType : Binding */0,
+    /* category : Binding */0,
     /* condition : Maintained */0,
     source_004,
     /* keywords : None */0,
@@ -43,7 +43,7 @@ if (Rebase.$$String[/* startsWith */3]("github:", name)) {
   var source_003 = /* platforms : int array */[/* Any */3];
   var source$1 = /* record */[
     /* id */name,
-    /* packageType : Binding */0,
+    /* category : Binding */0,
     /* condition : Maintained */0,
     source_003,
     /* keywords : None */0,

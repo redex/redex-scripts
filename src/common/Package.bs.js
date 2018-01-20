@@ -7,7 +7,7 @@ var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
 var Repository        = require("./Repository.bs.js");
 var Js_null_undefined = require("bs-platform/lib/js/js_null_undefined.js");
 
-function _encodePackageType(param) {
+function _encodecategory(param) {
   switch (param) {
     case 0 : 
         return "binding";
@@ -112,7 +112,7 @@ function fromPublished(source, data) {
           id: data[/* name */1],
           name: data[/* name */1],
           version: data[/* version */2],
-          packageType: _encodePackageType(source[/* packageType */1]),
+          category: _encodecategory(source[/* category */1]),
           condition: _encodeCondition(source[/* condition */2]),
           platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */3]),
           description: data[/* description */3],
@@ -142,7 +142,7 @@ function fromUnpublished(source, manifest, readme, stars) {
           id: Repository.makeId(source[/* repository */1]),
           name: Repository.makeName(source[/* repository */1]),
           version: manifest[/* version */1],
-          packageType: _encodePackageType(source[/* packageType */2]),
+          category: _encodecategory(source[/* category */2]),
           condition: _encodeCondition(source[/* condition */3]),
           platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */4]),
           description: Rebase.Option[/* getOr */16]("", manifest[/* description */2]),
@@ -166,7 +166,7 @@ function fromUnpublished(source, manifest, readme, stars) {
         };
 }
 
-exports._encodePackageType = _encodePackageType;
+exports._encodecategory    = _encodecategory;
 exports._encodeCondition   = _encodeCondition;
 exports._encodePlatform    = _encodePlatform;
 exports._mapKeywordSynonym = _mapKeywordSynonym;

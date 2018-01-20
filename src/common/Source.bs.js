@@ -11,7 +11,7 @@ var Js_dict     = require("bs-platform/lib/js/js_dict.js");
 var Repository  = require("./Repository.bs.js");
 var Json_decode = require("@glennsl/bs-json/src/Json_decode.js");
 
-function packageType(param) {
+function category(param) {
   return Json_decode.map((function (other) {
                 switch (other) {
                   case "binding" : 
@@ -100,7 +100,7 @@ function collection(decoder) {
 }
 
 var Decode = /* module */[
-  /* packageType */packageType,
+  /* category */category,
   /* condition */condition,
   /* platform */platform,
   /* collection */collection
@@ -109,7 +109,7 @@ var Decode = /* module */[
 function fromJson(key, json) {
   return /* record */[
           /* id */key,
-          /* packageType */Json_decode.field("type", packageType, json),
+          /* category */Json_decode.field("category", category, json),
           /* condition */Json_decode.field("condition", condition, json),
           /* platforms */Json_decode.field("platforms", (function (param) {
                   return Json_decode.array(platform, param);
@@ -140,7 +140,7 @@ function fromJson$1(key, json) {
           /* repository */Json_decode.field("repository", (function (param) {
                   return Json_decode.map(Repository.parse, Json_decode.string, param);
                 }), json),
-          /* packageType */Json_decode.field("type", packageType, json),
+          /* category */Json_decode.field("category", category, json),
           /* condition */Json_decode.field("condition", condition, json),
           /* platforms */Json_decode.field("platforms", (function (param) {
                   return Json_decode.array(platform, param);
