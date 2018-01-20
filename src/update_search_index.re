@@ -1,4 +1,4 @@
-let client = Algolia.makeClient(Config.Algolia.appId, Config.Algolia.apiKey);
+let client = Algolia.makeClient(Config.Algolia.appId, Config.Algolia.apiKey());
 let index = Algolia.initIndex(Config.Algolia.packageIndex, client);
 
 Utils.Fs.readDirRecursively(Config.packageDir)

@@ -8,7 +8,7 @@ var Utils         = require("./common/Utils.bs.js");
 var Config        = require("./common/Config.bs.js");
 var Algoliasearch = require("algoliasearch");
 
-var client = Algoliasearch(Config.Algolia[/* appId */0], Config.Algolia[/* apiKey */2]);
+var client = Algoliasearch(Config.Algolia[/* appId */0], Config.Algolia[/* apiKey */2](/* () */0));
 
 var index = client.initIndex(Config.Algolia[/* packageIndex */1]);
 
