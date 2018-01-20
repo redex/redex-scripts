@@ -10,6 +10,8 @@ var Pervasives              = require("bs-platform/lib/js/pervasives.js");
 var Json_decode             = require("@glennsl/bs-json/src/Json_decode.bs.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
+var filename = Rebase.$$Array[/* get */17](Process.argv, 2);
+
 function assertNotEmpty(array, msg) {
   if (Rebase.$$Array[/* length */16](array)) {
     return 0;
@@ -36,14 +38,14 @@ try {
           return Rebase.Option[/* forEach */8]((function (keywords) {
                         return assertNoDuplicates(keywords, "Duplicate items in keywords\n\tat " + source[/* id */0]);
                       }), source[/* keywords */4]);
-        }), Source.Published[/* get */1](/* () */0));
+        }), Source.Published[/* get */1](filename, /* () */0));
   Rebase.List[/* forEach */8]((function (source) {
           assertNotEmpty(source[/* platforms */4], "No platforms specified\n\tat " + source[/* id */0]);
           assertNoDuplicates(source[/* platforms */4], "Duplicate items in platforms\n\tat " + source[/* id */0]);
           return Rebase.Option[/* forEach */8]((function (keywords) {
                         return assertNoDuplicates(keywords, "Duplicate items in keywords\n\tat " + source[/* id */0]);
                       }), source[/* keywords */5]);
-        }), Source.Unpublished[/* get */1](/* () */0));
+        }), Source.Unpublished[/* get */1](filename, /* () */0));
 }
 catch (raw_exn){
   var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -68,6 +70,7 @@ catch (raw_exn){
   
 }
 
+exports.filename           = filename;
 exports.assertNotEmpty     = assertNotEmpty;
 exports.assertNoDuplicates = assertNoDuplicates;
-/*  Not a pure module */
+/* filename Not a pure module */

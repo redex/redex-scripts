@@ -1,5 +1,7 @@
 open Rebase;
 
+let filename = Node.Process.argv[2];
+
 let assertNotEmpty = (array, msg) => 
   if (Array.length(array) === 0) {
     failwith(msg);
@@ -13,14 +15,14 @@ let assertNoDuplicates = (array, msg) => {
 };
 
 try {
-  Source.Published.get()
+  Source.Published.get(~filename?, ())
   |> List.forEach((source: Source.Published.t) => {
     assertNotEmpty(source.platforms, "No platforms specified\n\tat " ++ source.id);
     assertNoDuplicates(source.platforms, "Duplicate items in platforms\n\tat " ++ source.id);
     source.keywords |> Option.forEach(keywords => assertNoDuplicates(keywords, "Duplicate items in keywords\n\tat " ++ source.id));
   });
 
-  Source.Unpublished.get()
+  Source.Unpublished.get(~filename?, ())
   |> List.forEach((source: Source.Unpublished.t) => {
     assertNotEmpty(source.platforms, "No platforms specified\n\tat " ++ source.id);
     assertNoDuplicates(source.platforms, "Duplicate items in platforms\n\tat " ++ source.id);

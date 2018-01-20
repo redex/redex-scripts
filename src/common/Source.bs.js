@@ -110,8 +110,9 @@ function fromJson(key, json) {
         ];
 }
 
-function get() {
-  return Json_decode.field("published", collection(fromJson), Json.parseOrRaise(Fs.readFileSync(Config.sourcesFile, "ascii")));
+function get($staropt$star, _) {
+  var filename = $staropt$star ? $staropt$star[0] : Config.sourcesFile;
+  return Json_decode.field("published", collection(fromJson), Json.parseOrRaise(Fs.readFileSync(filename, "ascii")));
 }
 
 var Published = /* module */[
@@ -145,8 +146,9 @@ function fromJson$1(key, json) {
         ];
 }
 
-function get$1() {
-  return Json_decode.field("unpublished", collection(fromJson$1), Json.parseOrRaise(Fs.readFileSync(Config.sourcesFile, "ascii")));
+function get$1($staropt$star, _) {
+  var filename = $staropt$star ? $staropt$star[0] : Config.sourcesFile;
+  return Json_decode.field("unpublished", collection(fromJson$1), Json.parseOrRaise(Fs.readFileSync(filename, "ascii")));
 }
 
 var Unpublished = /* module */[

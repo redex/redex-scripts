@@ -66,8 +66,8 @@ module Published = {
     comment:    json |> optional(field("comment", string))
   };
 
-let get = () => 
-  Node.Fs.readFileSync(Config.sourcesFile, `ascii)
+let get = (~filename=Config.sourcesFile, ()) => 
+  Node.Fs.readFileSync(filename, `ascii)
   |> Json.parseOrRaise
   |> Json.Decode.(field("published", Decode.collection(fromJson)));
 };
@@ -93,8 +93,8 @@ module Unpublished = {
     comment:    json |> optional(field("comment", string))
   };
 
-  let get = () => 
-    Node.Fs.readFileSync(Config.sourcesFile, `ascii)
+  let get = (~filename=Config.sourcesFile, ()) => 
+    Node.Fs.readFileSync(filename, `ascii)
     |> Json.parseOrRaise
     |> Json.Decode.(field("unpublished", Decode.collection(fromJson)));
 };
