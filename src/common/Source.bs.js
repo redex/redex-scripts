@@ -31,24 +31,6 @@ function category(param) {
               }), Json_decode.string, param);
 }
 
-function condition(param) {
-  return Json_decode.map((function (other) {
-                switch (other) {
-                  case "deprecated" : 
-                      return /* Deprecated */2;
-                  case "maintained" : 
-                      return /* Maintained */0;
-                  case "neglected" : 
-                      return /* Neglected */1;
-                  default:
-                    throw [
-                          Json_decode.DecodeError,
-                          "Unknown condition: " + other
-                        ];
-                }
-              }), Json_decode.string, param);
-}
-
 function platform(param) {
   return Json_decode.map((function (other) {
                 switch (other) {
@@ -101,7 +83,6 @@ function collection(decoder) {
 
 var Decode = /* module */[
   /* category */category,
-  /* condition */condition,
   /* platform */platform,
   /* collection */collection
 ];
@@ -110,7 +91,11 @@ function fromJson(key, json) {
   return /* record */[
           /* id */key,
           /* category */Json_decode.field("category", category, json),
-          /* condition */Json_decode.field("condition", condition, json),
+          /* flags */Json_decode.optional((function (param) {
+                  return Json_decode.field("flags", (function (param) {
+                                return Json_decode.array(Json_decode.string, param);
+                              }), param);
+                }), json),
           /* platforms */Json_decode.field("platforms", (function (param) {
                   return Json_decode.array(platform, param);
                 }), json),
@@ -141,7 +126,11 @@ function fromJson$1(key, json) {
                   return Json_decode.map(Repository.parse, Json_decode.string, param);
                 }), json),
           /* category */Json_decode.field("category", category, json),
-          /* condition */Json_decode.field("condition", condition, json),
+          /* flags */Json_decode.optional((function (param) {
+                  return Json_decode.field("flags", (function (param) {
+                                return Json_decode.array(Json_decode.string, param);
+                              }), param);
+                }), json),
           /* platforms */Json_decode.field("platforms", (function (param) {
                   return Json_decode.array(platform, param);
                 }), json),

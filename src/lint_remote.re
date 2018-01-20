@@ -16,7 +16,7 @@ let () = {
         id: name,
         repository: repo,
         category: Binding,
-        condition: Maintained,
+        flags: None,
         platforms: [|Any|],
         keywords: None,
         comment: None
@@ -32,7 +32,7 @@ let () = {
       let source = Source.Published.{
         id: name,
         category: Binding,
-        condition: Maintained,
+        flags: None,
         platforms: [|Any|],
         keywords: None,
         comment: None

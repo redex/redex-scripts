@@ -21,18 +21,6 @@ function _encodecategory(param) {
   }
 }
 
-function _encodeCondition(param) {
-  switch (param) {
-    case 0 : 
-        return "maintained";
-    case 1 : 
-        return "neglected";
-    case 2 : 
-        return "deprecated";
-    
-  }
-}
-
 function _encodePlatform(param) {
   switch (param) {
     case 0 : 
@@ -113,7 +101,7 @@ function fromPublished(source, data) {
           name: data[/* name */1],
           version: data[/* version */2],
           category: _encodecategory(source[/* category */1]),
-          condition: _encodeCondition(source[/* condition */2]),
+          flags: Rebase.Option[/* getOr */16](/* array */[], source[/* flags */2]),
           platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */3]),
           description: data[/* description */3],
           deprecated: Js_null_undefined.from_opt(data[/* deprecated */5]),
@@ -143,7 +131,7 @@ function fromUnpublished(source, manifest, readme, stars) {
           name: Repository.makeName(source[/* repository */1]),
           version: manifest[/* version */1],
           category: _encodecategory(source[/* category */2]),
-          condition: _encodeCondition(source[/* condition */3]),
+          flags: Rebase.Option[/* getOr */16](/* array */[], source[/* flags */3]),
           platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */4]),
           description: Rebase.Option[/* getOr */16]("", manifest[/* description */2]),
           deprecated: undefined,
@@ -167,7 +155,6 @@ function fromUnpublished(source, manifest, readme, stars) {
 }
 
 exports._encodecategory    = _encodecategory;
-exports._encodeCondition   = _encodeCondition;
 exports._encodePlatform    = _encodePlatform;
 exports._mapKeywordSynonym = _mapKeywordSynonym;
 exports._ignoreKeyword     = _ignoreKeyword;

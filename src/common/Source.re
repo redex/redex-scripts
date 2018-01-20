@@ -28,13 +28,6 @@ module Decode = {
         | other         => raise(DecodeError("Unknown package type: " ++ other))
   );
 
-  let condition = string |> map(
-    fun | "maintained"  => Maintained
-        | "neglected"   => Neglected
-        | "deprecated"  => Deprecated
-        | other         => raise(DecodeError("Unknown condition: " ++ other))
-  );
-
   let platform = string |> map(
     fun | "browser" => Browser
         | "node"    => Node
@@ -58,7 +51,7 @@ module Published = {
   type t = {
     id: string,
     category,
-    condition,
+    flags: option(array(string)),
     platforms: array(platform),
     keywords: option(array(string)),
     comment: option(string)
@@ -67,7 +60,7 @@ module Published = {
   let fromJson = (key, json) => Json.Decode.{
     id:         key,
     category:   json |> field("category", Decode.category),
-    condition:  json |> field("condition", Decode.condition),
+    flags:      json |> optional(field("flags", array(string))),
     platforms:  json |> field("platforms", array(Decode.platform)),
     keywords:   json |> optional(field("keywords", array(string))),
     comment:    json |> optional(field("comment", string))
@@ -84,7 +77,7 @@ module Unpublished = {
     id: string,
     repository: Repository.t,
     category,
-    condition,
+    flags: option(array(string)),
     platforms: array(platform),
     keywords: option(array(string)),
     comment: option(string)
@@ -94,7 +87,7 @@ module Unpublished = {
     id:         key,
     repository: json |> field("repository", string |> map(Repository.parse)),
     category:   json |> field("category", Decode.category),
-    condition:  json |> field("condition", Decode.condition),
+    flags:      json |> optional(field("flags", array(string))),
     platforms:  json |> field("platforms", array(Decode.platform)),
     keywords:   json |> optional(field("keywords", array(string))),
     comment:    json |> optional(field("comment", string))

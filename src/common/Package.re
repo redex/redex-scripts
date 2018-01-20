@@ -7,8 +7,8 @@ type t = {.
 
   "name"          : string,
   "version"       : string,
-  "category"   : string,
-  "condition"     : string,
+  "category"      : string,
+  "flags"         : array(string),
   "platforms"     : array(string),
   "description"   : string,
   "deprecated"    : Js.nullable(string),
@@ -39,11 +39,6 @@ let _encodecategory =
       | Library     => "library"
       | Tool        => "tool"
       | Boilerplate => "boilerplate"
-;
-let _encodeCondition =
-  fun | Maintained  => "maintained"
-      | Neglected   => "neglected"
-      | Deprecated  => "deprecated"
 ;
 let _encodePlatform =
   fun | Browser => "browser"
@@ -85,7 +80,7 @@ let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
     "name"          : data.name,
     "version"       : data.version,
     "category"      : source.category     |> _encodecategory,
-    "condition"     : source.condition    |> _encodeCondition,
+    "flags"         : source.flags        |> Option.getOr([||]),
     "platforms"     : source.platforms    |> Array.map(_encodePlatform),
     "description"   : data.description,
     "deprecated"    : data.deprecated     |> Js.Nullable.from_opt,
@@ -116,7 +111,7 @@ let fromUnpublished = (source: Source.Unpublished.t, manifest: Manifest.t, readm
     "name"          : Repository.makeName(source.repository),
     "version"       : manifest.version,
     "category"      : source.category       |> _encodecategory,
-    "condition"     : source.condition      |> _encodeCondition,
+    "flags"         : source.flags          |> Option.getOr([||]),
     "platforms"     : source.platforms      |> Array.map(_encodePlatform),
     "description"   : manifest.description  |> Option.getOr(""),
     "deprecated"    : Js.Nullable.undefined,
