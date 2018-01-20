@@ -4,7 +4,7 @@
 var Fs      = require("fs");
 var Path    = require("path");
 var Rebase  = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync  = require("refetch/src/Resync.js");
+var Resync  = require("refetch/src/Resync.bs.js");
 var Hashtbl = require("bs-platform/lib/js/hashtbl.js");
 
 function readDirRecursively(dir) {

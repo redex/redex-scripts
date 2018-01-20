@@ -7,7 +7,7 @@ var Path    = require("path");
 var Utils   = require("./common/Utils.bs.js");
 var Config  = require("./common/Config.bs.js");
 var Rebase  = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync  = require("refetch/src/Resync.js");
+var Resync  = require("refetch/src/Resync.bs.js");
 var Source  = require("./common/Source.bs.js");
 var Package = require("./common/Package.bs.js");
 

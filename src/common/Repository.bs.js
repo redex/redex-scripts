@@ -3,11 +3,11 @@
 
 var Curry             = require("bs-platform/lib/js/curry.js");
 var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync            = require("refetch/src/Resync.js");
-var Refetch           = require("refetch/src/Refetch.js");
+var Resync            = require("refetch/src/Resync.bs.js");
+var Refetch           = require("refetch/src/Refetch.bs.js");
 var Pervasives        = require("bs-platform/lib/js/pervasives.js");
 var Json_decode       = require("@glennsl/bs-json/src/Json_decode.bs.js");
-var Refetch__Response = require("refetch/src/Refetch__Response.js");
+var Refetch__Response = require("refetch/src/Refetch__Response.bs.js");
 
 function looksLikeUrl(str) {
   if (Rebase.$$String[/* startsWith */3]("http://", str)) {
