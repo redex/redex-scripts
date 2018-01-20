@@ -1,13 +1,12 @@
-#!/usr/bin/env node
 'use strict';
 
-var Curry             = require("bs-platform/lib/js/curry.js");
-var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync            = require("refetch/src/Resync.bs.js");
-var Refetch           = require("refetch/src/Refetch.bs.js");
-var Pervasives        = require("bs-platform/lib/js/pervasives.js");
-var Json_decode       = require("@glennsl/bs-json/src/Json_decode.bs.js");
-var Refetch__Response = require("refetch/src/Refetch__Response.bs.js");
+import * as Curry             from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Rebase            from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync            from "../../node_modules/refetch/src/Resync.bs.js";
+import * as Refetch           from "../../node_modules/refetch/src/Refetch.bs.js";
+import * as Pervasives        from "../../node_modules/bs-platform/lib/es6/pervasives.js";
+import * as Json_decode       from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Refetch__Response from "../../node_modules/refetch/src/Refetch__Response.bs.js";
 
 function looksLikeUrl(str) {
   if (Rebase.$$String[/* startsWith */3]("http://", str)) {
@@ -97,14 +96,17 @@ function getStats(source) {
                   }), Refetch.get(url)));
 }
 
-exports.looksLikeUrl        = looksLikeUrl;
-exports.parseUrl            = parseUrl;
-exports.looksLikeGitHubPath = looksLikeGitHubPath;
-exports.parseGitHubPath     = parseGitHubPath;
-exports.parse               = parse;
-exports.getUrl              = getUrl;
-exports.makeName            = makeName;
-exports.makeId              = makeId;
-exports.getReadme           = getReadme;
-exports.getStats            = getStats;
+export {
+  looksLikeUrl        ,
+  parseUrl            ,
+  looksLikeGitHubPath ,
+  parseGitHubPath     ,
+  parse               ,
+  getUrl              ,
+  makeName            ,
+  makeId              ,
+  getReadme           ,
+  getStats            ,
+  
+}
 /* Refetch Not a pure module */

@@ -1,7 +1,6 @@
-#!/usr/bin/env node
 'use strict';
 
-var Path = require("path");
+import * as Path from "path";
 
 var outputDir = "data/generated";
 
@@ -19,8 +18,11 @@ var Algolia = /* module */[
 
 var sourcesFile = "data/sources.json";
 
-exports.sourcesFile = sourcesFile;
-exports.outputDir   = outputDir;
-exports.packageDir  = packageDir;
-exports.Algolia     = Algolia;
+export {
+  sourcesFile ,
+  outputDir   ,
+  packageDir  ,
+  Algolia     ,
+  
+}
 /* packageDir Not a pure module */

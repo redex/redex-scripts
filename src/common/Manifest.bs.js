@@ -1,12 +1,11 @@
-#!/usr/bin/env node
 'use strict';
 
-var Curry             = require("bs-platform/lib/js/curry.js");
-var Resync            = require("refetch/src/Resync.bs.js");
-var Refetch           = require("refetch/src/Refetch.bs.js");
-var Pervasives        = require("bs-platform/lib/js/pervasives.js");
-var Json_decode       = require("@glennsl/bs-json/src/Json_decode.bs.js");
-var Refetch__Response = require("refetch/src/Refetch__Response.bs.js");
+import * as Curry             from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Resync            from "../../node_modules/refetch/src/Resync.bs.js";
+import * as Refetch           from "../../node_modules/refetch/src/Refetch.bs.js";
+import * as Pervasives        from "../../node_modules/bs-platform/lib/es6/pervasives.js";
+import * as Json_decode       from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Refetch__Response from "../../node_modules/refetch/src/Refetch__Response.bs.js";
 
 function fromJson(json) {
   return /* record */[
@@ -72,6 +71,9 @@ function get(repo) {
                   }), Refetch.get(url)));
 }
 
-exports.fromJson = fromJson;
-exports.get      = get;
+export {
+  fromJson ,
+  get      ,
+  
+}
 /* Refetch Not a pure module */

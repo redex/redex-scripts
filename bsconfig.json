@@ -1,7 +1,7 @@
 {
   "name": "redex-scripts",
   "package-specs": [{
-    "module": "commonjs",
+    "module": "es6-global",
     "in-source": true
   }],
   "sources": [{
@@ -11,8 +11,5 @@
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
   "refmt": 3,
   "bs-dependencies": ["@glennsl/bs-json", "refetch", "@glennsl/rebase"],
-  "js-post-build": {
-    "cmd": "/usr/bin/sed -i '1 i\\#!/usr/bin/env node'"
-  },
   "suffix": ".bs.js"
 }

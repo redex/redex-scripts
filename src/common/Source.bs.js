@@ -1,15 +1,14 @@
-#!/usr/bin/env node
 'use strict';
 
-var Fs          = require("fs");
-var Json        = require("@glennsl/bs-json/src/Json.bs.js");
-var Curry       = require("bs-platform/lib/js/curry.js");
-var Config      = require("./Config.bs.js");
-var Js_exn      = require("bs-platform/lib/js/js_exn.js");
-var Rebase      = require("@glennsl/rebase/src/Rebase.bs.js");
-var Js_dict     = require("bs-platform/lib/js/js_dict.js");
-var Repository  = require("./Repository.bs.js");
-var Json_decode = require("@glennsl/bs-json/src/Json_decode.bs.js");
+import * as Fs          from "fs";
+import * as Json        from "../../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Curry       from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Config      from "./Config.bs.js";
+import * as Js_exn      from "../../node_modules/bs-platform/lib/es6/js_exn.js";
+import * as Rebase      from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Js_dict     from "../../node_modules/bs-platform/lib/es6/js_dict.js";
+import * as Repository  from "./Repository.bs.js";
+import * as Json_decode from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
 
 function category(param) {
   return Json_decode.map((function (other) {
@@ -156,7 +155,10 @@ var Unpublished = /* module */[
   /* get */get$1
 ];
 
-exports.Decode      = Decode;
-exports.Published   = Published;
-exports.Unpublished = Unpublished;
+export {
+  Decode      ,
+  Published   ,
+  Unpublished ,
+  
+}
 /* fs Not a pure module */

@@ -1,17 +1,16 @@
-#!/usr/bin/env node
 'use strict';
 
-var Json       = require("@glennsl/bs-json/src/Json.bs.js");
-var Path       = require("path");
-var Curry      = require("bs-platform/lib/js/curry.js");
-var Utils      = require("./common/Utils.bs.js");
-var Config     = require("./common/Config.bs.js");
-var Rebase     = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync     = require("refetch/src/Resync.bs.js");
-var Source     = require("./common/Source.bs.js");
-var Package    = require("./common/Package.bs.js");
-var Manifest   = require("./common/Manifest.bs.js");
-var Repository = require("./common/Repository.bs.js");
+import * as Json       from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Path       from "path";
+import * as Curry      from "../node_modules/bs-platform/lib/es6/curry.js";
+import * as Utils      from "./common/Utils.bs.js";
+import * as Config     from "./common/Config.bs.js";
+import * as Rebase     from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync     from "../node_modules/refetch/src/Resync.bs.js";
+import * as Source     from "./common/Source.bs.js";
+import * as Package    from "./common/Package.bs.js";
+import * as Manifest   from "./common/Manifest.bs.js";
+import * as Repository from "./common/Repository.bs.js";
 
 require('isomorphic-fetch')
 ;
@@ -36,4 +35,7 @@ Rebase.List[/* forEach */8]((function (source) {
                         })));
       }), Source.Unpublished[/* get */1](/* None */0, /* () */0));
 
+export {
+  
+}
 /*  Not a pure module */

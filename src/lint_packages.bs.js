@@ -1,12 +1,11 @@
-#!/usr/bin/env node
 'use strict';
 
-var Fs     = require("fs");
-var Json   = require("@glennsl/bs-json/src/Json.bs.js");
-var Lint   = require("./common/Lint.bs.js");
-var Utils  = require("./common/Utils.bs.js");
-var Config = require("./common/Config.bs.js");
-var Rebase = require("@glennsl/rebase/src/Rebase.bs.js");
+import * as Fs     from "fs";
+import * as Json   from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Lint   from "./common/Lint.bs.js";
+import * as Utils  from "./common/Utils.bs.js";
+import * as Config from "./common/Config.bs.js";
+import * as Rebase from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
 
 Rebase.$$Array[/* forEach */8]((function (param) {
         console.log("");
@@ -28,4 +27,7 @@ Rebase.$$Array[/* forEach */8]((function (param) {
                             return Fs.readFileSync(path, "utf8");
                           }), Utils.Fs[/* readDirRecursively */0](Config.packageDir)))))));
 
+export {
+  
+}
 /*  Not a pure module */

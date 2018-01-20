@@ -1,11 +1,10 @@
-#!/usr/bin/env node
 'use strict';
 
-var Curry             = require("bs-platform/lib/js/curry.js");
-var Utils             = require("./Utils.bs.js");
-var Rebase            = require("@glennsl/rebase/src/Rebase.bs.js");
-var Repository        = require("./Repository.bs.js");
-var Js_null_undefined = require("bs-platform/lib/js/js_null_undefined.js");
+import * as Curry             from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Utils             from "./Utils.bs.js";
+import * as Rebase            from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Repository        from "./Repository.bs.js";
+import * as Js_null_undefined from "../../node_modules/bs-platform/lib/es6/js_null_undefined.js";
 
 function _encodecategory(param) {
   switch (param) {
@@ -154,11 +153,14 @@ function fromUnpublished(source, manifest, readme, stars) {
         };
 }
 
-exports._encodecategory    = _encodecategory;
-exports._encodePlatform    = _encodePlatform;
-exports._mapKeywordSynonym = _mapKeywordSynonym;
-exports._ignoreKeyword     = _ignoreKeyword;
-exports._normalizeKeywords = _normalizeKeywords;
-exports.fromPublished      = fromPublished;
-exports.fromUnpublished    = fromUnpublished;
+export {
+  _encodecategory    ,
+  _encodePlatform    ,
+  _mapKeywordSynonym ,
+  _ignoreKeyword     ,
+  _normalizeKeywords ,
+  fromPublished      ,
+  fromUnpublished    ,
+  
+}
 /* _normalizeKeywords Not a pure module */

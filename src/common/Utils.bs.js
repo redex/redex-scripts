@@ -1,11 +1,10 @@
-#!/usr/bin/env node
 'use strict';
 
-var Fs      = require("fs");
-var Path    = require("path");
-var Rebase  = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync  = require("refetch/src/Resync.bs.js");
-var Hashtbl = require("bs-platform/lib/js/hashtbl.js");
+import * as Fs      from "fs";
+import * as Path    from "path";
+import * as Rebase  from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync  from "../../node_modules/refetch/src/Resync.bs.js";
+import * as Hashtbl from "../../node_modules/bs-platform/lib/es6/hashtbl.js";
 
 function readDirRecursively(dir) {
   return Rebase.$$Array[/* flatMap */5]((function (filename) {
@@ -66,7 +65,10 @@ var Future = /* module */[
   /* return */$$return
 ];
 
-exports.Fs               = Fs$1;
-exports.filterDuplicates = filterDuplicates;
-exports.Future           = Future;
+export {
+  Fs$1               as Fs,
+  filterDuplicates ,
+  Future           ,
+  
+}
 /* fs Not a pure module */

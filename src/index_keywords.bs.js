@@ -1,17 +1,16 @@
-#!/usr/bin/env node
 'use strict';
 
-var Fs                      = require("fs");
-var Json                    = require("@glennsl/bs-json/src/Json.bs.js");
-var Path                    = require("path");
-var Utils                   = require("./common/Utils.bs.js");
-var Config                  = require("./common/Config.bs.js");
-var Rebase                  = require("@glennsl/rebase/src/Rebase.bs.js");
-var Hashtbl                 = require("bs-platform/lib/js/hashtbl.js");
-var Js_dict                 = require("bs-platform/lib/js/js_dict.js");
-var Json_decode             = require("@glennsl/bs-json/src/Json_decode.bs.js");
-var Json_encode             = require("@glennsl/bs-json/src/Json_encode.bs.js");
-var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
+import * as Fs                      from "fs";
+import * as Json                    from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Path                    from "path";
+import * as Utils                   from "./common/Utils.bs.js";
+import * as Config                  from "./common/Config.bs.js";
+import * as Rebase                  from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Hashtbl                 from "../node_modules/bs-platform/lib/es6/hashtbl.js";
+import * as Js_dict                 from "../node_modules/bs-platform/lib/es6/js_dict.js";
+import * as Json_decode             from "../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Json_encode             from "../node_modules/@glennsl/bs-json/src/Json_encode.bs.js";
+import * as Caml_builtin_exceptions from "../node_modules/bs-platform/lib/es6/caml_builtin_exceptions.js";
 
 var outputFile = Path.join(Config.outputDir, "keywords.json");
 
@@ -90,7 +89,10 @@ var json = Json.stringify(Json_encode.list((function (prim) {
 
 Utils.Fs[/* writeFile */2](outputFile, json);
 
-exports.outputFile        = outputFile;
-exports.getKeywords       = getKeywords;
-exports.makeInvertedIndex = makeInvertedIndex;
+export {
+  outputFile        ,
+  getKeywords       ,
+  makeInvertedIndex ,
+  
+}
 /* outputFile Not a pure module */

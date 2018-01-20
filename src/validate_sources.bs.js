@@ -1,14 +1,13 @@
-#!/usr/bin/env node
 'use strict';
 
-var Json                    = require("@glennsl/bs-json/src/Json.bs.js");
-var Js_exn                  = require("bs-platform/lib/js/js_exn.js");
-var Rebase                  = require("@glennsl/rebase/src/Rebase.bs.js");
-var Source                  = require("./common/Source.bs.js");
-var Process                 = require("process");
-var Pervasives              = require("bs-platform/lib/js/pervasives.js");
-var Json_decode             = require("@glennsl/bs-json/src/Json_decode.bs.js");
-var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
+import * as Json                    from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Js_exn                  from "../node_modules/bs-platform/lib/es6/js_exn.js";
+import * as Rebase                  from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Source                  from "./common/Source.bs.js";
+import * as Process                 from "process";
+import * as Pervasives              from "../node_modules/bs-platform/lib/es6/pervasives.js";
+import * as Json_decode             from "../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Caml_builtin_exceptions from "../node_modules/bs-platform/lib/es6/caml_builtin_exceptions.js";
 
 var filename = Rebase.$$Array[/* get */17](Process.argv, 2);
 
@@ -70,7 +69,10 @@ catch (raw_exn){
   
 }
 
-exports.filename           = filename;
-exports.assertNotEmpty     = assertNotEmpty;
-exports.assertNoDuplicates = assertNoDuplicates;
+export {
+  filename           ,
+  assertNotEmpty     ,
+  assertNoDuplicates ,
+  
+}
 /* filename Not a pure module */

@@ -1,9 +1,8 @@
-#!/usr/bin/env node
 'use strict';
 
-var Curry        = require("bs-platform/lib/js/curry.js");
-var Rebase       = require("@glennsl/rebase/src/Rebase.bs.js");
-var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
+import * as Curry        from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Rebase       from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Js_primitive from "../../node_modules/bs-platform/lib/es6/js_primitive.js";
 
 function lints_000($$package) {
   var match = +(Rebase.$$String[/* trim */8]($$package.description) === "");
@@ -140,6 +139,9 @@ function lintPackage($$package) {
               }), lints);
 }
 
-exports.lints       = lints;
-exports.lintPackage = lintPackage;
+export {
+  lints       ,
+  lintPackage ,
+  
+}
 /* No side effect */

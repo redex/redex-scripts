@@ -1,12 +1,11 @@
-#!/usr/bin/env node
 'use strict';
 
-var Fs            = require("fs");
-var Json          = require("@glennsl/bs-json/src/Json.bs.js");
-var $$Array       = require("bs-platform/lib/js/array.js");
-var Utils         = require("./common/Utils.bs.js");
-var Config        = require("./common/Config.bs.js");
-var Algoliasearch = require("algoliasearch");
+import * as Fs            from "fs";
+import * as Json          from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as $$Array       from "../node_modules/bs-platform/lib/es6/array.js";
+import * as Utils         from "./common/Utils.bs.js";
+import * as Config        from "./common/Config.bs.js";
+import * as Algoliasearch from "algoliasearch";
 
 var client = Algoliasearch(Config.Algolia[/* appId */0], Config.Algolia[/* apiKey */2](/* () */0));
 
@@ -34,6 +33,9 @@ $$Array.map((function (record) {
                         return Fs.readFileSync(path, "utf8");
                       }), Utils.Fs[/* readDirRecursively */0](Config.packageDir))))));
 
-exports.client = client;
-exports.index  = index;
+export {
+  client ,
+  index  ,
+  
+}
 /* client Not a pure module */

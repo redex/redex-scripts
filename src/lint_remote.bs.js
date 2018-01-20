@@ -1,17 +1,16 @@
-#!/usr/bin/env node
 'use strict';
 
-var Lint       = require("./common/Lint.bs.js");
-var NPMS       = require("./common/NPMS.bs.js");
-var Curry      = require("bs-platform/lib/js/curry.js");
-var Utils      = require("./common/Utils.bs.js");
-var Rebase     = require("@glennsl/rebase/src/Rebase.bs.js");
-var Resync     = require("refetch/src/Resync.bs.js");
-var Package    = require("./common/Package.bs.js");
-var Process    = require("process");
-var Manifest   = require("./common/Manifest.bs.js");
-var Pervasives = require("bs-platform/lib/js/pervasives.js");
-var Repository = require("./common/Repository.bs.js");
+import * as Lint       from "./common/Lint.bs.js";
+import * as NPMS       from "./common/NPMS.bs.js";
+import * as Curry      from "../node_modules/bs-platform/lib/es6/curry.js";
+import * as Utils      from "./common/Utils.bs.js";
+import * as Rebase     from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync     from "../node_modules/refetch/src/Resync.bs.js";
+import * as Package    from "./common/Package.bs.js";
+import * as Process    from "process";
+import * as Manifest   from "./common/Manifest.bs.js";
+import * as Pervasives from "../node_modules/bs-platform/lib/es6/pervasives.js";
+import * as Repository from "./common/Repository.bs.js";
 
 require('isomorphic-fetch')
 ;
@@ -85,4 +84,7 @@ Resync.Future[/* whenCompleted */6]((function (param) {
         }
       }), eventuallyPackage);
 
+export {
+  
+}
 /*  Not a pure module */
