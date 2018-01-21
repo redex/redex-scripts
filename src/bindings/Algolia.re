@@ -7,8 +7,12 @@ type error = {.
   "statusCode": int
 };
 type content;
-
+/*
 [@bs.module] external makeClient : (string, string) => client = "algoliasearch";
+*/
+[%%raw "import Algoliasearch from 'algoliasearch'"];
+[@bs.val] external makeClient : (string, string) => client = "Algoliasearch";
+let makeClient = makeClient;
 
 [@bs.send.pipe: client] external initIndex : string => index = "";
 

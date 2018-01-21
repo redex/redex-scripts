@@ -1,1 +1,15 @@
-/* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
+'use strict';
+
+
+import Algoliasearch from 'algoliasearch'
+;
+
+function makeClient(prim, prim$1) {
+  return Algoliasearch(prim, prim$1);
+}
+
+export {
+  makeClient ,
+  
+}
+/*  Not a pure module */

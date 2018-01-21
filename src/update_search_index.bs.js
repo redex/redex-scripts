@@ -1,13 +1,13 @@
 'use strict';
 
-import * as Fs            from "fs";
-import * as Json          from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
-import * as $$Array       from "../node_modules/bs-platform/lib/es6/array.js";
-import * as Utils         from "./common/Utils.bs.js";
-import * as Config        from "./common/Config.bs.js";
-import * as Algoliasearch from "algoliasearch";
+import * as Fs      from "fs";
+import * as Json    from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as $$Array from "../node_modules/bs-platform/lib/es6/array.js";
+import * as Utils   from "./common/Utils.bs.js";
+import * as Config  from "./common/Config.bs.js";
+import * as Algolia from "./bindings/Algolia.bs.js";
 
-var client = Algoliasearch(Config.Algolia[/* appId */0], Config.Algolia[/* apiKey */2](/* () */0));
+var client = Algolia.makeClient(Config.Algolia[/* appId */0], Config.Algolia[/* apiKey */2](/* () */0));
 
 var index = client.initIndex(Config.Algolia[/* packageIndex */1]);
 

@@ -5,16 +5,16 @@
     "clean": "bsb -clean-world",
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
-    "bundle": "rollup -c"
+    "bundle": "npm run build && rollup -c"
   },
   "bin": {
-    "fetch_published": "src/fetch_published.bs.js",
-    "fetch_unpublished": "src/fetch_unpublished.bs.js",
-    "index_keywords": "src/index_keywords.bs.js",
-    "lint_packages": "src/lint_packages.bs.js",
-    "lint_remote": "src/lint_remote.bs.js",
-    "update_search_index": "src/update_search_index.bs.js",
-    "validate_sources": "src/validate_sources.bs.js"
+    "fetch_published": "bin/fetch_published.js",
+    "fetch_unpublished": "bin/fetch_unpublished.js",
+    "index_keywords": "bin/index_keywords.js",
+    "lint_packages": "bin/lint_packages.js",
+    "lint_remote": "bin/lint_remote.js",
+    "update_search_index": "bin/update_search_index.js",
+    "validate_sources": "bin/validate_sources.js"
   },
   "keywords": [
     "BuckleScript"
@@ -23,13 +23,12 @@
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "^2.1.0",
-    "rollup": "^0.54.1"
-  },
-  "dependencies": {
-    "@glennsl/bs-json": "github:glennsl/bs-json",
+    "@glennsl/bs-json": "^1.1.1",
     "@glennsl/rebase": "^0.2.0",
     "algoliasearch": "^3.24.9",
     "isomorphic-fetch": "^2.2.1",
-    "refetch": "github:glennsl/refetch"
-  }
+    "refetch": "github:glennsl/refetch",
+    "rollup": "^0.54.1"
+  },
+  "dependencies": {}
 }
