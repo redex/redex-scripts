@@ -10,7 +10,6 @@
   "bin": {
     "fetch_published": "bin/fetch_published.js",
     "fetch_unpublished": "bin/fetch_unpublished.js",
-    "index_keywords": "bin/index_keywords.js",
     "lint_packages": "bin/lint_packages.js",
     "lint_remote": "bin/lint_remote.js",
     "update_search_index": "bin/update_search_index.js",
