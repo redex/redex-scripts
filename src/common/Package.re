@@ -73,6 +73,13 @@ let _normalizeKeywords =
     >> Array.filter(not << _ignoreKeyword)
     >> Utils.filterDuplicates);
 
+let ensureDeprecated = (deprecated, flags) =>
+  switch deprecated {
+  | Some(_) when !(flags |> Js.Array.includes("deprecated")) =>
+    Js.Array.append("deprecated", flags)
+  | _ => flags
+  };
+
 let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
   {
     "type"              : "published",
@@ -80,7 +87,8 @@ let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
     "name"              : data.name,
     "version"           : data.version,
     "category"          : source.category     |> _encodecategory,
-    "flags"             : source.flags        |> Option.getOr([||]),
+    "flags"             : source.flags        |> Option.getOr([||])
+                                              |> ensureDeprecated(data.deprecated),
     "platforms"         : source.platforms    |> Array.map(_encodePlatform),
     "description"       : data.description,
     "deprecated"        : data.deprecated     |> Js.Nullable.from_opt,

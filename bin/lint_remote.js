@@ -4283,6 +4283,14 @@ var _normalizeKeywords = _2(Fn[/* >> */6], _2(Fn[/* >> */6], _2(Fn[/* >> */6], (
             return partial_arg$3(partial_arg$2, param);
           })), filterDuplicates);
 
+function ensureDeprecated(deprecated, flags) {
+  if (deprecated && !flags.includes("deprecated")) {
+    return flags.concat("deprecated");
+  } else {
+    return flags;
+  }
+}
+
 function fromPublished(source, data) {
   return {
           type: "published",
@@ -4290,7 +4298,7 @@ function fromPublished(source, data) {
           name: data[/* name */1],
           version: data[/* version */2],
           category: _encodecategory(source[/* category */1]),
-          flags: Option[/* getOr */16](/* array */[], source[/* flags */2]),
+          flags: ensureDeprecated(data[/* deprecated */5], Option[/* getOr */16](/* array */[], source[/* flags */2])),
           platforms: $$Array[/* map */0](_encodePlatform, source[/* platforms */3]),
           description: data[/* description */3],
           deprecated: from_opt(data[/* deprecated */5]),

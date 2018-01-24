@@ -59,7 +59,7 @@
     },
     "bs-json": {
       "category": "library",
-      "flags": ["deprecated"],
+      "flags": ["not-deprecated"],
       "platforms": ["browser", "node"],
       "comment": "moved to @glennsl/bs-json"
     }

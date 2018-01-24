@@ -1822,6 +1822,13 @@ var client = makeClient(Algolia[/* appId */0], Algolia[/* apiKey */2](/* () */0)
 
 var index$2 = client.initIndex(Algolia[/* packageIndex */1]);
 
+function addSearchSpecificFields(record) {
+  return Object.assign({
+              objectID: record.id,
+              flagCount: record.flags.length
+            }, record);
+}
+
 map((function (record) {
         index$2.addObject(record, (function (err, _) {
                 if (err == null) {
@@ -1834,11 +1841,7 @@ map((function (record) {
                 }
               }));
         return /* () */0;
-      }), map((function (record) {
-            return Object.assign({
-                        objectID: record.id
-                      }, record);
-          }), map((function (prim) {
+      }), map(addSearchSpecificFields, map((function (prim) {
                 return prim;
               }), map(parseOrRaise, map((function (path) {
                         return Fs.readFileSync(path, "utf8");
@@ -1849,3 +1852,4 @@ map((function (record) {
 
 exports.client = client;
 exports.index = index$2;
+exports.addSearchSpecificFields = addSearchSpecificFields;

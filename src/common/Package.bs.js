@@ -93,6 +93,14 @@ var _normalizeKeywords = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >>
             return partial_arg$3(partial_arg$2, param);
           })), Utils.filterDuplicates);
 
+function ensureDeprecated(deprecated, flags) {
+  if (deprecated && !flags.includes("deprecated")) {
+    return flags.concat("deprecated");
+  } else {
+    return flags;
+  }
+}
+
 function fromPublished(source, data) {
   return {
           type: "published",
@@ -100,7 +108,7 @@ function fromPublished(source, data) {
           name: data[/* name */1],
           version: data[/* version */2],
           category: _encodecategory(source[/* category */1]),
-          flags: Rebase.Option[/* getOr */16](/* array */[], source[/* flags */2]),
+          flags: ensureDeprecated(data[/* deprecated */5], Rebase.Option[/* getOr */16](/* array */[], source[/* flags */2])),
           platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */3]),
           description: data[/* description */3],
           deprecated: Js_null_undefined.from_opt(data[/* deprecated */5]),
@@ -161,6 +169,7 @@ export {
   _mapKeywordSynonym ,
   _ignoreKeyword     ,
   _normalizeKeywords ,
+  ensureDeprecated   ,
   fromPublished      ,
   fromUnpublished    ,
   
