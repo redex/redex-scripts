@@ -11,6 +11,13 @@ var client = Algolia.makeClient(Config.Algolia[/* appId */0], Config.Algolia[/* 
 
 var index = client.initIndex(Config.Algolia[/* packageIndex */1]);
 
+function addSearchSpecificFields(record) {
+  return Object.assign({
+              objectID: record.id,
+              flagCount: record.flags.length
+            }, record);
+}
+
 $$Array.map((function (record) {
         index.addObject(record, (function (err, _) {
                 if (err == null) {
@@ -23,19 +30,16 @@ $$Array.map((function (record) {
                 }
               }));
         return /* () */0;
-      }), $$Array.map((function (record) {
-            return Object.assign({
-                        objectID: record.id
-                      }, record);
-          }), $$Array.map((function (prim) {
+      }), $$Array.map(addSearchSpecificFields, $$Array.map((function (prim) {
                 return prim;
               }), $$Array.map(Json.parseOrRaise, $$Array.map((function (path) {
                         return Fs.readFileSync(path, "utf8");
                       }), Utils.Fs[/* readDirRecursively */0](Config.packageDir))))));
 
 export {
-  client ,
-  index  ,
+  client                  ,
+  index                   ,
+  addSearchSpecificFields ,
   
 }
 /* client Not a pure module */
