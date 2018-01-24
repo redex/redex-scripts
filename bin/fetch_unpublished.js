@@ -4119,6 +4119,7 @@ function fromUnpublished(source, manifest, readme, stars) {
           author: from_opt(manifest[/* author */3]),
           license: from_opt(manifest[/* license */4]),
           keywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], Option[/* or_ */15](manifest[/* keywords */5], source[/* keywords */5]))),
+          originalKeywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], manifest[/* keywords */5])),
           readme: readme,
           analyzed: new Date(),
           updated: new Date(),

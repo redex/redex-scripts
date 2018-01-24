@@ -4205,6 +4205,7 @@ function fromPublished(source, data) {
           author: from_opt(data[/* author */6]),
           license: from_opt(data[/* license */7]),
           keywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], Option[/* or_ */15](data[/* keywords */9], source[/* keywords */4]))),
+          originalKeywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], data[/* keywords */9])),
           readme: Option[/* getOr */16]("", data[/* readme */8]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],
