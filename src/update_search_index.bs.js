@@ -1,10 +1,10 @@
 'use strict';
 
-import * as Fs      from "fs";
-import * as Json    from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Fs from "fs";
+import * as Json from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
 import * as $$Array from "../node_modules/bs-platform/lib/es6/array.js";
-import * as Utils   from "./common/Utils.bs.js";
-import * as Config  from "./common/Config.bs.js";
+import * as Utils from "./common/Utils.bs.js";
+import * as Config from "./common/Config.bs.js";
 import * as Algolia from "./bindings/Algolia.bs.js";
 
 var client = Algolia.makeClient(Config.Algolia[/* appId */0], Config.Algolia[/* apiKey */2](/* () */0));
@@ -37,8 +37,8 @@ $$Array.map((function (record) {
                       }), Utils.Fs[/* readDirRecursively */0](Config.packageDir))))));
 
 export {
-  client                  ,
-  index                   ,
+  client ,
+  index ,
   addSearchSpecificFields ,
   
 }

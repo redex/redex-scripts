@@ -1,11 +1,11 @@
 'use strict';
 
-import * as Curry             from "../../node_modules/bs-platform/lib/es6/curry.js";
-import * as Rebase            from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
-import * as Resync            from "../../node_modules/refetch/src/Resync.bs.js";
-import * as Refetch           from "../../node_modules/refetch/src/Refetch.bs.js";
-import * as Pervasives        from "../../node_modules/bs-platform/lib/es6/pervasives.js";
-import * as Json_decode       from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Rebase from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync from "../../node_modules/refetch/src/Resync.bs.js";
+import * as Refetch from "../../node_modules/refetch/src/Refetch.bs.js";
+import * as Pervasives from "../../node_modules/bs-platform/lib/es6/pervasives.js";
+import * as Json_decode from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
 import * as Refetch__Response from "../../node_modules/refetch/src/Refetch__Response.bs.js";
 
 function looksLikeUrl(str) {
@@ -97,16 +97,16 @@ function getStats(source) {
 }
 
 export {
-  looksLikeUrl        ,
-  parseUrl            ,
+  looksLikeUrl ,
+  parseUrl ,
   looksLikeGitHubPath ,
-  parseGitHubPath     ,
-  parse               ,
-  getUrl              ,
-  makeName            ,
-  makeId              ,
-  getReadme           ,
-  getStats            ,
+  parseGitHubPath ,
+  parse ,
+  getUrl ,
+  makeName ,
+  makeId ,
+  getReadme ,
+  getStats ,
   
 }
 /* Refetch Not a pure module */

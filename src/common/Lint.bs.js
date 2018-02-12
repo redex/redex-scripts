@@ -1,7 +1,7 @@
 'use strict';
 
-import * as Curry        from "../../node_modules/bs-platform/lib/es6/curry.js";
-import * as Rebase       from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Rebase from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
 import * as Js_primitive from "../../node_modules/bs-platform/lib/es6/js_primitive.js";
 
 function lints_000($$package) {
@@ -140,7 +140,7 @@ function lintPackage($$package) {
 }
 
 export {
-  lints       ,
+  lints ,
   lintPackage ,
   
 }

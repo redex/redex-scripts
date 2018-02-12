@@ -1,10 +1,10 @@
 'use strict';
 
-import * as Curry             from "../../node_modules/bs-platform/lib/es6/curry.js";
-import * as Resync            from "../../node_modules/refetch/src/Resync.bs.js";
-import * as Refetch           from "../../node_modules/refetch/src/Refetch.bs.js";
-import * as Pervasives        from "../../node_modules/bs-platform/lib/es6/pervasives.js";
-import * as Json_decode       from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Resync from "../../node_modules/refetch/src/Resync.bs.js";
+import * as Refetch from "../../node_modules/refetch/src/Refetch.bs.js";
+import * as Pervasives from "../../node_modules/bs-platform/lib/es6/pervasives.js";
+import * as Json_decode from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
 import * as Refetch__Response from "../../node_modules/refetch/src/Refetch__Response.bs.js";
 
 function fromJson(json) {
@@ -73,7 +73,7 @@ function get(repo) {
 
 export {
   fromJson ,
-  get      ,
+  get ,
   
 }
 /* Refetch Not a pure module */

@@ -1,9 +1,9 @@
 'use strict';
 
-import * as Fs     from "fs";
-import * as Json   from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
-import * as Lint   from "./common/Lint.bs.js";
-import * as Utils  from "./common/Utils.bs.js";
+import * as Fs from "fs";
+import * as Json from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Lint from "./common/Lint.bs.js";
+import * as Utils from "./common/Utils.bs.js";
 import * as Config from "./common/Config.bs.js";
 import * as Rebase from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
 

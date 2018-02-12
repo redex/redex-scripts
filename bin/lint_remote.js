@@ -759,6 +759,27 @@ function caml_int_compare(x, y) {
   }
 }
 
+function caml_string_compare(s1, s2) {
+  if (s1 === s2) {
+    return 0;
+  } else if (s1 < s2) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
+function caml_float_max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+
+/* No side effect */
+
 function caml_compare(_a, _b) {
   while(true) {
     var b = _b;
@@ -769,15 +790,7 @@ function caml_compare(_a, _b) {
       var a_type = typeof a;
       var b_type = typeof b;
       if (a_type === "string") {
-        var x = a;
-        var y = b;
-        if (x < y) {
-          return -1;
-        } else if (x === y) {
-          return 0;
-        } else {
-          return 1;
-        }
+        return caml_string_compare(a, b);
       } else {
         var is_a_number = +(a_type === "number");
         var is_b_number = +(b_type === "number");
@@ -790,11 +803,11 @@ function caml_compare(_a, _b) {
         } else if (is_b_number !== 0) {
           return 1;
         } else if (a_type === "boolean" || a_type === "undefined" || a === null) {
-          var x$1 = a;
-          var y$1 = b;
-          if (x$1 === y$1) {
+          var x = a;
+          var y = b;
+          if (x === y) {
             return 0;
-          } else if (x$1 < y$1) {
+          } else if (x < y) {
             return -1;
           } else {
             return 1;
@@ -899,14 +912,10 @@ function caml_compare(_a, _b) {
   }
 }
 
-function caml_greaterequal(a, b) {
-  return +(caml_compare(a, b) >= 0);
-}
-
 
 /* No side effect */
 
-/* stdin Not a pure module */
+/* node_std_output Not a pure module */
 
 function caml_sys_random_seed() {
   return /* array */[((Date.now() | 0) ^ 4294967295) * Math.random() | 0];
@@ -923,7 +932,7 @@ var min_int = /* record */[
 ];
 
 var max_int = /* record */[
-  /* hi */134217727,
+  /* hi */2147483647,
   /* lo */1
 ];
 
@@ -1282,7 +1291,7 @@ function div$1(_self, _other) {
           var res = zero;
           var rem$1 = self;
           while(ge(rem$1, other)) {
-            var approx$1 = Math.max(1, Math.floor(to_float(rem$1) / to_float(other)));
+            var approx$1 = caml_float_max(1, Math.floor(to_float(rem$1) / to_float(other)));
             var log2 = Math.ceil(Math.log(approx$1) / Math.LN2);
             var delta = log2 <= 48 ? 1 : Math.pow(2, log2 - 48);
             var approxRes = of_float(approx$1);
@@ -1353,14 +1362,6 @@ function failwith(s) {
 }
 
 var Exit = create("Pervasives.Exit");
-
-function max(x, y) {
-  if (caml_greaterequal(x, y)) {
-    return x;
-  } else {
-    return y;
-  }
-}
 
 function string_of_int(param) {
   return "" + param;
@@ -3587,7 +3588,9 @@ function full_init(s, seed) {
     caml_array_set(s[/* st */0], i, i);
   }
   var accu = "x";
-  for(var i$1 = 0 ,i_finish = 54 + max(55, l) | 0; i$1 <= i_finish; ++i$1){
+  for(var i$1 = 0 ,i_finish = 54 + (
+      55 > l ? 55 : l
+    ) | 0; i$1 <= i_finish; ++i$1){
     var j = i$1 % 55;
     var k = i$1 % l;
     accu = combine(accu, caml_array_get(seed$1, k));
@@ -3783,7 +3786,7 @@ function rotl32(x, n) {
   return (x << n) | (x >>> (32 - n | 0));
 }
 
-function mix(h, d) {
+function caml_hash_mix_int(h, d) {
   var d$1 = d;
   d$1 = imul(d$1, 3432918353);
   d$1 = rotl32(d$1, 15);
@@ -3793,7 +3796,7 @@ function mix(h, d) {
   return (h$1 + (h$1 << 2) | 0) + 3864292196 | 0;
 }
 
-function final_mix(h) {
+function caml_hash_final_mix(h) {
   var h$1 = h ^ (h >>> 16);
   h$1 = imul(h$1, 2246822507);
   h$1 = h$1 ^ (h$1 >>> 13);
@@ -3808,14 +3811,14 @@ function caml_hash_mix_string(h, s) {
   for(var i = 0; i <= block; ++i){
     var j = (i << 2);
     var w = s.charCodeAt(j) | (s.charCodeAt(j + 1 | 0) << 8) | (s.charCodeAt(j + 2 | 0) << 16) | (s.charCodeAt(j + 3 | 0) << 24);
-    hash = mix(hash, w);
+    hash = caml_hash_mix_int(hash, w);
   }
   var modulo = len & 3;
   if (modulo !== 0) {
     var w$1 = modulo === 3 ? (s.charCodeAt(len - 1 | 0) << 16) | (s.charCodeAt(len - 2 | 0) << 8) | s.charCodeAt(len - 3 | 0) : (
         modulo === 2 ? (s.charCodeAt(len - 1 | 0) << 8) | s.charCodeAt(len - 2 | 0) : s.charCodeAt(len - 1 | 0)
       );
-    hash = mix(hash, w$1);
+    hash = caml_hash_mix_int(hash, w$1);
   }
   hash = hash ^ len;
   return hash;
@@ -3825,11 +3828,11 @@ function caml_hash(count, _, seed, obj) {
   var hash = seed;
   if (typeof obj === "number") {
     var u = obj | 0;
-    hash = mix(hash, (u + u | 0) + 1 | 0);
-    return final_mix(hash);
+    hash = caml_hash_mix_int(hash, (u + u | 0) + 1 | 0);
+    return caml_hash_final_mix(hash);
   } else if (typeof obj === "string") {
     hash = caml_hash_mix_string(hash, obj);
-    return final_mix(hash);
+    return caml_hash_final_mix(hash);
   } else {
     var queue = /* record */[
       /* length */0,
@@ -3842,7 +3845,7 @@ function caml_hash(count, _, seed, obj) {
       var obj$1 = unsafe_pop(queue);
       if (typeof obj$1 === "number") {
         var u$1 = obj$1 | 0;
-        hash = mix(hash, (u$1 + u$1 | 0) + 1 | 0);
+        hash = caml_hash_mix_int(hash, (u$1 + u$1 | 0) + 1 | 0);
         num = num - 1 | 0;
       } else if (typeof obj$1 === "string") {
         hash = caml_hash_mix_string(hash, obj$1);
@@ -3864,9 +3867,9 @@ function caml_hash(count, _, seed, obj) {
               var obj_tag = obj$1.tag | 0;
               var tag = (size << 10) | obj_tag;
               if (tag === 248) {
-                hash = mix(hash, obj$1[1]);
+                hash = caml_hash_mix_int(hash, obj$1[1]);
               } else {
-                hash = mix(hash, tag);
+                hash = caml_hash_mix_int(hash, tag);
                 var v = size - 1 | 0;
                 var block = v < num ? v : num;
                 for(var i = 0; i <= block; ++i){
@@ -3882,7 +3885,7 @@ function caml_hash(count, _, seed, obj) {
       }
       
     }
-    return final_mix(hash);
+    return caml_hash_final_mix(hash);
   }
 }
 

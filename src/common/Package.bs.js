@@ -1,9 +1,9 @@
 'use strict';
 
-import * as Curry             from "../../node_modules/bs-platform/lib/es6/curry.js";
-import * as Utils             from "./Utils.bs.js";
-import * as Rebase            from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
-import * as Repository        from "./Repository.bs.js";
+import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Utils from "./Utils.bs.js";
+import * as Rebase from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Repository from "./Repository.bs.js";
 import * as Js_null_undefined from "../../node_modules/bs-platform/lib/es6/js_null_undefined.js";
 
 function _encodecategory(param) {
@@ -164,14 +164,14 @@ function fromUnpublished(source, manifest, readme, stars) {
 }
 
 export {
-  _encodecategory    ,
-  _encodePlatform    ,
+  _encodecategory ,
+  _encodePlatform ,
   _mapKeywordSynonym ,
-  _ignoreKeyword     ,
+  _ignoreKeyword ,
   _normalizeKeywords ,
-  ensureDeprecated   ,
-  fromPublished      ,
-  fromUnpublished    ,
+  ensureDeprecated ,
+  fromPublished ,
+  fromUnpublished ,
   
 }
 /* _normalizeKeywords Not a pure module */

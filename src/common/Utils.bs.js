@@ -1,9 +1,9 @@
 'use strict';
 
-import * as Fs      from "fs";
-import * as Path    from "path";
-import * as Rebase  from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
-import * as Resync  from "../../node_modules/refetch/src/Resync.bs.js";
+import * as Fs from "fs";
+import * as Path from "path";
+import * as Rebase from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync from "../../node_modules/refetch/src/Resync.bs.js";
 import * as Hashtbl from "../../node_modules/bs-platform/lib/es6/hashtbl.js";
 
 function readDirRecursively(dir) {
@@ -66,9 +66,9 @@ var Future = /* module */[
 ];
 
 export {
-  Fs$1               as Fs,
+  Fs$1 as Fs,
   filterDuplicates ,
-  Future           ,
+  Future ,
   
 }
 /* fs Not a pure module */

@@ -748,7 +748,9 @@ function __(tag, block) {
 
 /* No side effect */
 
-/* stdin Not a pure module */
+/* No side effect */
+
+/* node_std_output Not a pure module */
 
 /* No side effect */
 
@@ -1425,6 +1427,8 @@ var $$String = [
 
 /* No side effect */
 
+var match = (process.env.NODE_ENV);
+
 var outputDir = "data/generated";
 
 var packageDir = Path.join(outputDir, "packages");
@@ -1432,7 +1436,7 @@ var packageDir = Path.join(outputDir, "packages");
 var sourcesFile = "data/sources.json";
 
 
-/* packageDir Not a pure module */
+/* match Not a pure module */
 
 function entries(dict) {
   var keys = Object.keys(dict);

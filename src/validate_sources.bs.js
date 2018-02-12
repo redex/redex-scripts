@@ -1,12 +1,12 @@
 'use strict';
 
-import * as Json                    from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
-import * as Js_exn                  from "../node_modules/bs-platform/lib/es6/js_exn.js";
-import * as Rebase                  from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
-import * as Source                  from "./common/Source.bs.js";
-import * as Process                 from "process";
-import * as Pervasives              from "../node_modules/bs-platform/lib/es6/pervasives.js";
-import * as Json_decode             from "../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Json from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Js_exn from "../node_modules/bs-platform/lib/es6/js_exn.js";
+import * as Rebase from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Source from "./common/Source.bs.js";
+import * as Process from "process";
+import * as Pervasives from "../node_modules/bs-platform/lib/es6/pervasives.js";
+import * as Json_decode from "../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
 import * as Caml_builtin_exceptions from "../node_modules/bs-platform/lib/es6/caml_builtin_exceptions.js";
 
 var filename = Rebase.$$Array[/* get */17](Process.argv, 2);
@@ -70,8 +70,8 @@ catch (raw_exn){
 }
 
 export {
-  filename           ,
-  assertNotEmpty     ,
+  filename ,
+  assertNotEmpty ,
   assertNoDuplicates ,
   
 }

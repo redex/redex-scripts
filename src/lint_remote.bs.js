@@ -1,14 +1,14 @@
 'use strict';
 
-import * as Lint       from "./common/Lint.bs.js";
-import * as NPMS       from "./common/NPMS.bs.js";
-import * as Curry      from "../node_modules/bs-platform/lib/es6/curry.js";
-import * as Utils      from "./common/Utils.bs.js";
-import * as Rebase     from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
-import * as Resync     from "../node_modules/refetch/src/Resync.bs.js";
-import * as Package    from "./common/Package.bs.js";
-import * as Process    from "process";
-import * as Manifest   from "./common/Manifest.bs.js";
+import * as Lint from "./common/Lint.bs.js";
+import * as NPMS from "./common/NPMS.bs.js";
+import * as Curry from "../node_modules/bs-platform/lib/es6/curry.js";
+import * as Utils from "./common/Utils.bs.js";
+import * as Rebase from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync from "../node_modules/refetch/src/Resync.bs.js";
+import * as Package from "./common/Package.bs.js";
+import * as Process from "process";
+import * as Manifest from "./common/Manifest.bs.js";
 import * as Pervasives from "../node_modules/bs-platform/lib/es6/pervasives.js";
 import * as Repository from "./common/Repository.bs.js";
 

@@ -422,164 +422,20 @@ function __(tag, block) {
 
 /* No side effect */
 
-function caml_int_compare(x, y) {
-  if (x < y) {
-    return -1;
-  } else if (x === y) {
-    return 0;
+function caml_float_max(x, y) {
+  if (x > y) {
+    return x;
   } else {
-    return 1;
+    return y;
   }
-}
-
-function caml_compare(_a, _b) {
-  while(true) {
-    var b = _b;
-    var a = _a;
-    if (a === b) {
-      return 0;
-    } else {
-      var a_type = typeof a;
-      var b_type = typeof b;
-      if (a_type === "string") {
-        var x = a;
-        var y = b;
-        if (x < y) {
-          return -1;
-        } else if (x === y) {
-          return 0;
-        } else {
-          return 1;
-        }
-      } else {
-        var is_a_number = +(a_type === "number");
-        var is_b_number = +(b_type === "number");
-        if (is_a_number !== 0) {
-          if (is_b_number !== 0) {
-            return caml_int_compare(a, b);
-          } else {
-            return -1;
-          }
-        } else if (is_b_number !== 0) {
-          return 1;
-        } else if (a_type === "boolean" || a_type === "undefined" || a === null) {
-          var x$1 = a;
-          var y$1 = b;
-          if (x$1 === y$1) {
-            return 0;
-          } else if (x$1 < y$1) {
-            return -1;
-          } else {
-            return 1;
-          }
-        } else if (a_type === "function" || b_type === "function") {
-          throw [
-                invalid_argument,
-                "compare: functional value"
-              ];
-        } else {
-          var tag_a = a.tag | 0;
-          var tag_b = b.tag | 0;
-          if (tag_a === 250) {
-            _a = a[0];
-            continue ;
-            
-          } else if (tag_b === 250) {
-            _b = b[0];
-            continue ;
-            
-          } else if (tag_a === 248) {
-            return caml_int_compare(a[1], b[1]);
-          } else if (tag_a === 251) {
-            throw [
-                  invalid_argument,
-                  "equal: abstract value"
-                ];
-          } else if (tag_a !== tag_b) {
-            if (tag_a < tag_b) {
-              return -1;
-            } else {
-              return 1;
-            }
-          } else {
-            var len_a = a.length | 0;
-            var len_b = b.length | 0;
-            if (len_a === len_b) {
-              var a$1 = a;
-              var b$1 = b;
-              var _i = 0;
-              var same_length = len_a;
-              while(true) {
-                var i = _i;
-                if (i === same_length) {
-                  return 0;
-                } else {
-                  var res = caml_compare(a$1[i], b$1[i]);
-                  if (res !== 0) {
-                    return res;
-                  } else {
-                    _i = i + 1 | 0;
-                    continue ;
-                    
-                  }
-                }
-              }
-            } else if (len_a < len_b) {
-              var a$2 = a;
-              var b$2 = b;
-              var _i$1 = 0;
-              var short_length = len_a;
-              while(true) {
-                var i$1 = _i$1;
-                if (i$1 === short_length) {
-                  return -1;
-                } else {
-                  var res$1 = caml_compare(a$2[i$1], b$2[i$1]);
-                  if (res$1 !== 0) {
-                    return res$1;
-                  } else {
-                    _i$1 = i$1 + 1 | 0;
-                    continue ;
-                    
-                  }
-                }
-              }
-            } else {
-              var a$3 = a;
-              var b$3 = b;
-              var _i$2 = 0;
-              var short_length$1 = len_b;
-              while(true) {
-                var i$2 = _i$2;
-                if (i$2 === short_length$1) {
-                  return 1;
-                } else {
-                  var res$2 = caml_compare(a$3[i$2], b$3[i$2]);
-                  if (res$2 !== 0) {
-                    return res$2;
-                  } else {
-                    _i$2 = i$2 + 1 | 0;
-                    continue ;
-                    
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-function caml_greaterequal(a, b) {
-  return +(caml_compare(a, b) >= 0);
 }
 
 
 /* No side effect */
 
-/* stdin Not a pure module */
+/* No side effect */
+
+/* node_std_output Not a pure module */
 
 function caml_sys_random_seed() {
   return /* array */[((Date.now() | 0) ^ 4294967295) * Math.random() | 0];
@@ -596,7 +452,7 @@ var min_int = /* record */[
 ];
 
 var max_int = /* record */[
-  /* hi */134217727,
+  /* hi */2147483647,
   /* lo */1
 ];
 
@@ -955,7 +811,7 @@ function div$1(_self, _other) {
           var res = zero;
           var rem$1 = self;
           while(ge(rem$1, other)) {
-            var approx$1 = Math.max(1, Math.floor(to_float(rem$1) / to_float(other)));
+            var approx$1 = caml_float_max(1, Math.floor(to_float(rem$1) / to_float(other)));
             var log2 = Math.ceil(Math.log(approx$1) / Math.LN2);
             var delta = log2 <= 48 ? 1 : Math.pow(2, log2 - 48);
             var approxRes = of_float(approx$1);
@@ -1016,14 +872,6 @@ function get(s, i) {
 /* No side effect */
 
 var Exit = create("Pervasives.Exit");
-
-function max(x, y) {
-  if (caml_greaterequal(x, y)) {
-    return x;
-  } else {
-    return y;
-  }
-}
 
 
 /* No side effect */
@@ -1581,7 +1429,9 @@ function full_init(s, seed) {
     caml_array_set(s[/* st */0], i, i);
   }
   var accu = "x";
-  for(var i$1 = 0 ,i_finish = 54 + max(55, l) | 0; i$1 <= i_finish; ++i$1){
+  for(var i$1 = 0 ,i_finish = 54 + (
+      55 > l ? 55 : l
+    ) | 0; i$1 <= i_finish; ++i$1){
     var j = i$1 % 55;
     var k = i$1 % l;
     accu = combine(accu, caml_array_get(seed$1, k));
@@ -1794,9 +1644,15 @@ var Fs$1 = /* module */[
 
 /* fs Not a pure module */
 
+var match = (process.env.NODE_ENV);
+
+var env = match === "production" ? /* Production */661752345 : /* Development */378050971;
+
 var outputDir = "data/generated";
 
 var packageDir = Path.join(outputDir, "packages");
+
+var packageIndex = env >= 661752345 ? "redex-packages" : "redex-test";
 
 function apiKey() {
   return (require('./config_secret').algoliaApiKey);
@@ -1804,12 +1660,12 @@ function apiKey() {
 
 var Algolia = /* module */[
   /* appId */"B1AVN0IGTU",
-  /* packageIndex */"redex-packages",
+  /* packageIndex */packageIndex,
   /* apiKey */apiKey
 ];
 
 
-/* packageDir Not a pure module */
+/* match Not a pure module */
 
 function makeClient(prim, prim$1) {
   return Algoliasearch(prim, prim$1);

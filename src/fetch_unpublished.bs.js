@@ -1,15 +1,15 @@
 'use strict';
 
-import * as Json       from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
-import * as Path       from "path";
-import * as Curry      from "../node_modules/bs-platform/lib/es6/curry.js";
-import * as Utils      from "./common/Utils.bs.js";
-import * as Config     from "./common/Config.bs.js";
-import * as Rebase     from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
-import * as Resync     from "../node_modules/refetch/src/Resync.bs.js";
-import * as Source     from "./common/Source.bs.js";
-import * as Package    from "./common/Package.bs.js";
-import * as Manifest   from "./common/Manifest.bs.js";
+import * as Json from "../node_modules/@glennsl/bs-json/src/Json.bs.js";
+import * as Path from "path";
+import * as Curry from "../node_modules/bs-platform/lib/es6/curry.js";
+import * as Utils from "./common/Utils.bs.js";
+import * as Config from "./common/Config.bs.js";
+import * as Rebase from "../node_modules/@glennsl/rebase/src/Rebase.bs.js";
+import * as Resync from "../node_modules/refetch/src/Resync.bs.js";
+import * as Source from "./common/Source.bs.js";
+import * as Package from "./common/Package.bs.js";
+import * as Manifest from "./common/Manifest.bs.js";
 import * as Repository from "./common/Repository.bs.js";
 
 require('isomorphic-fetch')
