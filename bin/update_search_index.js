@@ -354,35 +354,6 @@ function _2(o, a0, a1) {
 
 /* No side effect */
 
-function blit(a1, ofs1, a2, ofs2, len) {
-  if (len < 0 || ofs1 < 0 || ofs1 > (a1.length - len | 0) || ofs2 < 0 || ofs2 > (a2.length - len | 0)) {
-    throw [
-          invalid_argument,
-          "Array.blit"
-        ];
-  } else {
-    return caml_array_blit(a1, ofs1, a2, ofs2, len);
-  }
-}
-
-function map(f, a) {
-  var l = a.length;
-  if (l) {
-    var r = caml_make_vect(l, _1(f, a[0]));
-    for(var i = 1 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
-      r[i] = _1(f, a[i]);
-    }
-    return r;
-  } else {
-    return /* array */[];
-  }
-}
-
-var Bottom = create("Array.Bottom");
-
-
-/* No side effect */
-
 /* No side effect */
 
 function div(x, y) {
@@ -512,7 +483,7 @@ function neg(x) {
   }
 }
 
-function sub$1(x, y) {
+function sub(x, y) {
   return add(x, neg(y));
 }
 
@@ -1214,6 +1185,22 @@ var $$Array = [
 
 /* No side effect */
 
+function blit(a1, ofs1, a2, ofs2, len) {
+  if (len < 0 || ofs1 < 0 || ofs1 > (a1.length - len | 0) || ofs2 < 0 || ofs2 > (a2.length - len | 0)) {
+    throw [
+          invalid_argument,
+          "Array.blit"
+        ];
+  } else {
+    return caml_array_blit(a1, ofs1, a2, ofs2, len);
+  }
+}
+
+var Bottom = create("Array.Bottom");
+
+
+/* No side effect */
+
 var max_int$2 = 2147483647;
 
 
@@ -1539,7 +1526,7 @@ function int64(s, bound) {
             /* lo */((b2[1] | b3[1]) >>> 0)
           ]);
       var v = mod_$1(r, n);
-      if (gt(sub$1(r, v), add(sub$1(max_int$3, n), /* int64 */[
+      if (gt(sub(r, v), add(sub(max_int$3, n), /* int64 */[
                   /* hi */0,
                   /* lo */1
                 ]))) {
@@ -1678,6 +1665,8 @@ var client = makeClient(Algolia[/* appId */0], Algolia[/* apiKey */2](/* () */0)
 
 var index$2 = client.initIndex(Algolia[/* packageIndex */1]);
 
+console.log("\nUpdating search index...");
+
 function addSearchSpecificFields(record) {
   return Object.assign({
               objectID: record.id,
@@ -1685,23 +1674,57 @@ function addSearchSpecificFields(record) {
             }, record);
 }
 
-map((function (record) {
-        index$2.addObject(record, (function (err, _) {
-                if (err == null) {
-                  return /* () */0;
-                } else {
-                  console.log("");
-                  console.log(record.id);
-                  console.log("  ", err.message);
-                  return /* () */0;
-                }
-              }));
+var locals = Fs$1[/* readDirRecursively */0](packageDir).map((function (path) {
+            return Fs.readFileSync(path, "utf8");
+          })).map(parseOrRaise).map((function (prim) {
+        return prim;
+      }));
+
+var browser = index$2.browseAll();
+
+var remotes = [/* array */[]];
+
+browser.on("result", (function (content) {
+        remotes[0] = remotes[0].concat(content.hits);
         return /* () */0;
-      }), map(addSearchSpecificFields, map((function (prim) {
-                return prim;
-              }), map(parseOrRaise, map((function (path) {
-                        return Fs.readFileSync(path, "utf8");
-                      }), Fs$1[/* readDirRecursively */0](packageDir))))));
+      }));
+
+browser.on("error", (function (error) {
+        console.log("Error: ", error);
+        return /* () */0;
+      }));
+
+browser.on("end", (function () {
+        remotes[0].filter((function (remote) {
+                  return +locals.every((function (local) {
+                                return +(local.id !== remote.objectID);
+                              }));
+                })).forEach((function (remote) {
+                console.log("Removing: ", remote.objectID);
+                index$2.deleteObject(remote.objectID, (function (err) {
+                        if (err == null) {
+                          return /* () */0;
+                        } else {
+                          console.log("Error removing ", remote.objectID, ": ", err.message);
+                          return /* () */0;
+                        }
+                      }));
+                return /* () */0;
+              }));
+        locals.map(addSearchSpecificFields).forEach((function (record) {
+                index$2.addObject(record, (function (err, _) {
+                        if (err == null) {
+                          return /* () */0;
+                        } else {
+                          console.log("Error adding ", record.id, ": ", err.message);
+                          return /* () */0;
+                        }
+                      }));
+                return /* () */0;
+              }));
+        console.log("Search index updated.");
+        return /* () */0;
+      }));
 
 
 /* client Not a pure module */
@@ -1709,3 +1732,6 @@ map((function (record) {
 exports.client = client;
 exports.index = index$2;
 exports.addSearchSpecificFields = addSearchSpecificFields;
+exports.locals = locals;
+exports.browser = browser;
+exports.remotes = remotes;
