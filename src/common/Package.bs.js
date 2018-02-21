@@ -95,7 +95,7 @@ var _normalizeKeywords = Curry._2(Rebase.Fn[/* >> */6], Curry._2(Rebase.Fn[/* >>
 
 function ensureDeprecated(deprecated, flags) {
   if (deprecated && !flags.includes("deprecated")) {
-    return flags.concat("deprecated");
+    return flags.concat(/* array */["deprecated"]);
   } else {
     return flags;
   }

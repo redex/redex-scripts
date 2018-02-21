@@ -76,7 +76,7 @@ let _normalizeKeywords =
 let ensureDeprecated = (deprecated, flags) =>
   switch deprecated {
   | Some(_) when !(flags |> Js.Array.includes("deprecated")) =>
-    Js.Array.append("deprecated", flags)
+    Js.Array.concat([| "deprecated" |], flags)
   | _ => flags
   };
 
