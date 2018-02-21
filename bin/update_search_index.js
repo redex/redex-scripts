@@ -40,8 +40,6 @@ function isCamlExceptionOrOpenVariant(e) {
     }
   }
 }
-
-
 /* No side effect */
 
 var $$Error = create("Js_exn.Error");
@@ -56,8 +54,6 @@ function internalToOCamlException(e) {
           ];
   }
 }
-
-
 /* No side effect */
 
 var ParseError = create("Json.ParseError");
@@ -80,8 +76,6 @@ function parseOrRaise(s) {
     }
   }
 }
-
-
 /* No side effect */
 
 var out_of_memory = /* tuple */[
@@ -167,8 +161,6 @@ sys_blocked_io.tag = 248;
 assert_failure.tag = 248;
 
 undefined_recursive_module.tag = 248;
-
-
 /*  Not a pure module */
 
 function caml_array_sub(x, offset, len) {
@@ -179,8 +171,7 @@ function caml_array_sub(x, offset, len) {
     result[j] = x[i];
     j = j + 1 | 0;
     i = i + 1 | 0;
-  }
-  return result;
+  }  return result;
 }
 
 function caml_array_set(xs, index, newval) {
@@ -227,8 +218,6 @@ function caml_array_blit(a1, i1, a2, i2, len) {
     return /* () */0;
   }
 }
-
-
 /* No side effect */
 
 function app(_f, _args) {
@@ -255,8 +244,7 @@ function app(_f, _args) {
     } else {
       return f.apply(null, args);
     }
-  }
-}
+  }}
 
 function curry_1(o, a0, arity) {
   if (arity > 7 || arity < 0) {
@@ -350,8 +338,6 @@ function _2(o, a0, a1) {
     return curry_2(o, a0, a1, arity);
   }
 }
-
-
 /* No side effect */
 
 /* No side effect */
@@ -368,8 +354,6 @@ var imul = ( Math.imul || function (x,y) {
   y |= 0; return ((((x >> 16) * y) << 16) + (x & 0xffff) * y)|0; 
 }
 );
-
-
 /* imul Not a pure module */
 
 var InvalidArgument = create("Rebase__Types.InvalidArgument");
@@ -377,8 +361,6 @@ var InvalidArgument = create("Rebase__Types.InvalidArgument");
 var IndexOutOfBounds = create("Rebase__Types.IndexOutOfBounds");
 
 var NotFound = create("Rebase__Types.NotFound");
-
-
 /* No side effect */
 
 /* No side effect */
@@ -389,8 +371,6 @@ function __(tag, block) {
   block.tag = tag;
   return block;
 }
-
-
 /* No side effect */
 
 function caml_float_max(x, y) {
@@ -400,8 +380,6 @@ function caml_float_max(x, y) {
     return y;
   }
 }
-
-
 /* No side effect */
 
 /* No side effect */
@@ -411,8 +389,6 @@ function caml_float_max(x, y) {
 function caml_sys_random_seed() {
   return /* array */[((Date.now() | 0) ^ 4294967295) * Math.random() | 0];
 }
-
-
 /* No side effect */
 
 /* repeat Not a pure module */
@@ -640,8 +616,7 @@ function mul(_this, _other) {
       }
     }
     
-  }
-}
+  }}
 
 function or_(param, param$1) {
   return /* record */[
@@ -791,21 +766,18 @@ function div$1(_self, _other) {
               approx$1 -= delta;
               approxRes = of_float(approx$1);
               approxRem = mul(approxRes, other);
-            }
-            if (is_zero(approxRes)) {
+            }            if (is_zero(approxRes)) {
               approxRes = one;
             }
             res = add(res, approxRes);
             rem$1 = add(rem$1, neg(approxRem));
-          }
-          return res;
+          }          return res;
         }
       }
       
     }
     
-  }
-}
+  }}
 
 function mod_$1(self, other) {
   var y = mul(div$1(self, other), other);
@@ -818,8 +790,6 @@ function of_int32(lo) {
           /* lo */(lo >>> 0)
         ];
 }
-
-
 /* two_ptr_32_dbl Not a pure module */
 
 /* float_of_string Not a pure module */
@@ -834,8 +804,6 @@ function get(s, i) {
     return s.charCodeAt(i);
   }
 }
-
-
 /* No side effect */
 
 /* not_implemented Not a pure module */
@@ -843,8 +811,6 @@ function get(s, i) {
 /* No side effect */
 
 var Exit = create("Pervasives.Exit");
-
-
 /* No side effect */
 
 function length$1(l) {
@@ -861,10 +827,7 @@ function length$1(l) {
     } else {
       return len;
     }
-  }
-}
-
-
+  }}
 /* No side effect */
 
 function to_js_boolean(b) {
@@ -874,8 +837,6 @@ function to_js_boolean(b) {
     return false;
   }
 }
-
-
 /* No side effect */
 
 function undefined_to_opt(x) {
@@ -885,8 +846,6 @@ function undefined_to_opt(x) {
     return /* Some */[x];
   }
 }
-
-
 /* No side effect */
 
 function from$2(x) {
@@ -925,8 +884,7 @@ function fromList$1(list) {
       } else {
         return array;
       }
-    }
-  } else {
+    }  } else {
     return /* array */[];
   }
 }
@@ -945,8 +903,7 @@ function fromSeq$1(seq) {
     } else {
       return array;
     }
-  }
-}
+  }}
 
 function range$2($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
@@ -969,8 +926,7 @@ function range$2($staropt$star, start, finish) {
           } else {
             return 0;
           }
-        }
-      };
+        }      };
       loop(start);
       return array;
     }
@@ -1090,8 +1046,6 @@ function apply$2(fs, xs) {
                 return _1(f, x);
               }), fs, xs);
 }
-
-
 /* No side effect */
 
 /* No side effect */
@@ -1179,8 +1133,6 @@ var $$Array = [
   Array_028,
   findIndex
 ];
-
-
 /* No side effect */
 
 /* No side effect */
@@ -1197,21 +1149,15 @@ function blit(a1, ofs1, a2, ofs2, len) {
 }
 
 var Bottom = create("Array.Bottom");
-
-
 /* No side effect */
 
 var max_int$2 = 2147483647;
-
-
 /* No side effect */
 
 var max_int$3 = /* int64 */[
   /* hi */2147483647,
   /* lo */4294967295
 ];
-
-
 /* No side effect */
 
 /* No side effect */
@@ -1381,20 +1327,14 @@ function caml_md5_string(s, start, len) {
   cycle(state, md5blk);
   return String.fromCharCode(state[0] & 255, (state[0] >> 8) & 255, (state[0] >> 16) & 255, (state[0] >> 24) & 255, state[1] & 255, (state[1] >> 8) & 255, (state[1] >> 16) & 255, (state[1] >> 24) & 255, state[2] & 255, (state[2] >> 8) & 255, (state[2] >> 16) & 255, (state[2] >> 24) & 255, state[3] & 255, (state[3] >> 8) & 255, (state[3] >> 16) & 255, (state[3] >> 24) & 255);
 }
-
-
 /* No side effect */
 
 function string(str) {
   return caml_md5_string(str, 0, str.length);
 }
-
-
 /* No side effect */
 
 var size = 54;
-
-
 /* No side effect */
 
 function assign(st1, st2) {
@@ -1477,8 +1417,7 @@ function $$int(s, bound) {
       } else {
         return v;
       }
-    }
-  }
+    }  }
 }
 
 function int32(s, bound) {
@@ -1501,8 +1440,7 @@ function int32(s, bound) {
       } else {
         return v;
       }
-    }
-  }
+    }  }
 }
 
 function int64(s, bound) {
@@ -1535,8 +1473,7 @@ function int64(s, bound) {
       } else {
         return v;
       }
-    }
-  }
+    }  }
 }
 
 var nativeint = size === 32 ? int32 : (function (s, bound) {
@@ -1569,8 +1506,6 @@ var State = [
   $$float,
   bool
 ];
-
-
 /* No side effect */
 
 /* No side effect */
@@ -1582,15 +1517,11 @@ var State = [
 /* No side effect */
 
 var Undefined = create("CamlinternalLazy.Undefined");
-
-
 /* No side effect */
 
 var prng = __(246, [(function () {
         return State[/* make_self_init */1](/* () */0);
       })]);
-
-
 /* No side effect */
 
 function readDirRecursively(dir) {
@@ -1627,8 +1558,6 @@ var Fs$1 = /* module */[
   /* ensureDirExists */ensureDirExists,
   /* writeFile */writeFile
 ];
-
-
 /* fs Not a pure module */
 
 var match = (process.env.NODE_ENV);
@@ -1650,15 +1579,11 @@ var Algolia = /* module */[
   /* packageIndex */packageIndex,
   /* apiKey */apiKey
 ];
-
-
 /* match Not a pure module */
 
 function makeClient(prim, prim$1) {
   return Algoliasearch(prim, prim$1);
 }
-
-
 /*  Not a pure module */
 
 var client = makeClient(Algolia[/* appId */0], Algolia[/* apiKey */2](/* () */0));
@@ -1725,8 +1650,6 @@ browser.on("end", (function () {
         console.log("Search index updated.");
         return /* () */0;
       }));
-
-
 /* client Not a pure module */
 
 exports.client = client;

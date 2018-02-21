@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-var Path = require('path');
 var Fs = require('fs');
+var Path = require('path');
 
 var id = [0];
 
@@ -35,8 +35,6 @@ function isCamlExceptionOrOpenVariant(e) {
     }
   }
 }
-
-
 /* No side effect */
 
 var $$Error = create("Js_exn.Error");
@@ -51,8 +49,6 @@ function internalToOCamlException(e) {
           ];
   }
 }
-
-
 /* No side effect */
 
 var ParseError = create("Json.ParseError");
@@ -79,8 +75,6 @@ function parseOrRaise(s) {
 function stringify(prim) {
   return JSON.stringify(prim);
 }
-
-
 /* No side effect */
 
 var out_of_memory = /* tuple */[
@@ -166,8 +160,6 @@ sys_blocked_io.tag = 248;
 assert_failure.tag = 248;
 
 undefined_recursive_module.tag = 248;
-
-
 /*  Not a pure module */
 
 function caml_array_sub(x, offset, len) {
@@ -178,8 +170,7 @@ function caml_array_sub(x, offset, len) {
     result[j] = x[i];
     j = j + 1 | 0;
     i = i + 1 | 0;
-  }
-  return result;
+  }  return result;
 }
 
 function caml_array_set(xs, index, newval) {
@@ -226,8 +217,6 @@ function caml_array_blit(a1, i1, a2, i2, len) {
     return /* () */0;
   }
 }
-
-
 /* No side effect */
 
 function app(_f, _args) {
@@ -254,8 +243,7 @@ function app(_f, _args) {
     } else {
       return f.apply(null, args);
     }
-  }
-}
+  }}
 
 function curry_1(o, a0, arity) {
   if (arity > 7 || arity < 0) {
@@ -360,8 +348,6 @@ function _2(o, a0, a1) {
     return curry_2(o, a0, a1, arity);
   }
 }
-
-
 /* No side effect */
 
 function id$1(x) {
@@ -399,8 +385,6 @@ function tap(f, x) {
   _1(f, x);
   return x;
 }
-
-
 /* No side effect */
 
 function div(x, y) {
@@ -415,8 +399,6 @@ var imul = ( Math.imul || function (x,y) {
   y |= 0; return ((((x >> 16) * y) << 16) + (x & 0xffff) * y)|0; 
 }
 );
-
-
 /* imul Not a pure module */
 
 var InvalidArgument = create("Rebase__Types.InvalidArgument");
@@ -424,8 +406,6 @@ var InvalidArgument = create("Rebase__Types.InvalidArgument");
 var IndexOutOfBounds = create("Rebase__Types.IndexOutOfBounds");
 
 var NotFound = create("Rebase__Types.NotFound");
-
-
 /* No side effect */
 
 /* No side effect */
@@ -454,8 +434,7 @@ function fromArray$1(arr) {
     } else {
       return acc;
     }
-  }
-}
+  }}
 
 function fromSeq(seq) {
   var match = _1(seq, /* () */0);
@@ -497,8 +476,7 @@ function range$1($staropt$star, start, finish) {
           continue ;
           
         }
-      }
-    }
+      }    }
   } else {
     throw [
           InvalidArgument,
@@ -546,8 +524,7 @@ function reverseAndAppend(_acc, _param) {
     } else {
       return acc;
     }
-  }
-}
+  }}
 
 function reverse(self) {
   return reverseAndAppend(/* [] */0, self);
@@ -572,8 +549,7 @@ function filter$1(predicate, _param) {
     } else {
       return /* [] */0;
     }
-  }
-}
+  }}
 
 function filterMap$1(f, _param) {
   while(true) {
@@ -594,8 +570,7 @@ function filterMap$1(f, _param) {
     } else {
       return /* [] */0;
     }
-  }
-}
+  }}
 
 function exists$1(predicate, _param) {
   while(true) {
@@ -611,8 +586,7 @@ function exists$1(predicate, _param) {
     } else {
       return /* false */0;
     }
-  }
-}
+  }}
 
 function forEach$1(f, _param) {
   while(true) {
@@ -625,8 +599,7 @@ function forEach$1(f, _param) {
     } else {
       return /* () */0;
     }
-  }
-}
+  }}
 
 function find$1(predicate, _param) {
   while(true) {
@@ -643,8 +616,7 @@ function find$1(predicate, _param) {
     } else {
       return /* None */0;
     }
-  }
-}
+  }}
 
 function forAll$1(predicate, _param) {
   while(true) {
@@ -660,8 +632,7 @@ function forAll$1(predicate, _param) {
     } else {
       return /* true */1;
     }
-  }
-}
+  }}
 
 function flatMap$1(f, self) {
   var aux = function (_inner, _outer) {
@@ -681,8 +652,7 @@ function flatMap$1(f, self) {
       } else {
         return /* [] */0;
       }
-    }
-  };
+    }  };
   return aux(/* [] */0, self);
 }
 
@@ -723,8 +693,7 @@ function reduce$1(f, _acc, _param) {
     } else {
       return acc;
     }
-  }
-}
+  }}
 
 function reduceRight$1(f, acc, param) {
   if (param) {
@@ -748,8 +717,7 @@ function length(self) {
     } else {
       return acc;
     }
-  }
-}
+  }}
 
 function zip$1(ys, xs) {
   if (xs && ys) {
@@ -780,16 +748,12 @@ function concat(ys, xs) {
     return /* [] */0;
   }
 }
-
-
 /* No side effect */
 
 function __(tag, block) {
   block.tag = tag;
   return block;
 }
-
-
 /* No side effect */
 
 function caml_int_compare(x, y) {
@@ -819,8 +783,6 @@ function caml_float_max(x, y) {
     return y;
   }
 }
-
-
 /* No side effect */
 
 function caml_compare(_a, _b) {
@@ -906,8 +868,7 @@ function caml_compare(_a, _b) {
                     
                   }
                 }
-              }
-            } else if (len_a < len_b) {
+              }            } else if (len_a < len_b) {
               var a$2 = a;
               var b$2 = b;
               var _i$1 = 0;
@@ -926,8 +887,7 @@ function caml_compare(_a, _b) {
                     
                   }
                 }
-              }
-            } else {
+              }            } else {
               var a$3 = a;
               var b$3 = b;
               var _i$2 = 0;
@@ -946,16 +906,12 @@ function caml_compare(_a, _b) {
                     
                   }
                 }
-              }
-            }
+              }            }
           }
         }
       }
     }
-  }
-}
-
-
+  }}
 /* No side effect */
 
 /* node_std_output Not a pure module */
@@ -963,8 +919,6 @@ function caml_compare(_a, _b) {
 function caml_sys_random_seed() {
   return /* array */[((Date.now() | 0) ^ 4294967295) * Math.random() | 0];
 }
-
-
 /* No side effect */
 
 /* repeat Not a pure module */
@@ -1192,8 +1146,7 @@ function mul(_this, _other) {
       }
     }
     
-  }
-}
+  }}
 
 function or_(param, param$1) {
   return /* record */[
@@ -1343,21 +1296,18 @@ function div$1(_self, _other) {
               approx$1 -= delta;
               approxRes = of_float(approx$1);
               approxRem = mul(approxRes, other);
-            }
-            if (is_zero(approxRes)) {
+            }            if (is_zero(approxRes)) {
               approxRes = one;
             }
             res = add(res, approxRes);
             rem$1 = add(rem$1, neg(approxRem));
-          }
-          return res;
+          }          return res;
         }
       }
       
     }
     
-  }
-}
+  }}
 
 function mod_$1(self, other) {
   var y = mul(div$1(self, other), other);
@@ -1370,8 +1320,6 @@ function of_int32(lo) {
           /* lo */(lo >>> 0)
         ];
 }
-
-
 /* two_ptr_32_dbl Not a pure module */
 
 /* float_of_string Not a pure module */
@@ -1386,13 +1334,9 @@ function get(s, i) {
     return s.charCodeAt(i);
   }
 }
-
-
 /* No side effect */
 
 var not_implemented = (function (s){ throw new Error(s)});
-
-
 /* not_implemented Not a pure module */
 
 /* No side effect */
@@ -1409,8 +1353,6 @@ var Exit = create("Pervasives.Exit");
 function string_of_int(param) {
   return "" + param;
 }
-
-
 /* No side effect */
 
 function length$1(l) {
@@ -1427,10 +1369,7 @@ function length$1(l) {
     } else {
       return len;
     }
-  }
-}
-
-
+  }}
 /* No side effect */
 
 function to_js_boolean(b) {
@@ -1440,8 +1379,6 @@ function to_js_boolean(b) {
     return false;
   }
 }
-
-
 /* No side effect */
 
 function undefined_to_opt(x) {
@@ -1451,8 +1388,6 @@ function undefined_to_opt(x) {
     return /* Some */[x];
   }
 }
-
-
 /* No side effect */
 
 function from$2(x) {
@@ -1491,8 +1426,7 @@ function fromList$1(list) {
       } else {
         return array;
       }
-    }
-  } else {
+    }  } else {
     return /* array */[];
   }
 }
@@ -1511,8 +1445,7 @@ function fromSeq$1(seq) {
     } else {
       return array;
     }
-  }
-}
+  }}
 
 function range$2($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
@@ -1535,8 +1468,7 @@ function range$2($staropt$star, start, finish) {
           } else {
             return 0;
           }
-        }
-      };
+        }      };
       loop(start);
       return array;
     }
@@ -1656,8 +1588,6 @@ function apply$2(fs, xs) {
                 return _1(f, x);
               }), fs, xs);
 }
-
-
 /* No side effect */
 
 function from$3(x) {
@@ -1829,8 +1759,6 @@ function reduceRight$2(f, acc, param) {
 }
 
 var flatMap$3 = andThen;
-
-
 /* No side effect */
 
 /* No side effect */
@@ -1839,20 +1767,20 @@ function isEmpty$2(s) {
   return +(s.trim().length === 0);
 }
 
-function join$1(param) {
+function join(param) {
   if (param) {
-    return param[0] + join$1(param[1]);
+    return param[0] + join(param[1]);
   } else {
     return "";
   }
 }
 
-function joinWith(sep$$1, param) {
+function joinWith(sep, param) {
   if (param) {
     var ss = param[1];
     var s = param[0];
     if (ss) {
-      return s + (sep$$1 + joinWith(sep$$1, ss));
+      return s + (sep + joinWith(sep, ss));
     } else {
       return s;
     }
@@ -1860,8 +1788,6 @@ function joinWith(sep$$1, param) {
     return "";
   }
 }
-
-
 /* No side effect */
 
 function Array_000(prim, prim$1) {
@@ -2051,11 +1977,9 @@ var $$String = [
   String_007,
   String_008,
   String_009,
-  join$1,
+  join,
   joinWith
 ];
-
-
 /* No side effect */
 
 function _dispatch(f, value) {
@@ -2172,8 +2096,6 @@ var Future = /* module */[
   /* flatMap */flatMap$5,
   /* fromJSPromise */fromJSPromise
 ];
-
-
 /* No side effect */
 
 function blit(a1, ofs1, a2, ofs2, len) {
@@ -2188,21 +2110,15 @@ function blit(a1, ofs1, a2, ofs2, len) {
 }
 
 var Bottom = create("Array.Bottom");
-
-
 /* No side effect */
 
 var max_int$2 = 2147483647;
-
-
 /* No side effect */
 
 var max_int$3 = /* int64 */[
   /* hi */2147483647,
   /* lo */4294967295
 ];
-
-
 /* No side effect */
 
 /* No side effect */
@@ -2372,20 +2288,14 @@ function caml_md5_string(s, start, len) {
   cycle(state, md5blk);
   return String.fromCharCode(state[0] & 255, (state[0] >> 8) & 255, (state[0] >> 16) & 255, (state[0] >> 24) & 255, state[1] & 255, (state[1] >> 8) & 255, (state[1] >> 16) & 255, (state[1] >> 24) & 255, state[2] & 255, (state[2] >> 8) & 255, (state[2] >> 16) & 255, (state[2] >> 24) & 255, state[3] & 255, (state[3] >> 8) & 255, (state[3] >> 16) & 255, (state[3] >> 24) & 255);
 }
-
-
 /* No side effect */
 
 function string(str) {
   return caml_md5_string(str, 0, str.length);
 }
-
-
 /* No side effect */
 
 var size = 54;
-
-
 /* No side effect */
 
 function assign(st1, st2) {
@@ -2468,8 +2378,7 @@ function $$int(s, bound) {
       } else {
         return v;
       }
-    }
-  }
+    }  }
 }
 
 function int32(s, bound) {
@@ -2492,8 +2401,7 @@ function int32(s, bound) {
       } else {
         return v;
       }
-    }
-  }
+    }  }
 }
 
 function int64(s, bound) {
@@ -2526,8 +2434,7 @@ function int64(s, bound) {
       } else {
         return v;
       }
-    }
-  }
+    }  }
 }
 
 var nativeint = size === 32 ? int32 : (function (s, bound) {
@@ -2560,8 +2467,6 @@ var State = [
   $$float,
   bool
 ];
-
-
 /* No side effect */
 
 function push(x, q) {
@@ -2597,8 +2502,6 @@ function unsafe_pop(q) {
   }
   return head[/* content */0];
 }
-
-
 /* No side effect */
 
 function rotl32(x, n) {
@@ -2703,19 +2606,14 @@ function caml_hash(count, _, seed, obj) {
         
       }
       
-    }
-    return caml_hash_final_mix(hash);
+    }    return caml_hash_final_mix(hash);
   }
 }
-
-
 /* No side effect */
 
 /* No side effect */
 
 var forward_tag = 250;
-
-
 /* No side effect */
 
 var Undefined = create("CamlinternalLazy.Undefined");
@@ -2740,8 +2638,6 @@ function force_lazy_block(blk) {
     throw e;
   }
 }
-
-
 /* No side effect */
 
 var randomized = [/* false */0];
@@ -2762,8 +2658,7 @@ function power_2_above(_x, n) {
       continue ;
       
     }
-  }
-}
+  }}
 
 function create$2($staropt$star, initial_size) {
   var random = $staropt$star ? $staropt$star[0] : randomized[0];
@@ -2881,16 +2776,13 @@ function iter$4(f, h) {
       } else {
         return /* () */0;
       }
-    }
-  };
+    }  };
   var d = h[/* data */1];
   for(var i = 0 ,i_finish = d.length - 1 | 0; i <= i_finish; ++i){
     do_bucket(caml_array_get(d, i));
   }
   return /* () */0;
 }
-
-
 /* No side effect */
 
 function readDirRecursively(dir) {
@@ -2951,8 +2843,6 @@ var Future$1 = /* module */[
   /* >>= */$great$great$eq,
   /* return */$$return
 ];
-
-
 /* fs Not a pure module */
 
 var match = (process.env.NODE_ENV);
@@ -2962,8 +2852,6 @@ var outputDir = "data/generated";
 var packageDir = Path.join(outputDir, "packages");
 
 var sourcesFile = "data/sources.json";
-
-
 /* match Not a pure module */
 
 function entries(dict) {
@@ -2994,10 +2882,7 @@ function fromList$2(entries) {
     } else {
       return dict;
     }
-  }
-}
-
-
+  }}
 /* unsafeDeleteKey Not a pure module */
 
 function other(m) {
@@ -3054,8 +2939,6 @@ var RequestInit = [(function (prim, prim$1, prim$2, prim$3, prim$4, prim$5, prim
       }
       return tmp;
     })];
-
-
 /* No side effect */
 
 /* No side effect */
@@ -3070,8 +2953,6 @@ var btoa = (
     }
   }()
 );
-
-
 /* btoa Not a pure module */
 
 function _pairifyHeader(h) {
@@ -3157,8 +3038,6 @@ function _stringifyHeader(header) {
 function _encode(headers) {
   return fromList$2(List[/* map */0](_pairifyHeader, headers));
 }
-
-
 /* Js_dict Not a pure module */
 
 function make$5(method_, $staropt$star, $staropt$star$1, body, url) {
@@ -3251,8 +3130,6 @@ function _toFetchRequest(request) {
                             return prim;
                           })), request[/* body */4]), /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* () */0));
 }
-
-
 /* Refetch__Headers Not a pure module */
 
 function codeFromInt(param) {
@@ -3463,8 +3340,6 @@ function codeFromInt(param) {
     return failwith("TODO: exception or option?");
   }
 }
-
-
 /* No side effect */
 
 function _getStatus(response) {
@@ -3575,8 +3450,6 @@ var text = _2(Fn[/* >> */6], (function (prim) {
 var json$1 = _2(Fn[/* >> */6], (function (prim) {
         return prim.json();
       }), Future[/* fromJSPromise */10]);
-
-
 /* text Not a pure module */
 
 function fetch$1(request) {
@@ -3588,8 +3461,6 @@ function fetch$1(request) {
 function get$2(url) {
   return fetch$1(make$5(/* GET */3546230, /* None */0, /* None */0, /* None */0, url));
 }
-
-
 /* Refetch__Request Not a pure module */
 
 function _isInteger(value) {
@@ -3602,7 +3473,7 @@ function _isInteger(value) {
 
 var DecodeError = create("Json_decode.DecodeError");
 
-function $$float$1$1(json) {
+function $$float$2(json) {
   if (typeof json === "number") {
     return json;
   } else {
@@ -3613,8 +3484,8 @@ function $$float$1$1(json) {
   }
 }
 
-function $$int$1$1(json) {
-  var f = $$float$1$1(json);
+function $$int$2(json) {
+  var f = $$float$2(json);
   if (_isInteger(f)) {
     return f;
   } else {
@@ -3792,8 +3663,7 @@ function oneOf(_decoders, json) {
             "Expected oneOf " + (String(length) + ", got ") + JSON.stringify(json)
           ];
     }
-  }
-}
+  }}
 
 function either(a, b) {
   var partial_arg_001 = /* :: */[
@@ -3812,8 +3682,6 @@ function either(a, b) {
 function map$10(f, decode, json) {
   return _1(f, _1(decode, json));
 }
-
-
 /* No side effect */
 
 function looksLikeUrl(str) {
@@ -3890,7 +3758,7 @@ function getReadme(source) {
 function getStats(source) {
   var url = "https://api.github.com/repos/" + (String(source[0]) + ("/" + (String(source[1]) + "")));
   return Future[/* map */8]((function (param) {
-                return field("stargazers_count", $$int$1$1, param);
+                return field("stargazers_count", $$int$2, param);
               }), Future[/* flatMap */9]((function (param) {
                     if (param.tag) {
                       return failwith("failed to get stats: " + param[0][/* reason */1]);
@@ -3899,8 +3767,6 @@ function getStats(source) {
                     }
                   }), get$2(url)));
 }
-
-
 /* Refetch Not a pure module */
 
 function category(param) {
@@ -4008,8 +3874,6 @@ var Unpublished = /* module */[
   /* fromJson */fromJson$1,
   /* get */get$1$1
 ];
-
-
 /* fs Not a pure module */
 
 function from_opt(x) {
@@ -4019,8 +3883,6 @@ function from_opt(x) {
     return undefined;
   }
 }
-
-
 /* No side effect */
 
 function _encodecategory(param) {
@@ -4140,11 +4002,9 @@ function fromUnpublished(source, manifest, readme, stars) {
           docsUrl: undefined
         };
 }
-
-
 /* _normalizeKeywords Not a pure module */
 
-function fromJson$1$1(json) {
+function fromJson$2(json) {
   return /* record */[
           /* name */field("name", string$1, json),
           /* version */field("version", string$1, json),
@@ -4199,7 +4059,7 @@ function fromJson$1$1(json) {
 
 function get$4(repo) {
   var url = "https://raw.githubusercontent.com/" + (String(repo[0]) + ("/" + (String(repo[1]) + "/master/package.json")));
-  return Future[/* map */8](fromJson$1$1, Future[/* flatMap */9]((function (param) {
+  return Future[/* map */8](fromJson$2, Future[/* flatMap */9]((function (param) {
                     if (param.tag) {
                       return failwith("failed to get package.json");
                     } else {
@@ -4207,8 +4067,6 @@ function get$4(repo) {
                     }
                   }), get$2(url)));
 }
-
-
 /* Refetch Not a pure module */
 
 require('isomorphic-fetch')
@@ -4233,6 +4091,4 @@ List[/* forEach */8]((function (source) {
                                       }));
                         })));
       }), Unpublished[/* get */1](/* None */0, /* () */0));
-
-
 /*  Not a pure module */
