@@ -21,13 +21,13 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "bs-platform": "^2.1.0",
-    "@glennsl/bs-json": "^1.1.1",
+    "bs-platform": "^2.2.1",
+    "@glennsl/bs-json": "^1.1.2",
     "@glennsl/rebase": "^0.2.0",
-    "algoliasearch": "^3.24.9",
+    "algoliasearch": "^3.24.11",
     "isomorphic-fetch": "^2.2.1",
-    "refetch": "github:glennsl/refetch",
-    "rollup": "^0.54.1"
+    "refetch": "github:glennsl/refetch#c33aadd461bf32a520c282d3444f2602affe4401",
+    "rollup": "^0.56.2"
   },
   "dependencies": {}
 }
