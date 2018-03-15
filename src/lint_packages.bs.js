@@ -1,4 +1,4 @@
-'use strict';
+
 
 import * as Fs from "fs";
 import * as Json from "../node_modules/@glennsl/bs-json/src/Json.bs.js";

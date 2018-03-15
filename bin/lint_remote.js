@@ -4054,13 +4054,15 @@ function getStats(source) {
 }
 /* Refetch Not a pure module */
 
-function from_opt(x) {
+function fromOption(x) {
   if (x) {
     return x[0];
   } else {
     return undefined;
   }
 }
+
+var from_opt = fromOption;
 /* No side effect */
 
 function _encodecategory(param) {

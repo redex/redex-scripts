@@ -1,4 +1,4 @@
-'use strict';
+
 
 import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
 import * as Resync from "../../node_modules/refetch/src/Resync.bs.js";

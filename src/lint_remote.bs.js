@@ -1,4 +1,4 @@
-'use strict';
+
 
 import * as Lint from "./common/Lint.bs.js";
 import * as NPMS from "./common/NPMS.bs.js";

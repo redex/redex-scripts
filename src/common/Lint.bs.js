@@ -1,4 +1,4 @@
-'use strict';
+
 
 import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
 import * as Rebase from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";

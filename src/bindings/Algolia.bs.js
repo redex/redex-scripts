@@ -1,4 +1,4 @@
-'use strict';
+
 
 
 import Algoliasearch from 'algoliasearch'
