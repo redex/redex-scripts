@@ -14,50 +14,50 @@ function fromJson(json) {
                                 return new Date(prim);
                               }), Json_decode.string, param);
                 }), json),
-          /* name */Curry._1(Json_decode.at(/* :: */[
-                    "collected",
+          /* name */Json_decode.at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "name",
-                        /* [] */0
-                      ]
+                      "name",
+                      /* [] */0
                     ]
-                  ], Json_decode.string), json),
-          /* version */Curry._1(Json_decode.at(/* :: */[
-                    "collected",
+                  ]
+                ], Json_decode.string)(json),
+          /* version */Json_decode.at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "version",
-                        /* [] */0
-                      ]
+                      "version",
+                      /* [] */0
                     ]
-                  ], Json_decode.string), json),
-          /* description */Curry._1(Json_decode.at(/* :: */[
-                    "collected",
+                  ]
+                ], Json_decode.string)(json),
+          /* description */Json_decode.at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "description",
-                        /* [] */0
-                      ]
+                      "description",
+                      /* [] */0
                     ]
-                  ], Json_decode.string), json),
-          /* updated */Curry._1(Json_decode.at(/* :: */[
-                    "collected",
+                  ]
+                ], Json_decode.string)(json),
+          /* updated */Json_decode.at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "date",
-                        /* [] */0
-                      ]
+                      "date",
+                      /* [] */0
                     ]
-                  ], (function (param) {
-                      return Json_decode.map((function (prim) {
-                                    return new Date(prim);
-                                  }), Json_decode.string, param);
-                    })), json),
+                  ]
+                ], (function (param) {
+                    return Json_decode.map((function (prim) {
+                                  return new Date(prim);
+                                }), Json_decode.string, param);
+                  }))(json),
           /* deprecated */Json_decode.optional(Json_decode.at(/* :: */[
                     "collected",
                     /* :: */[
@@ -123,43 +123,43 @@ function fromJson(json) {
                       ]
                     ]
                   ], Json_decode.$$int), json),
-          /* score */Curry._1(Json_decode.at(/* :: */[
-                    "score",
+          /* score */Json_decode.at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "final",
+                    /* [] */0
+                  ]
+                ], Json_decode.$$float)(json),
+          /* quality */Json_decode.at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "detail",
                     /* :: */[
-                      "final",
+                      "quality",
                       /* [] */0
                     ]
-                  ], Json_decode.$$float), json),
-          /* quality */Curry._1(Json_decode.at(/* :: */[
-                    "score",
+                  ]
+                ], Json_decode.$$float)(json),
+          /* popularity */Json_decode.at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "detail",
                     /* :: */[
-                      "detail",
-                      /* :: */[
-                        "quality",
-                        /* [] */0
-                      ]
+                      "popularity",
+                      /* [] */0
                     ]
-                  ], Json_decode.$$float), json),
-          /* popularity */Curry._1(Json_decode.at(/* :: */[
-                    "score",
+                  ]
+                ], Json_decode.$$float)(json),
+          /* maintenance */Json_decode.at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "detail",
                     /* :: */[
-                      "detail",
-                      /* :: */[
-                        "popularity",
-                        /* [] */0
-                      ]
+                      "maintenance",
+                      /* [] */0
                     ]
-                  ], Json_decode.$$float), json),
-          /* maintenance */Curry._1(Json_decode.at(/* :: */[
-                    "score",
-                    /* :: */[
-                      "detail",
-                      /* :: */[
-                        "maintenance",
-                        /* [] */0
-                      ]
-                    ]
-                  ], Json_decode.$$float), json),
+                  ]
+                ], Json_decode.$$float)(json),
           /* homepageUrl */Json_decode.optional(Json_decode.at(/* :: */[
                     "collected",
                     /* :: */[

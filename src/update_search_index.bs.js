@@ -41,8 +41,8 @@ browser.on("error", (function (error) {
 
 browser.on("end", (function () {
         remotes[0].filter((function (remote) {
-                  return +locals.every((function (local) {
-                                return +(local.id !== remote.objectID);
+                  return locals.every((function (local) {
+                                return local.id !== remote.objectID;
                               }));
                 })).forEach((function (remote) {
                 console.log("Removing: ", remote.objectID);

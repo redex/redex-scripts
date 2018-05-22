@@ -12,17 +12,17 @@ import * as Caml_builtin_exceptions from "../node_modules/bs-platform/lib/es6/ca
 var filename = Rebase.$$Array[/* get */17](Process.argv, 2);
 
 function assertNotEmpty(array, msg) {
-  if (Rebase.$$Array[/* length */16](array)) {
-    return 0;
-  } else {
+  if (Rebase.$$Array[/* length */16](array) === 0) {
     return Pervasives.failwith(msg);
+  } else {
+    return 0;
   }
 }
 
 function assertNoDuplicates(array, msg) {
   var sorted = array.slice().sort();
   if (sorted.some((function (x, i) {
-            return +(x === Rebase.$$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted));
+            return x === Rebase.$$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted);
           }))) {
     return Pervasives.failwith(msg);
   } else {

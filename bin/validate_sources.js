@@ -26,15 +26,15 @@ function create(str) {
 
 function isCamlExceptionOrOpenVariant(e) {
   if (e === undefined) {
-    return /* false */0;
+    return false;
   } else if (e.tag === 248) {
-    return /* true */1;
+    return true;
   } else {
     var slot = e[0];
     if (slot !== undefined) {
-      return +(slot.tag === 248);
+      return slot.tag === 248;
     } else {
-      return /* false */0;
+      return false;
     }
   }
 }
@@ -178,24 +178,21 @@ function app(_f, _args) {
     var args = _args;
     var f = _f;
     var arity = f.length;
-    var arity$1 = arity ? arity : 1;
+    var arity$1 = arity === 0 ? 1 : arity;
     var len = args.length;
     var d = arity$1 - len | 0;
-    if (d) {
-      if (d < 0) {
-        _args = caml_array_sub(args, arity$1, -d | 0);
-        _f = f.apply(null, caml_array_sub(args, 0, arity$1));
-        continue ;
-        
-      } else {
-        return (function(f,args){
-        return function (x) {
-          return app(f, args.concat(/* array */[x]));
-        }
-        }(f,args));
-      }
-    } else {
+    if (d === 0) {
       return f.apply(null, args);
+    } else if (d < 0) {
+      _args = caml_array_sub(args, arity$1, -d | 0);
+      _f = f.apply(null, caml_array_sub(args, 0, arity$1));
+      continue ;
+    } else {
+      return (function(f,args){
+      return function (x) {
+        return app(f, args.concat(/* array */[x]));
+      }
+      }(f,args));
     }
   }}
 
@@ -355,6 +352,8 @@ var imul = ( Math.imul || function (x,y) {
 );
 /* imul Not a pure module */
 
+/* No side effect */
+
 var InvalidArgument = create("Rebase__Types.InvalidArgument");
 
 var IndexOutOfBounds = create("Rebase__Types.IndexOutOfBounds");
@@ -384,7 +383,6 @@ function fromArray$1(arr) {
         acc
       ];
       continue ;
-      
     } else {
       return acc;
     }
@@ -404,46 +402,41 @@ function fromSeq(seq) {
 
 function range$1($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
-  if (step) {
-    if (step < 0 && start < finish) {
-      return /* [] */0;
-    } else if (step > 0 && start > finish) {
-      return /* [] */0;
-    } else {
-      var last = imul(div(finish - start | 0, step), step) + start | 0;
-      var _acc = /* [] */0;
-      var _n = last;
-      while(true) {
-        var n = _n;
-        var acc = _acc;
-        if (n === start) {
-          return /* :: */[
-                  n,
-                  acc
-                ];
-        } else {
-          _n = n - step | 0;
-          _acc = /* :: */[
-            n,
-            acc
-          ];
-          continue ;
-          
-        }
-      }    }
-  } else {
+  if (step === 0) {
     throw [
           InvalidArgument,
           "List.range: ~step=0 would cause infinite loop"
         ];
-  }
+  } else if (step < 0 && start < finish || step > 0 && start > finish) {
+    return /* [] */0;
+  } else {
+    var last = imul(div(finish - start | 0, step), step) + start | 0;
+    var _acc = /* [] */0;
+    var _n = last;
+    while(true) {
+      var n = _n;
+      var acc = _acc;
+      if (n === start) {
+        return /* :: */[
+                n,
+                acc
+              ];
+      } else {
+        _n = n - step | 0;
+        _acc = /* :: */[
+          n,
+          acc
+        ];
+        continue ;
+      }
+    }  }
 }
 
 function isEmpty$1(param) {
   if (param) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -474,7 +467,6 @@ function reverseAndAppend(_acc, _param) {
         acc
       ];
       continue ;
-      
     } else {
       return acc;
     }
@@ -498,7 +490,6 @@ function filter$1(predicate, _param) {
       } else {
         _param = xs;
         continue ;
-        
       }
     } else {
       return /* [] */0;
@@ -519,7 +510,6 @@ function filterMap$1(f, _param) {
       } else {
         _param = xs;
         continue ;
-        
       }
     } else {
       return /* [] */0;
@@ -531,14 +521,13 @@ function exists$1(predicate, _param) {
     var param = _param;
     if (param) {
       if (_1(predicate, param[0])) {
-        return /* true */1;
+        return true;
       } else {
         _param = param[1];
         continue ;
-        
       }
     } else {
-      return /* false */0;
+      return false;
     }
   }}
 
@@ -549,7 +538,6 @@ function forEach$1(f, _param) {
       _1(f, param[0]);
       _param = param[1];
       continue ;
-      
     } else {
       return /* () */0;
     }
@@ -565,7 +553,6 @@ function find$1(predicate, _param) {
       } else {
         _param = param[1];
         continue ;
-        
       }
     } else {
       return /* None */0;
@@ -579,12 +566,11 @@ function forAll$1(predicate, _param) {
       if (_1(predicate, param[0])) {
         _param = param[1];
         continue ;
-        
       } else {
-        return /* false */0;
+        return false;
       }
     } else {
-      return /* true */1;
+      return true;
     }
   }}
 
@@ -602,7 +588,6 @@ function flatMap$1(f, self) {
         _outer = outer[1];
         _inner = _1(f, outer[0]);
         continue ;
-        
       } else {
         return /* [] */0;
       }
@@ -643,7 +628,6 @@ function reduce$1(f, _acc, _param) {
       _param = param[1];
       _acc = _2(f, acc, param[0]);
       continue ;
-      
     } else {
       return acc;
     }
@@ -667,7 +651,6 @@ function length(self) {
       _param = param[1];
       _acc = acc + 1 | 0;
       continue ;
-      
     } else {
       return acc;
     }
@@ -726,7 +709,7 @@ function __(tag, block) {
 
 /* No side effect */
 
-/* not_implemented Not a pure module */
+/* No side effect */
 
 /* No side effect */
 
@@ -738,10 +721,6 @@ function failwith(s) {
 }
 
 var Exit = create("Pervasives.Exit");
-
-function string_of_int(param) {
-  return "" + param;
-}
 /* No side effect */
 
 function length$1(l) {
@@ -754,20 +733,10 @@ function length$1(l) {
       _param = param[1];
       _len = len + 1 | 0;
       continue ;
-      
     } else {
       return len;
     }
   }}
-/* No side effect */
-
-function to_js_boolean(b) {
-  if (b) {
-    return true;
-  } else {
-    return false;
-  }
-}
 /* No side effect */
 
 function undefined_to_opt(x) {
@@ -811,7 +780,6 @@ function fromList$1(list) {
         _param = param[1];
         _i = i + 1 | 0;
         continue ;
-        
       } else {
         return array;
       }
@@ -830,7 +798,6 @@ function fromSeq$1(seq) {
       array.push(match[0]);
       _seq = match[1];
       continue ;
-      
     } else {
       return array;
     }
@@ -838,34 +805,31 @@ function fromSeq$1(seq) {
 
 function range$2($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
-  if (step) {
-    if (step < 0 && start < finish) {
-      return /* array */[];
-    } else if (step > 0 && start > finish) {
-      return /* array */[];
-    } else {
-      var array = /* array */[];
-      var last = imul(div(finish - start | 0, step), step) + start | 0;
-      var loop = function (_n) {
-        while(true) {
-          var n = _n;
-          array.push(n);
-          if (n !== last) {
-            _n = n + step | 0;
-            continue ;
-            
-          } else {
-            return 0;
-          }
-        }      };
-      loop(start);
-      return array;
-    }
-  } else {
+  if (step === 0) {
     throw [
           InvalidArgument,
           "Array.range: ~step=0 would cause infinite loop"
         ];
+  } else if (step < 0 && start < finish) {
+    return /* array */[];
+  } else if (step > 0 && start > finish) {
+    return /* array */[];
+  } else {
+    var array = /* array */[];
+    var last = imul(div(finish - start | 0, step), step) + start | 0;
+    var loop = function (_n) {
+      while(true) {
+        var n = _n;
+        array.push(n);
+        if (n !== last) {
+          _n = n + step | 0;
+          continue ;
+        } else {
+          return 0;
+        }
+      }    };
+    loop(start);
+    return array;
   }
 }
 
@@ -904,27 +868,19 @@ function setOrRaise(i, value, self) {
 }
 
 function exists$3(f, self) {
-  return +self.some((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.some(__1(f));
 }
 
 function filter$3(f, self) {
-  return self.filter((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.filter(__1(f));
 }
 
 function find$3(f, self) {
-  return undefined_to_opt(self.find((function (x) {
-                    return to_js_boolean(_1(f, x));
-                  })));
+  return undefined_to_opt(self.find(__1(f)));
 }
 
 function findIndex(f, self) {
-  var i = self.findIndex((function (x) {
-          return to_js_boolean(_1(f, x));
-        }));
+  var i = self.findIndex(__1(f));
   if (i !== -1) {
     return /* Some */[/* tuple */[
               i,
@@ -936,9 +892,7 @@ function findIndex(f, self) {
 }
 
 function forAll$2(f, self) {
-  return +self.every((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.every(__1(f));
 }
 
 function flatMap$2(f, self) {
@@ -997,17 +951,17 @@ function fromResult(param) {
 
 function isSome(param) {
   if (param) {
-    return /* true */1;
+    return true;
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
 function isNone(param) {
   if (param) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -1066,7 +1020,7 @@ function exists$4(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
@@ -1074,7 +1028,7 @@ function forAll$3(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -1153,7 +1107,7 @@ var flatMap$3 = andThen;
 /* No side effect */
 
 function isEmpty$2(s) {
-  return +(s.trim().length === 0);
+  return s.trim().length === 0;
 }
 
 function join(param) {
@@ -1328,15 +1282,15 @@ function String_001(prim) {
 }
 
 function String_002(prim, prim$1) {
-  return +prim$1.includes(prim);
+  return prim$1.includes(prim);
 }
 
 function String_003(prim, prim$1) {
-  return +prim$1.startsWith(prim);
+  return prim$1.startsWith(prim);
 }
 
 function String_004(prim, prim$1) {
-  return +prim$1.endsWith(prim);
+  return prim$1.endsWith(prim);
 }
 
 function String_006(prim, prim$1, prim$2) {
@@ -1574,7 +1528,7 @@ function array(decode, json) {
         if (exn[0] === DecodeError) {
           throw [
                 DecodeError,
-                exn[1] + ("\n\tin array at index " + string_of_int(i))
+                exn[1] + ("\n\tin array at index " + String(i))
               ];
         } else {
           throw exn;
@@ -1677,7 +1631,7 @@ function map$8(f, decode, json) {
 
 function looksLikeUrl(str) {
   if ($$String[/* startsWith */3]("http://", str)) {
-    return /* true */1;
+    return true;
   } else {
     return $$String[/* startsWith */3]("https://", str);
   }
@@ -1867,17 +1821,17 @@ var Unpublished = /* module */[
 var filename = $$Array[/* get */17](Process.argv, 2);
 
 function assertNotEmpty(array$$1, msg) {
-  if ($$Array[/* length */16](array$$1)) {
-    return 0;
-  } else {
+  if ($$Array[/* length */16](array$$1) === 0) {
     return failwith(msg);
+  } else {
+    return 0;
   }
 }
 
 function assertNoDuplicates(array$$1, msg) {
   var sorted = array$$1.slice().sort();
   if (sorted.some((function (x, i) {
-            return +(x === $$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted));
+            return x === $$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted);
           }))) {
     return failwith(msg);
   } else {

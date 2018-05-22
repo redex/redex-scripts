@@ -9,8 +9,8 @@ import * as Hashtbl from "../../node_modules/bs-platform/lib/es6/hashtbl.js";
 function readDirRecursively(dir) {
   return Rebase.$$Array[/* flatMap */5]((function (filename) {
                 var path = Path.join(dir, filename);
-                var match = +Fs.statSync(path).isDirectory();
-                if (match !== 0) {
+                var match = Fs.statSync(path).isDirectory();
+                if (match) {
                   return readDirRecursively(path);
                 } else {
                   return /* array */[path];

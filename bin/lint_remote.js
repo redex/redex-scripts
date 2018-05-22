@@ -152,24 +152,21 @@ function app(_f, _args) {
     var args = _args;
     var f = _f;
     var arity = f.length;
-    var arity$1 = arity ? arity : 1;
+    var arity$1 = arity === 0 ? 1 : arity;
     var len = args.length;
     var d = arity$1 - len | 0;
-    if (d) {
-      if (d < 0) {
-        _args = caml_array_sub(args, arity$1, -d | 0);
-        _f = f.apply(null, caml_array_sub(args, 0, arity$1));
-        continue ;
-        
-      } else {
-        return (function(f,args){
-        return function (x) {
-          return app(f, args.concat(/* array */[x]));
-        }
-        }(f,args));
-      }
-    } else {
+    if (d === 0) {
       return f.apply(null, args);
+    } else if (d < 0) {
+      _args = caml_array_sub(args, arity$1, -d | 0);
+      _f = f.apply(null, caml_array_sub(args, 0, arity$1));
+      continue ;
+    } else {
+      return (function(f,args){
+      return function (x) {
+        return app(f, args.concat(/* array */[x]));
+      }
+      }(f,args));
     }
   }}
 
@@ -329,6 +326,8 @@ var imul = ( Math.imul || function (x,y) {
 );
 /* imul Not a pure module */
 
+/* No side effect */
+
 var id$1 = [0];
 
 function get_id() {
@@ -348,15 +347,15 @@ function create(str) {
 
 function isCamlExceptionOrOpenVariant(e) {
   if (e === undefined) {
-    return /* false */0;
+    return false;
   } else if (e.tag === 248) {
-    return /* true */1;
+    return true;
   } else {
     var slot = e[0];
     if (slot !== undefined) {
-      return +(slot.tag === 248);
+      return slot.tag === 248;
     } else {
-      return /* false */0;
+      return false;
     }
   }
 }
@@ -391,7 +390,6 @@ function fromArray$1(arr) {
         acc
       ];
       continue ;
-      
     } else {
       return acc;
     }
@@ -411,46 +409,41 @@ function fromSeq(seq) {
 
 function range$1($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
-  if (step) {
-    if (step < 0 && start < finish) {
-      return /* [] */0;
-    } else if (step > 0 && start > finish) {
-      return /* [] */0;
-    } else {
-      var last = imul(div(finish - start | 0, step), step) + start | 0;
-      var _acc = /* [] */0;
-      var _n = last;
-      while(true) {
-        var n = _n;
-        var acc = _acc;
-        if (n === start) {
-          return /* :: */[
-                  n,
-                  acc
-                ];
-        } else {
-          _n = n - step | 0;
-          _acc = /* :: */[
-            n,
-            acc
-          ];
-          continue ;
-          
-        }
-      }    }
-  } else {
+  if (step === 0) {
     throw [
           InvalidArgument,
           "List.range: ~step=0 would cause infinite loop"
         ];
-  }
+  } else if (step < 0 && start < finish || step > 0 && start > finish) {
+    return /* [] */0;
+  } else {
+    var last = imul(div(finish - start | 0, step), step) + start | 0;
+    var _acc = /* [] */0;
+    var _n = last;
+    while(true) {
+      var n = _n;
+      var acc = _acc;
+      if (n === start) {
+        return /* :: */[
+                n,
+                acc
+              ];
+      } else {
+        _n = n - step | 0;
+        _acc = /* :: */[
+          n,
+          acc
+        ];
+        continue ;
+      }
+    }  }
 }
 
 function isEmpty$1(param) {
   if (param) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -481,7 +474,6 @@ function reverseAndAppend(_acc, _param) {
         acc
       ];
       continue ;
-      
     } else {
       return acc;
     }
@@ -505,7 +497,6 @@ function filter$1(predicate, _param) {
       } else {
         _param = xs;
         continue ;
-        
       }
     } else {
       return /* [] */0;
@@ -526,7 +517,6 @@ function filterMap$1(f, _param) {
       } else {
         _param = xs;
         continue ;
-        
       }
     } else {
       return /* [] */0;
@@ -538,14 +528,13 @@ function exists$1(predicate, _param) {
     var param = _param;
     if (param) {
       if (_1(predicate, param[0])) {
-        return /* true */1;
+        return true;
       } else {
         _param = param[1];
         continue ;
-        
       }
     } else {
-      return /* false */0;
+      return false;
     }
   }}
 
@@ -556,7 +545,6 @@ function forEach$1(f, _param) {
       _1(f, param[0]);
       _param = param[1];
       continue ;
-      
     } else {
       return /* () */0;
     }
@@ -572,7 +560,6 @@ function find$1(predicate, _param) {
       } else {
         _param = param[1];
         continue ;
-        
       }
     } else {
       return /* None */0;
@@ -586,12 +573,11 @@ function forAll$1(predicate, _param) {
       if (_1(predicate, param[0])) {
         _param = param[1];
         continue ;
-        
       } else {
-        return /* false */0;
+        return false;
       }
     } else {
-      return /* true */1;
+      return true;
     }
   }}
 
@@ -609,7 +595,6 @@ function flatMap$1(f, self) {
         _outer = outer[1];
         _inner = _1(f, outer[0]);
         continue ;
-        
       } else {
         return /* [] */0;
       }
@@ -650,7 +635,6 @@ function reduce$1(f, _acc, _param) {
       _param = param[1];
       _acc = _2(f, acc, param[0]);
       continue ;
-      
     } else {
       return acc;
     }
@@ -674,7 +658,6 @@ function length(self) {
       _param = param[1];
       _acc = acc + 1 | 0;
       continue ;
-      
     } else {
       return acc;
     }
@@ -717,26 +700,6 @@ function __(tag, block) {
 }
 /* No side effect */
 
-function caml_int_compare(x, y) {
-  if (x < y) {
-    return -1;
-  } else if (x === y) {
-    return 0;
-  } else {
-    return 1;
-  }
-}
-
-function caml_string_compare(s1, s2) {
-  if (s1 === s2) {
-    return 0;
-  } else if (s1 < s2) {
-    return -1;
-  } else {
-    return 1;
-  }
-}
-
 function caml_float_max(x, y) {
   if (x > y) {
     return x;
@@ -746,128 +709,99 @@ function caml_float_max(x, y) {
 }
 /* No side effect */
 
-function caml_compare(_a, _b) {
+var for_in = function (o,foo){
+        for (var x in o) { foo(x); }
+      };
+
+function caml_equal(_a, _b) {
   while(true) {
     var b = _b;
     var a = _a;
     if (a === b) {
-      return 0;
+      return true;
     } else {
       var a_type = typeof a;
-      var b_type = typeof b;
-      if (a_type === "string") {
-        return caml_string_compare(a, b);
+      if (a_type === "string" || a_type === "number" || a_type === "boolean" || a_type === "undefined" || a === null) {
+        return false;
       } else {
-        var is_a_number = +(a_type === "number");
-        var is_b_number = +(b_type === "number");
-        if (is_a_number !== 0) {
-          if (is_b_number !== 0) {
-            return caml_int_compare(a, b);
-          } else {
-            return -1;
-          }
-        } else if (is_b_number !== 0) {
-          return 1;
-        } else if (a_type === "boolean" || a_type === "undefined" || a === null) {
-          var x = a;
-          var y = b;
-          if (x === y) {
-            return 0;
-          } else if (x < y) {
-            return -1;
-          } else {
-            return 1;
-          }
-        } else if (a_type === "function" || b_type === "function") {
+        var b_type = typeof b;
+        if (a_type === "function" || b_type === "function") {
           throw [
                 invalid_argument,
-                "compare: functional value"
+                "equal: functional value"
               ];
+        } else if (b_type === "number" || b_type === "undefined" || b === null) {
+          return false;
         } else {
           var tag_a = a.tag | 0;
           var tag_b = b.tag | 0;
           if (tag_a === 250) {
             _a = a[0];
             continue ;
-            
           } else if (tag_b === 250) {
             _b = b[0];
             continue ;
-            
           } else if (tag_a === 248) {
-            return caml_int_compare(a[1], b[1]);
+            return a[1] === b[1];
           } else if (tag_a === 251) {
             throw [
                   invalid_argument,
                   "equal: abstract value"
                 ];
           } else if (tag_a !== tag_b) {
-            if (tag_a < tag_b) {
-              return -1;
-            } else {
-              return 1;
-            }
+            return false;
           } else {
             var len_a = a.length | 0;
             var len_b = b.length | 0;
             if (len_a === len_b) {
-              var a$1 = a;
-              var b$1 = b;
-              var _i = 0;
-              var same_length = len_a;
-              while(true) {
-                var i = _i;
-                if (i === same_length) {
-                  return 0;
-                } else {
-                  var res = caml_compare(a$1[i], b$1[i]);
-                  if (res !== 0) {
-                    return res;
-                  } else {
+              if (Array.isArray(a)) {
+                var a$1 = a;
+                var b$1 = b;
+                var _i = 0;
+                var same_length = len_a;
+                while(true) {
+                  var i = _i;
+                  if (i === same_length) {
+                    return true;
+                  } else if (caml_equal(a$1[i], b$1[i])) {
                     _i = i + 1 | 0;
                     continue ;
-                    
-                  }
-                }
-              }            } else if (len_a < len_b) {
-              var a$2 = a;
-              var b$2 = b;
-              var _i$1 = 0;
-              var short_length = len_a;
-              while(true) {
-                var i$1 = _i$1;
-                if (i$1 === short_length) {
-                  return -1;
-                } else {
-                  var res$1 = caml_compare(a$2[i$1], b$2[i$1]);
-                  if (res$1 !== 0) {
-                    return res$1;
                   } else {
-                    _i$1 = i$1 + 1 | 0;
-                    continue ;
-                    
+                    return false;
                   }
-                }
-              }            } else {
-              var a$3 = a;
-              var b$3 = b;
-              var _i$2 = 0;
-              var short_length$1 = len_b;
-              while(true) {
-                var i$2 = _i$2;
-                if (i$2 === short_length$1) {
-                  return 1;
-                } else {
-                  var res$2 = caml_compare(a$3[i$2], b$3[i$2]);
-                  if (res$2 !== 0) {
-                    return res$2;
+                }              } else {
+                var a$2 = a;
+                var b$2 = b;
+                var result = [true];
+                var do_key_a = (function(b$2,result){
+                return function do_key_a(key) {
+                  if (b$2.hasOwnProperty(key)) {
+                    return 0;
                   } else {
-                    _i$2 = i$2 + 1 | 0;
-                    continue ;
-                    
+                    result[0] = false;
+                    return /* () */0;
                   }
                 }
-              }            }
+                }(b$2,result));
+                var do_key_b = (function(a$2,b$2,result){
+                return function do_key_b(key) {
+                  if (!a$2.hasOwnProperty(key) || !caml_equal(b$2[key], a$2[key])) {
+                    result[0] = false;
+                    return /* () */0;
+                  } else {
+                    return 0;
+                  }
+                }
+                }(a$2,b$2,result));
+                for_in(a$2, do_key_a);
+                if (result[0]) {
+                  for_in(b$2, do_key_b);
+                }
+                return result[0];
+              }
+            } else {
+              return false;
+            }
           }
         }
       }
@@ -910,7 +844,7 @@ var neg_one = /* record */[
 ];
 
 function neg_signed(x) {
-  return +((x & 2147483648) !== 0);
+  return (x & 2147483648) !== 0;
 }
 
 function add(param, param$1) {
@@ -936,9 +870,9 @@ function not(param) {
 
 function eq(x, y) {
   if (x[/* hi */0] === y[/* hi */0]) {
-    return +(x[/* lo */1] === y[/* lo */1]);
+    return x[/* lo */1] === y[/* lo */1];
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
@@ -955,7 +889,9 @@ function sub(x, y) {
 }
 
 function lsl_(x, numBits) {
-  if (numBits) {
+  if (numBits === 0) {
+    return x;
+  } else {
     var lo = x[/* lo */1];
     if (numBits >= 32) {
       return /* record */[
@@ -969,13 +905,13 @@ function lsl_(x, numBits) {
               /* lo */((lo << numBits) >>> 0)
             ];
     }
-  } else {
-    return x;
   }
 }
 
 function asr_(x, numBits) {
-  if (numBits) {
+  if (numBits === 0) {
+    return x;
+  } else {
     var hi = x[/* hi */0];
     if (numBits < 32) {
       var hi$1 = (hi >> numBits);
@@ -991,16 +927,14 @@ function asr_(x, numBits) {
               /* lo */(lo$1 >>> 0)
             ];
     }
-  } else {
-    return x;
   }
 }
 
 function is_zero(param) {
   if (param[/* hi */0] !== 0 || param[/* lo */1] !== 0) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -1014,26 +948,20 @@ function mul(_this, _other) {
     var exit$1 = 0;
     var exit$2 = 0;
     var exit$3 = 0;
-    if (this_hi !== 0) {
-      exit$3 = 4;
-    } else if ($$this[/* lo */1] !== 0) {
+    if (this_hi !== 0 || $$this[/* lo */1] !== 0) {
       exit$3 = 4;
     } else {
       return zero;
     }
     if (exit$3 === 4) {
-      if (other[/* hi */0] !== 0) {
-        exit$2 = 3;
-      } else if (other[/* lo */1] !== 0) {
+      if (other[/* hi */0] !== 0 || other[/* lo */1] !== 0) {
         exit$2 = 3;
       } else {
         return zero;
       }
     }
     if (exit$2 === 3) {
-      if (this_hi !== -2147483648) {
-        exit$1 = 2;
-      } else if ($$this[/* lo */1] !== 0) {
+      if (this_hi !== -2147483648 || $$this[/* lo */1] !== 0) {
         exit$1 = 2;
       } else {
         lo = other[/* lo */1];
@@ -1044,9 +972,7 @@ function mul(_this, _other) {
       var other_hi = other[/* hi */0];
       var lo$1 = $$this[/* lo */1];
       var exit$4 = 0;
-      if (other_hi !== -2147483648) {
-        exit$4 = 3;
-      } else if (other[/* lo */1] !== 0) {
+      if (other_hi !== -2147483648 || other[/* lo */1] !== 0) {
         exit$4 = 3;
       } else {
         lo = lo$1;
@@ -1059,7 +985,6 @@ function mul(_this, _other) {
             _other = neg(other);
             _this = neg($$this);
             continue ;
-            
           } else {
             return neg(mul(neg($$this), other));
           }
@@ -1120,26 +1045,26 @@ function ge(param, param$1) {
   var other_hi = param$1[/* hi */0];
   var hi = param[/* hi */0];
   if (hi > other_hi) {
-    return /* true */1;
+    return true;
   } else if (hi < other_hi) {
-    return /* false */0;
+    return false;
   } else {
-    return +(param[/* lo */1] >= param$1[/* lo */1]);
+    return param[/* lo */1] >= param$1[/* lo */1];
   }
 }
 
 function gt(x, y) {
   if (x[/* hi */0] > y[/* hi */0]) {
-    return /* true */1;
+    return true;
   } else if (x[/* hi */0] < y[/* hi */0]) {
-    return /* false */0;
+    return false;
   } else {
-    return +(x[/* lo */1] > y[/* lo */1]);
+    return x[/* lo */1] > y[/* lo */1];
   }
 }
 
 function le(x, y) {
-  return 1 - gt(x, y);
+  return !gt(x, y);
 }
 
 function to_float(param) {
@@ -1178,18 +1103,14 @@ function div$1(_self, _other) {
     var self_hi = self[/* hi */0];
     var exit = 0;
     var exit$1 = 0;
-    if (other[/* hi */0] !== 0) {
-      exit$1 = 2;
-    } else if (other[/* lo */1] !== 0) {
+    if (other[/* hi */0] !== 0 || other[/* lo */1] !== 0) {
       exit$1 = 2;
     } else {
       throw division_by_zero;
     }
     if (exit$1 === 2) {
       if (self_hi !== -2147483648) {
-        if (self_hi !== 0) {
-          exit = 1;
-        } else if (self[/* lo */1] !== 0) {
+        if (self_hi !== 0 || self[/* lo */1] !== 0) {
           exit = 1;
         } else {
           return zero;
@@ -1205,9 +1126,7 @@ function div$1(_self, _other) {
         var half_this = asr_(self, 1);
         var approx = lsl_(div$1(half_this, other), 1);
         var exit$2 = 0;
-        if (approx[/* hi */0] !== 0) {
-          exit$2 = 3;
-        } else if (approx[/* lo */1] !== 0) {
+        if (approx[/* hi */0] !== 0 || approx[/* lo */1] !== 0) {
           exit$2 = 3;
         } else if (other_hi < 0) {
           return one;
@@ -1225,9 +1144,7 @@ function div$1(_self, _other) {
     if (exit === 1) {
       var other_hi$1 = other[/* hi */0];
       var exit$3 = 0;
-      if (other_hi$1 !== -2147483648) {
-        exit$3 = 2;
-      } else if (other[/* lo */1] !== 0) {
+      if (other_hi$1 !== -2147483648 || other[/* lo */1] !== 0) {
         exit$3 = 2;
       } else {
         return zero;
@@ -1238,7 +1155,6 @@ function div$1(_self, _other) {
             _other = neg(other);
             _self = neg(self);
             continue ;
-            
           } else {
             return neg(div$1(neg(self), other));
           }
@@ -1297,8 +1213,11 @@ function get(s, i) {
 }
 /* No side effect */
 
-var not_implemented = (function (s){ throw new Error(s)});
-/* not_implemented Not a pure module */
+function not_implemented(s) {
+  var str = s + " not implemented by BuckleScript yet\n";
+  throw new Error(str);
+}
+/* No side effect */
 
 /* No side effect */
 
@@ -1310,10 +1229,6 @@ function failwith(s) {
 }
 
 var Exit = create("Pervasives.Exit");
-
-function string_of_int(param) {
-  return "" + param;
-}
 /* No side effect */
 
 function length$1(l) {
@@ -1326,19 +1241,29 @@ function length$1(l) {
       _param = param[1];
       _len = len + 1 | 0;
       continue ;
-      
     } else {
       return len;
     }
   }}
-/* No side effect */
 
-function to_js_boolean(b) {
-  if (b) {
-    return true;
-  } else {
-    return false;
-  }
+function rev_append(_l1, _l2) {
+  while(true) {
+    var l2 = _l2;
+    var l1 = _l1;
+    if (l1) {
+      _l2 = /* :: */[
+        l1[0],
+        l2
+      ];
+      _l1 = l1[1];
+      continue ;
+    } else {
+      return l2;
+    }
+  }}
+
+function rev(l) {
+  return rev_append(l, /* [] */0);
 }
 /* No side effect */
 
@@ -1391,7 +1316,6 @@ function fromList$1(list) {
         _param = param[1];
         _i = i + 1 | 0;
         continue ;
-        
       } else {
         return array;
       }
@@ -1410,7 +1334,6 @@ function fromSeq$1(seq) {
       array.push(match[0]);
       _seq = match[1];
       continue ;
-      
     } else {
       return array;
     }
@@ -1418,34 +1341,31 @@ function fromSeq$1(seq) {
 
 function range$2($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
-  if (step) {
-    if (step < 0 && start < finish) {
-      return /* array */[];
-    } else if (step > 0 && start > finish) {
-      return /* array */[];
-    } else {
-      var array = /* array */[];
-      var last = imul(div(finish - start | 0, step), step) + start | 0;
-      var loop = function (_n) {
-        while(true) {
-          var n = _n;
-          array.push(n);
-          if (n !== last) {
-            _n = n + step | 0;
-            continue ;
-            
-          } else {
-            return 0;
-          }
-        }      };
-      loop(start);
-      return array;
-    }
-  } else {
+  if (step === 0) {
     throw [
           InvalidArgument,
           "Array.range: ~step=0 would cause infinite loop"
         ];
+  } else if (step < 0 && start < finish) {
+    return /* array */[];
+  } else if (step > 0 && start > finish) {
+    return /* array */[];
+  } else {
+    var array = /* array */[];
+    var last = imul(div(finish - start | 0, step), step) + start | 0;
+    var loop = function (_n) {
+      while(true) {
+        var n = _n;
+        array.push(n);
+        if (n !== last) {
+          _n = n + step | 0;
+          continue ;
+        } else {
+          return 0;
+        }
+      }    };
+    loop(start);
+    return array;
   }
 }
 
@@ -1484,27 +1404,19 @@ function setOrRaise(i, value, self) {
 }
 
 function exists$3(f, self) {
-  return +self.some((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.some(__1(f));
 }
 
 function filter$3(f, self) {
-  return self.filter((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.filter(__1(f));
 }
 
 function find$3(f, self) {
-  return undefined_to_opt(self.find((function (x) {
-                    return to_js_boolean(_1(f, x));
-                  })));
+  return undefined_to_opt(self.find(__1(f)));
 }
 
 function findIndex(f, self) {
-  var i = self.findIndex((function (x) {
-          return to_js_boolean(_1(f, x));
-        }));
+  var i = self.findIndex(__1(f));
   if (i !== -1) {
     return /* Some */[/* tuple */[
               i,
@@ -1516,9 +1428,7 @@ function findIndex(f, self) {
 }
 
 function forAll$2(f, self) {
-  return +self.every((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.every(__1(f));
 }
 
 function flatMap$2(f, self) {
@@ -1577,17 +1487,17 @@ function fromResult(param) {
 
 function isSome(param) {
   if (param) {
-    return /* true */1;
+    return true;
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
 function isNone(param) {
   if (param) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -1646,7 +1556,7 @@ function exists$4(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
@@ -1654,7 +1564,7 @@ function forAll$3(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -1747,7 +1657,7 @@ function internalToOCamlException(e) {
 /* No side effect */
 
 function isEmpty$2(s) {
-  return +(s.trim().length === 0);
+  return s.trim().length === 0;
 }
 
 function join(param) {
@@ -1922,15 +1832,15 @@ function String_001(prim) {
 }
 
 function String_002(prim, prim$1) {
-  return +prim$1.includes(prim);
+  return prim$1.includes(prim);
 }
 
 function String_003(prim, prim$1) {
-  return +prim$1.startsWith(prim);
+  return prim$1.startsWith(prim);
 }
 
 function String_004(prim, prim$1) {
-  return +prim$1.endsWith(prim);
+  return prim$1.endsWith(prim);
 }
 
 function String_006(prim, prim$1, prim$2) {
@@ -1966,8 +1876,8 @@ var $$String = [
 /* No side effect */
 
 function lints_000($$package) {
-  var match = +($$String[/* trim */8]($$package.description) === "");
-  if (match !== 0) {
+  var match = $$String[/* trim */8]($$package.description) === "";
+  if (match) {
     return /* Some */["Missing description"];
   } else {
     return /* None */0;
@@ -1976,8 +1886,8 @@ function lints_000($$package) {
 
 var lints_001 = /* :: */[
   (function ($$package) {
-      var match = +($$String[/* trim */8]($$package.readme) === "");
-      if (match !== 0) {
+      var match = $$String[/* trim */8]($$package.readme) === "";
+      if (match) {
         return /* Some */["Missing readme"];
       } else {
         return /* None */0;
@@ -1986,8 +1896,8 @@ var lints_001 = /* :: */[
   /* :: */[
     (function ($$package) {
         var l = $$String[/* length */1]($$String[/* trim */8]($$package.readme));
-        var match = +(l > 0 && l < 400);
-        if (match !== 0) {
+        var match = l > 0 && l < 400;
+        if (match) {
           return /* Some */["Short readme"];
         } else {
           return /* None */0;
@@ -1995,8 +1905,8 @@ var lints_001 = /* :: */[
       }),
     /* :: */[
       (function ($$package) {
-          var match = +($$package.license == null);
-          if (match !== 0) {
+          var match = ($$package.license == null);
+          if (match) {
             return /* Some */["Missing license"];
           } else {
             return /* None */0;
@@ -2004,8 +1914,8 @@ var lints_001 = /* :: */[
         }),
       /* :: */[
         (function ($$package) {
-            var match = +($$Array[/* length */16]($$package.keywords) === 0);
-            if (match !== 0) {
+            var match = $$Array[/* length */16]($$package.keywords) === 0;
+            if (match) {
               return /* Some */["Missing keywords"];
             } else {
               return /* None */0;
@@ -2014,10 +1924,10 @@ var lints_001 = /* :: */[
         /* :: */[
           (function ($$package) {
               var sorted = $$package.keywords.slice().sort();
-              var match = +sorted.some((function (x, i) {
-                      return +(x === $$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted));
+              var match = sorted.some((function (x, i) {
+                      return x === $$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted);
                     }));
-              if (match !== 0) {
+              if (match) {
                 return /* Some */["Duplicate keywords"];
               } else {
                 return /* None */0;
@@ -2028,7 +1938,7 @@ var lints_001 = /* :: */[
                 var match = $$Array[/* exists */9]((function (k) {
                         return $$String[/* startsWith */3]("bs-", k);
                       }), $$package.keywords);
-                if (match !== 0) {
+                if (match) {
                   return /* Some */["Keyword starting with 'bs-'"];
                 } else {
                   return /* None */0;
@@ -2036,8 +1946,8 @@ var lints_001 = /* :: */[
               }),
             /* :: */[
               (function ($$package) {
-                  var match = +($$package.repositoryUrl == null);
-                  if (match !== 0) {
+                  var match = ($$package.repositoryUrl == null);
+                  if (match) {
                     return /* Some */["Missing repository url"];
                   } else {
                     return /* None */0;
@@ -2045,8 +1955,8 @@ var lints_001 = /* :: */[
                 }),
               /* :: */[
                 (function ($$package) {
-                    var match = +($$package.homepageUrl == null);
-                    if (match !== 0) {
+                    var match = ($$package.homepageUrl == null);
+                    if (match) {
                       return /* Some */["Missing homepage url"];
                     } else {
                       return /* None */0;
@@ -2054,8 +1964,8 @@ var lints_001 = /* :: */[
                   }),
                 /* :: */[
                   (function ($$package) {
-                      var match = +($$package.issuesUrl == null);
-                      if (match !== 0) {
+                      var match = ($$package.issuesUrl == null);
+                      if (match) {
                         return /* Some */["Missing issues url"];
                       } else {
                         return /* None */0;
@@ -2063,8 +1973,8 @@ var lints_001 = /* :: */[
                     }),
                   /* :: */[
                     (function ($$package) {
-                        var match = +($$String[/* length */1]($$package.readme) > 10000);
-                        if (match !== 0) {
+                        var match = $$String[/* length */1]($$package.readme) > 10000;
+                        if (match) {
                           return /* Some */["Readme > 10k bytes"];
                         } else {
                           return /* None */0;
@@ -2285,7 +2195,6 @@ function fromList$2(entries) {
       dict[match[0]] = match[1];
       _param = param[1];
       continue ;
-      
     } else {
       return dict;
     }
@@ -2324,7 +2233,7 @@ function _pairifyHeader(h) {
         } else {
           return /* tuple */[
                   "Content-Length",
-                  string_of_int(param[1])
+                  String(param[1])
                 ];
         }
       } else {
@@ -2828,9 +2737,9 @@ var Bottom = create("Array.Bottom");
 
 function _isInteger(value) {
   if (isFinite(value)) {
-    return +(Math.floor(value) === value);
+    return Math.floor(value) === value;
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
@@ -2884,7 +2793,7 @@ function array(decode, json) {
         if (exn[0] === DecodeError) {
           throw [
                 DecodeError,
-                exn[1] + ("\n\tin array at index " + string_of_int(i))
+                exn[1] + ("\n\tin array at index " + String(i))
               ];
         } else {
           throw exn;
@@ -3002,28 +2911,34 @@ function optional(decode, json) {
   }
 }
 
-function oneOf(_decoders, json) {
+function oneOf(decoders, json) {
+  var _decoders = decoders;
+  var _errors = /* [] */0;
   while(true) {
-    var decoders = _decoders;
-    if (decoders) {
+    var errors = _errors;
+    var decoders$1 = _decoders;
+    if (decoders$1) {
       try {
-        return _1(decoders[0], json);
+        return _1(decoders$1[0], json);
       }
       catch (raw_exn){
         var exn = internalToOCamlException(raw_exn);
         if (exn[0] === DecodeError) {
-          _decoders = decoders[1];
+          _errors = /* :: */[
+            exn[1],
+            errors
+          ];
+          _decoders = decoders$1[1];
           continue ;
-          
         } else {
           throw exn;
         }
       }
     } else {
-      var length = length$1(decoders);
+      var revErrors = rev(errors);
       throw [
             DecodeError,
-            "Expected oneOf " + (String(length) + ", got ") + JSON.stringify(json)
+            "All decoders given to oneOf failed. Here are all the errors: " + (String(revErrors) + ". And the JSON being decoded: ") + JSON.stringify(json)
           ];
     }
   }}
@@ -3054,50 +2969,50 @@ function fromJson(json) {
                                 return new Date(prim);
                               }), string, param);
                 }), json),
-          /* name */_1(at(/* :: */[
-                    "collected",
+          /* name */at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "name",
-                        /* [] */0
-                      ]
+                      "name",
+                      /* [] */0
                     ]
-                  ], string), json),
-          /* version */_1(at(/* :: */[
-                    "collected",
+                  ]
+                ], string)(json),
+          /* version */at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "version",
-                        /* [] */0
-                      ]
+                      "version",
+                      /* [] */0
                     ]
-                  ], string), json),
-          /* description */_1(at(/* :: */[
-                    "collected",
+                  ]
+                ], string)(json),
+          /* description */at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "description",
-                        /* [] */0
-                      ]
+                      "description",
+                      /* [] */0
                     ]
-                  ], string), json),
-          /* updated */_1(at(/* :: */[
-                    "collected",
+                  ]
+                ], string)(json),
+          /* updated */at(/* :: */[
+                  "collected",
+                  /* :: */[
+                    "metadata",
                     /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "date",
-                        /* [] */0
-                      ]
+                      "date",
+                      /* [] */0
                     ]
-                  ], (function (param) {
-                      return map$8((function (prim) {
-                                    return new Date(prim);
-                                  }), string, param);
-                    })), json),
+                  ]
+                ], (function (param) {
+                    return map$8((function (prim) {
+                                  return new Date(prim);
+                                }), string, param);
+                  }))(json),
           /* deprecated */optional(at(/* :: */[
                     "collected",
                     /* :: */[
@@ -3163,43 +3078,43 @@ function fromJson(json) {
                       ]
                     ]
                   ], $$int), json),
-          /* score */_1(at(/* :: */[
-                    "score",
+          /* score */at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "final",
+                    /* [] */0
+                  ]
+                ], $$float)(json),
+          /* quality */at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "detail",
                     /* :: */[
-                      "final",
+                      "quality",
                       /* [] */0
                     ]
-                  ], $$float), json),
-          /* quality */_1(at(/* :: */[
-                    "score",
+                  ]
+                ], $$float)(json),
+          /* popularity */at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "detail",
                     /* :: */[
-                      "detail",
-                      /* :: */[
-                        "quality",
-                        /* [] */0
-                      ]
+                      "popularity",
+                      /* [] */0
                     ]
-                  ], $$float), json),
-          /* popularity */_1(at(/* :: */[
-                    "score",
+                  ]
+                ], $$float)(json),
+          /* maintenance */at(/* :: */[
+                  "score",
+                  /* :: */[
+                    "detail",
                     /* :: */[
-                      "detail",
-                      /* :: */[
-                        "popularity",
-                        /* [] */0
-                      ]
+                      "maintenance",
+                      /* [] */0
                     ]
-                  ], $$float), json),
-          /* maintenance */_1(at(/* :: */[
-                    "score",
-                    /* :: */[
-                      "detail",
-                      /* :: */[
-                        "maintenance",
-                        /* [] */0
-                      ]
-                    ]
-                  ], $$float), json),
+                  ]
+                ], $$float)(json),
           /* homepageUrl */optional(at(/* :: */[
                     "collected",
                     /* :: */[
@@ -3465,12 +3380,12 @@ function assign(st1, st2) {
 
 function full_init(s, seed) {
   var combine = function (accu, x) {
-    return string$1(accu + x);
+    return string$1(accu + String(x));
   };
   var extract = function (d) {
     return ((get(d, 0) + (get(d, 1) << 8) | 0) + (get(d, 2) << 16) | 0) + (get(d, 3) << 24) | 0;
   };
-  var seed$1 = seed.length ? seed : /* int array */[0];
+  var seed$1 = seed.length === 0 ? /* array */[0] : seed;
   var l = seed$1.length;
   for(var i = 0; i <= 54; ++i){
     caml_array_set(s[/* st */0], i, i);
@@ -3533,7 +3448,6 @@ function $$int$1(s, bound) {
       var v = r % n;
       if ((r - v | 0) > ((1073741823 - n | 0) + 1 | 0)) {
         continue ;
-        
       } else {
         return v;
       }
@@ -3556,7 +3470,6 @@ function int32(s, bound) {
       var v = r % n;
       if ((r - v | 0) > ((max_int$2 - n | 0) + 1 | 0)) {
         continue ;
-        
       } else {
         return v;
       }
@@ -3589,7 +3502,6 @@ function int64(s, bound) {
                   /* lo */1
                 ]))) {
         continue ;
-        
       } else {
         return v;
       }
@@ -3611,7 +3523,7 @@ function $$float$1(s, bound) {
 }
 
 function bool$1(s) {
-  return +((bits(s) & 1) === 0);
+  return (bits(s) & 1) === 0;
 }
 
 var State = [
@@ -3629,22 +3541,22 @@ var State = [
 /* No side effect */
 
 function push(x, q) {
-  if (q[/* length */0]) {
+  if (q[/* length */0] === 0) {
+    var cell = [];
+    cell[0] = x;
+    cell[1] = cell;
+    q[/* length */0] = 1;
+    q[/* tail */1] = cell;
+    return /* () */0;
+  } else {
     var tail = q[/* tail */1];
     var head = tail[/* next */1];
-    var cell = /* record */[
+    var cell$1 = /* record */[
       /* content */x,
       /* next */head
     ];
     q[/* length */0] = q[/* length */0] + 1 | 0;
-    tail[/* next */1] = cell;
-    q[/* tail */1] = cell;
-    return /* () */0;
-  } else {
-    var cell$1 = [];
-    cell$1[0] = x;
-    cell$1[1] = cell$1;
-    q[/* length */0] = 1;
+    tail[/* next */1] = cell$1;
     q[/* tail */1] = cell$1;
     return /* () */0;
   }
@@ -3704,6 +3616,7 @@ function caml_hash_mix_string(h, s) {
   hash = hash ^ len;
   return hash;
 }
+/* No side effect */
 
 function caml_hash(count, _, seed, obj) {
   var hash = seed;
@@ -3738,7 +3651,7 @@ function caml_hash(count, _, seed, obj) {
                   assert_failure,
                   [
                     "caml_hash.ml",
-                    135,
+                    72,
                     8
                   ]
                 ];
@@ -3799,7 +3712,7 @@ function force_lazy_block(blk) {
 }
 /* No side effect */
 
-var randomized = [/* false */0];
+var randomized = [false];
 
 var prng = __(246, [(function () {
         return State[/* make_self_init */1](/* () */0);
@@ -3808,14 +3721,11 @@ var prng = __(246, [(function () {
 function power_2_above(_x, n) {
   while(true) {
     var x = _x;
-    if (x >= n) {
-      return x;
-    } else if ((x << 1) < x) {
+    if (x >= n || (x << 1) < x) {
       return x;
     } else {
       _x = (x << 1);
       continue ;
-      
     }
   }}
 
@@ -3873,7 +3783,7 @@ function key_index(h, key) {
   if (h.length >= 3) {
     return caml_hash(10, 100, h[/* seed */2], key) & (h[/* data */1].length - 1 | 0);
   } else {
-    return not_implemented("caml_hash_univ_param not implemented by bucklescript yet\n") % h[/* data */1].length;
+    return not_implemented("caml_hash_univ_param") % h[/* data */1].length;
   }
 }
 
@@ -3882,17 +3792,17 @@ function replace(h, key, info) {
     if (param) {
       var next = param[2];
       var k = param[0];
-      if (caml_compare(k, key)) {
-        return /* Cons */[
-                k,
-                param[1],
-                replace_bucket(next)
-              ];
-      } else {
+      if (caml_equal(k, key)) {
         return /* Cons */[
                 key,
                 info,
                 next
+              ];
+      } else {
+        return /* Cons */[
+                k,
+                param[1],
+                replace_bucket(next)
               ];
       }
     } else {
@@ -3923,7 +3833,7 @@ function replace(h, key, info) {
   }
 }
 
-function iter$4(f, h) {
+function iter$5(f, h) {
   var do_bucket = function (_param) {
     while(true) {
       var param = _param;
@@ -3931,7 +3841,6 @@ function iter$4(f, h) {
         _2(f, param[0], param[1]);
         _param = param[2];
         continue ;
-        
       } else {
         return /* () */0;
       }
@@ -3950,7 +3859,7 @@ function filterDuplicates(arr) {
   $$Array[/* forEach */8]((function (x) {
           return replace(set, x, /* () */0);
         }), arr);
-  iter$4((function (x, _) {
+  iter$5((function (x, _) {
           unique.push(x);
           return /* () */0;
         }), set);
@@ -3971,7 +3880,7 @@ var Future$1 = /* module */[
 
 function looksLikeUrl(str) {
   if ($$String[/* startsWith */3]("http://", str)) {
-    return /* true */1;
+    return true;
   } else {
     return $$String[/* startsWith */3]("https://", str);
   }
@@ -4054,15 +3963,13 @@ function getStats(source) {
 }
 /* Refetch Not a pure module */
 
-function fromOption(x) {
+function fromOption$1(x) {
   if (x) {
     return x[0];
   } else {
     return undefined;
   }
 }
-
-var from_opt = fromOption;
 /* No side effect */
 
 function _encodecategory(param) {
@@ -4122,12 +4029,12 @@ function _ignoreKeyword(k) {
   switch (k) {
     case "data" : 
     case "reason" : 
-        return /* true */1;
+        return true;
     default:
       if ($$String[/* startsWith */3]("bs-", k)) {
-        return /* true */1;
+        return true;
       } else {
-        return /* false */0;
+        return false;
       }
   }
 }
@@ -4137,7 +4044,7 @@ var partial_arg = $$Array[/* map */0];
 var partial_arg$1 = $$Array[/* map */0];
 
 var partial_arg$2 = _2(Fn[/* << */5], (function (prim) {
-        return 1 - prim;
+        return !prim;
       }), _ignoreKeyword);
 
 var partial_arg$3 = $$Array[/* filter */10];
@@ -4170,23 +4077,23 @@ function fromPublished(source, data) {
           flags: ensureDeprecated(data[/* deprecated */5], Option[/* getOr */16](/* array */[], source[/* flags */2])),
           platforms: $$Array[/* map */0](_encodePlatform, source[/* platforms */3]),
           description: data[/* description */3],
-          deprecated: from_opt(data[/* deprecated */5]),
-          author: from_opt(data[/* author */6]),
-          license: from_opt(data[/* license */7]),
+          deprecated: fromOption$1(data[/* deprecated */5]),
+          author: fromOption$1(data[/* author */6]),
+          license: fromOption$1(data[/* license */7]),
           keywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], Option[/* or_ */15](data[/* keywords */9], source[/* keywords */4]))),
           originalKeywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], data[/* keywords */9])),
           readme: Option[/* getOr */16]("", data[/* readme */8]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],
-          stars: from_opt(data[/* stars */10]),
+          stars: fromOption$1(data[/* stars */10]),
           score: data[/* score */11],
           quality: data[/* quality */12],
           popularity: data[/* popularity */13],
           maintenance: data[/* maintenance */14],
-          homepageUrl: from_opt(data[/* homepageUrl */15]),
-          repositoryUrl: from_opt(data[/* repositoryUrl */16]),
-          npmUrl: from_opt(data[/* npmUrl */17]),
-          issuesUrl: from_opt(data[/* issuesUrl */18]),
+          homepageUrl: fromOption$1(data[/* homepageUrl */15]),
+          repositoryUrl: fromOption$1(data[/* repositoryUrl */16]),
+          npmUrl: fromOption$1(data[/* npmUrl */17]),
+          issuesUrl: fromOption$1(data[/* issuesUrl */18]),
           docsUrl: undefined
         };
 }
@@ -4202,8 +4109,8 @@ function fromUnpublished(source, manifest, readme, stars) {
           platforms: $$Array[/* map */0](_encodePlatform, source[/* platforms */4]),
           description: Option[/* getOr */16]("", manifest[/* description */2]),
           deprecated: undefined,
-          author: from_opt(manifest[/* author */3]),
-          license: from_opt(manifest[/* license */4]),
+          author: fromOption$1(manifest[/* author */3]),
+          license: fromOption$1(manifest[/* license */4]),
           keywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], Option[/* or_ */15](manifest[/* keywords */5], source[/* keywords */5]))),
           originalKeywords: _1(_normalizeKeywords, Option[/* getOr */16](/* array */[], manifest[/* keywords */5])),
           readme: readme,
@@ -4214,10 +4121,10 @@ function fromUnpublished(source, manifest, readme, stars) {
           quality: 0,
           popularity: 0,
           maintenance: 0,
-          homepageUrl: from_opt(manifest[/* homepage */7]),
+          homepageUrl: fromOption$1(manifest[/* homepage */7]),
           repositoryUrl: getUrl(source[/* repository */1]),
           npmUrl: undefined,
-          issuesUrl: from_opt(manifest[/* bugsUrl */9]),
+          issuesUrl: fromOption$1(manifest[/* bugsUrl */9]),
           docsUrl: undefined
         };
 }
@@ -4297,7 +4204,7 @@ var eventuallyPackage;
 
 if ($$String[/* startsWith */3]("github:", name)) {
   var repo = parse(name);
-  var source_004 = /* platforms : int array */[/* Any */3];
+  var source_004 = /* platforms : array */[/* Any */3];
   var source = /* record */[
     /* id */name,
     /* repository */repo,
@@ -4315,7 +4222,7 @@ if ($$String[/* startsWith */3]("github:", name)) {
                       }));
         }));
 } else {
-  var source_003 = /* platforms : int array */[/* Any */3];
+  var source_003 = /* platforms : array */[/* Any */3];
   var source$1 = /* record */[
     /* id */name,
     /* category : Binding */0,
@@ -4340,7 +4247,7 @@ Future[/* whenCompleted */6]((function (param) {
           var truncatedPackage = $$String[/* length */1]($$package.readme) > 1000 ? Object.assign($$package, {
                   readme: $$String[/* sub */9](0, 1000, $$package.readme) + "..."
                 }) : $$package;
-          console.log("\n", JSON.stringify(truncatedPackage, (null), 2));
+          console.log("\n", JSON.stringify(truncatedPackage, null, 2));
           var errors = lintPackage($$package);
           if (List[/* isEmpty */15](errors)) {
             console.log("\x1b[32;1m");
@@ -4349,7 +4256,7 @@ Future[/* whenCompleted */6]((function (param) {
             return /* () */0;
           } else {
             console.log("\x1b[31;1m");
-            console.log(string_of_int(List[/* length */19](errors)) + " problems:");
+            console.log(String(List[/* length */19](errors)) + " problems:");
             List[/* forEach */8]((function (error) {
                     console.log("  ", error);
                     return /* () */0;

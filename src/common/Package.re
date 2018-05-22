@@ -91,9 +91,9 @@ let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
                                               |> ensureDeprecated(data.deprecated),
     "platforms"         : source.platforms    |> Array.map(_encodePlatform),
     "description"       : data.description,
-    "deprecated"        : data.deprecated     |> Js.Nullable.from_opt,
-    "author"            : data.author         |> Js.Nullable.from_opt,
-    "license"           : data.license        |> Js.Nullable.from_opt,
+    "deprecated"        : data.deprecated     |> Js.Nullable.fromOption,
+    "author"            : data.author         |> Js.Nullable.fromOption,
+    "license"           : data.license        |> Js.Nullable.fromOption,
     "keywords"          : source.keywords     |> Option.or_(data.keywords)
                                               |> Option.getOr([||])
                                               |> _normalizeKeywords,
@@ -102,15 +102,15 @@ let fromPublished = (source: Source.Published.t, data: NPMS.t): t =>
     "readme"            : data.readme         |> Option.getOr(""),
     "analyzed"          : data.analyzed,
     "updated"           : data.analyzed,
-    "stars"             : data.stars          |> Js.Nullable.from_opt,
+    "stars"             : data.stars          |> Js.Nullable.fromOption,
     "score"             : data.score,
     "quality"           : data.quality,
     "popularity"        : data.popularity,
     "maintenance"       : data.maintenance,
-    "homepageUrl"       : data.homepageUrl    |> Js.Nullable.from_opt,
-    "repositoryUrl"     : data.repositoryUrl  |> Js.Nullable.from_opt,
-    "npmUrl"            : data.npmUrl         |> Js.Nullable.from_opt,
-    "issuesUrl"         : data.issuesUrl      |> Js.Nullable.from_opt,
+    "homepageUrl"       : data.homepageUrl    |> Js.Nullable.fromOption,
+    "repositoryUrl"     : data.repositoryUrl  |> Js.Nullable.fromOption,
+    "npmUrl"            : data.npmUrl         |> Js.Nullable.fromOption,
+    "issuesUrl"         : data.issuesUrl      |> Js.Nullable.fromOption,
     "docsUrl"           : Js.Nullable.undefined
   };
 
@@ -125,8 +125,8 @@ let fromUnpublished = (source: Source.Unpublished.t, manifest: Manifest.t, readm
     "platforms"         : source.platforms      |> Array.map(_encodePlatform),
     "description"       : manifest.description  |> Option.getOr(""),
     "deprecated"        : Js.Nullable.undefined,
-    "author"            : manifest.author       |> Js.Nullable.from_opt,
-    "license"           : manifest.license      |> Js.Nullable.from_opt,
+    "author"            : manifest.author       |> Js.Nullable.fromOption,
+    "license"           : manifest.license      |> Js.Nullable.fromOption,
     "keywords"          : source.keywords       |> Option.or_(manifest.keywords)
                                                 |> Option.getOr([||])
                                                 |> _normalizeKeywords,
@@ -140,9 +140,9 @@ let fromUnpublished = (source: Source.Unpublished.t, manifest: Manifest.t, readm
     "quality"           : 0.,
     "popularity"        : 0.,
     "maintenance"       : 0.,
-    "homepageUrl"       : manifest.homepage     |> Js.Nullable.from_opt,
+    "homepageUrl"       : manifest.homepage     |> Js.Nullable.fromOption,
     "repositoryUrl"     : Js.Nullable.return(Repository.getUrl(source.repository)),
     "npmUrl"            : Js.Nullable.undefined,
-    "issuesUrl"         : manifest.bugsUrl      |> Js.Nullable.from_opt,
+    "issuesUrl"         : manifest.bugsUrl      |> Js.Nullable.fromOption,
     "docsUrl"           : Js.Nullable.undefined
   };

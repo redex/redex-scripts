@@ -10,7 +10,7 @@ import * as Refetch__Response from "../../node_modules/refetch/src/Refetch__Resp
 
 function looksLikeUrl(str) {
   if (Rebase.$$String[/* startsWith */3]("http://", str)) {
-    return /* true */1;
+    return true;
   } else {
     return Rebase.$$String[/* startsWith */3]("https://", str);
   }

@@ -23,15 +23,15 @@ function create(str) {
 
 function isCamlExceptionOrOpenVariant(e) {
   if (e === undefined) {
-    return /* false */0;
+    return false;
   } else if (e.tag === 248) {
-    return /* true */1;
+    return true;
   } else {
     var slot = e[0];
     if (slot !== undefined) {
-      return +(slot.tag === 248);
+      return slot.tag === 248;
     } else {
-      return /* false */0;
+      return false;
     }
   }
 }
@@ -220,24 +220,21 @@ function app(_f, _args) {
     var args = _args;
     var f = _f;
     var arity = f.length;
-    var arity$1 = arity ? arity : 1;
+    var arity$1 = arity === 0 ? 1 : arity;
     var len = args.length;
     var d = arity$1 - len | 0;
-    if (d) {
-      if (d < 0) {
-        _args = caml_array_sub(args, arity$1, -d | 0);
-        _f = f.apply(null, caml_array_sub(args, 0, arity$1));
-        continue ;
-        
-      } else {
-        return (function(f,args){
-        return function (x) {
-          return app(f, args.concat(/* array */[x]));
-        }
-        }(f,args));
-      }
-    } else {
+    if (d === 0) {
       return f.apply(null, args);
+    } else if (d < 0) {
+      _args = caml_array_sub(args, arity$1, -d | 0);
+      _f = f.apply(null, caml_array_sub(args, 0, arity$1));
+      continue ;
+    } else {
+      return (function(f,args){
+      return function (x) {
+        return app(f, args.concat(/* array */[x]));
+      }
+      }(f,args));
     }
   }}
 
@@ -284,6 +281,17 @@ function _1(o, a0) {
     return o(a0);
   } else {
     return curry_1(o, a0, arity);
+  }
+}
+
+function __1(o) {
+  var arity = o.length;
+  if (arity === 1) {
+    return o;
+  } else {
+    return (function (a0) {
+        return _1(o, a0);
+      });
   }
 }
 
@@ -351,6 +359,8 @@ var imul = ( Math.imul || function (x,y) {
 );
 /* imul Not a pure module */
 
+/* No side effect */
+
 var InvalidArgument = create("Rebase__Types.InvalidArgument");
 
 var IndexOutOfBounds = create("Rebase__Types.IndexOutOfBounds");
@@ -380,7 +390,6 @@ function fromArray$1(arr) {
         acc
       ];
       continue ;
-      
     } else {
       return acc;
     }
@@ -400,46 +409,41 @@ function fromSeq(seq) {
 
 function range$1($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
-  if (step) {
-    if (step < 0 && start < finish) {
-      return /* [] */0;
-    } else if (step > 0 && start > finish) {
-      return /* [] */0;
-    } else {
-      var last = imul(div(finish - start | 0, step), step) + start | 0;
-      var _acc = /* [] */0;
-      var _n = last;
-      while(true) {
-        var n = _n;
-        var acc = _acc;
-        if (n === start) {
-          return /* :: */[
-                  n,
-                  acc
-                ];
-        } else {
-          _n = n - step | 0;
-          _acc = /* :: */[
-            n,
-            acc
-          ];
-          continue ;
-          
-        }
-      }    }
-  } else {
+  if (step === 0) {
     throw [
           InvalidArgument,
           "List.range: ~step=0 would cause infinite loop"
         ];
-  }
+  } else if (step < 0 && start < finish || step > 0 && start > finish) {
+    return /* [] */0;
+  } else {
+    var last = imul(div(finish - start | 0, step), step) + start | 0;
+    var _acc = /* [] */0;
+    var _n = last;
+    while(true) {
+      var n = _n;
+      var acc = _acc;
+      if (n === start) {
+        return /* :: */[
+                n,
+                acc
+              ];
+      } else {
+        _n = n - step | 0;
+        _acc = /* :: */[
+          n,
+          acc
+        ];
+        continue ;
+      }
+    }  }
 }
 
 function isEmpty$1(param) {
   if (param) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -470,7 +474,6 @@ function reverseAndAppend(_acc, _param) {
         acc
       ];
       continue ;
-      
     } else {
       return acc;
     }
@@ -494,7 +497,6 @@ function filter$1(predicate, _param) {
       } else {
         _param = xs;
         continue ;
-        
       }
     } else {
       return /* [] */0;
@@ -515,7 +517,6 @@ function filterMap$1(f, _param) {
       } else {
         _param = xs;
         continue ;
-        
       }
     } else {
       return /* [] */0;
@@ -527,14 +528,13 @@ function exists$1(predicate, _param) {
     var param = _param;
     if (param) {
       if (_1(predicate, param[0])) {
-        return /* true */1;
+        return true;
       } else {
         _param = param[1];
         continue ;
-        
       }
     } else {
-      return /* false */0;
+      return false;
     }
   }}
 
@@ -545,7 +545,6 @@ function forEach$1(f, _param) {
       _1(f, param[0]);
       _param = param[1];
       continue ;
-      
     } else {
       return /* () */0;
     }
@@ -561,7 +560,6 @@ function find$1(predicate, _param) {
       } else {
         _param = param[1];
         continue ;
-        
       }
     } else {
       return /* None */0;
@@ -575,12 +573,11 @@ function forAll$1(predicate, _param) {
       if (_1(predicate, param[0])) {
         _param = param[1];
         continue ;
-        
       } else {
-        return /* false */0;
+        return false;
       }
     } else {
-      return /* true */1;
+      return true;
     }
   }}
 
@@ -598,7 +595,6 @@ function flatMap$1(f, self) {
         _outer = outer[1];
         _inner = _1(f, outer[0]);
         continue ;
-        
       } else {
         return /* [] */0;
       }
@@ -639,7 +635,6 @@ function reduce$1(f, _acc, _param) {
       _param = param[1];
       _acc = _2(f, acc, param[0]);
       continue ;
-      
     } else {
       return acc;
     }
@@ -663,7 +658,6 @@ function length(self) {
       _param = param[1];
       _acc = acc + 1 | 0;
       continue ;
-      
     } else {
       return acc;
     }
@@ -752,7 +746,7 @@ var neg_one = /* record */[
 ];
 
 function neg_signed(x) {
-  return +((x & 2147483648) !== 0);
+  return (x & 2147483648) !== 0;
 }
 
 function add(param, param$1) {
@@ -778,9 +772,9 @@ function not(param) {
 
 function eq(x, y) {
   if (x[/* hi */0] === y[/* hi */0]) {
-    return +(x[/* lo */1] === y[/* lo */1]);
+    return x[/* lo */1] === y[/* lo */1];
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
@@ -797,7 +791,9 @@ function sub(x, y) {
 }
 
 function lsl_(x, numBits) {
-  if (numBits) {
+  if (numBits === 0) {
+    return x;
+  } else {
     var lo = x[/* lo */1];
     if (numBits >= 32) {
       return /* record */[
@@ -811,13 +807,13 @@ function lsl_(x, numBits) {
               /* lo */((lo << numBits) >>> 0)
             ];
     }
-  } else {
-    return x;
   }
 }
 
 function asr_(x, numBits) {
-  if (numBits) {
+  if (numBits === 0) {
+    return x;
+  } else {
     var hi = x[/* hi */0];
     if (numBits < 32) {
       var hi$1 = (hi >> numBits);
@@ -833,16 +829,14 @@ function asr_(x, numBits) {
               /* lo */(lo$1 >>> 0)
             ];
     }
-  } else {
-    return x;
   }
 }
 
 function is_zero(param) {
   if (param[/* hi */0] !== 0 || param[/* lo */1] !== 0) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -856,26 +850,20 @@ function mul(_this, _other) {
     var exit$1 = 0;
     var exit$2 = 0;
     var exit$3 = 0;
-    if (this_hi !== 0) {
-      exit$3 = 4;
-    } else if ($$this[/* lo */1] !== 0) {
+    if (this_hi !== 0 || $$this[/* lo */1] !== 0) {
       exit$3 = 4;
     } else {
       return zero;
     }
     if (exit$3 === 4) {
-      if (other[/* hi */0] !== 0) {
-        exit$2 = 3;
-      } else if (other[/* lo */1] !== 0) {
+      if (other[/* hi */0] !== 0 || other[/* lo */1] !== 0) {
         exit$2 = 3;
       } else {
         return zero;
       }
     }
     if (exit$2 === 3) {
-      if (this_hi !== -2147483648) {
-        exit$1 = 2;
-      } else if ($$this[/* lo */1] !== 0) {
+      if (this_hi !== -2147483648 || $$this[/* lo */1] !== 0) {
         exit$1 = 2;
       } else {
         lo = other[/* lo */1];
@@ -886,9 +874,7 @@ function mul(_this, _other) {
       var other_hi = other[/* hi */0];
       var lo$1 = $$this[/* lo */1];
       var exit$4 = 0;
-      if (other_hi !== -2147483648) {
-        exit$4 = 3;
-      } else if (other[/* lo */1] !== 0) {
+      if (other_hi !== -2147483648 || other[/* lo */1] !== 0) {
         exit$4 = 3;
       } else {
         lo = lo$1;
@@ -901,7 +887,6 @@ function mul(_this, _other) {
             _other = neg(other);
             _this = neg($$this);
             continue ;
-            
           } else {
             return neg(mul(neg($$this), other));
           }
@@ -962,26 +947,26 @@ function ge(param, param$1) {
   var other_hi = param$1[/* hi */0];
   var hi = param[/* hi */0];
   if (hi > other_hi) {
-    return /* true */1;
+    return true;
   } else if (hi < other_hi) {
-    return /* false */0;
+    return false;
   } else {
-    return +(param[/* lo */1] >= param$1[/* lo */1]);
+    return param[/* lo */1] >= param$1[/* lo */1];
   }
 }
 
 function gt(x, y) {
   if (x[/* hi */0] > y[/* hi */0]) {
-    return /* true */1;
+    return true;
   } else if (x[/* hi */0] < y[/* hi */0]) {
-    return /* false */0;
+    return false;
   } else {
-    return +(x[/* lo */1] > y[/* lo */1]);
+    return x[/* lo */1] > y[/* lo */1];
   }
 }
 
 function le(x, y) {
-  return 1 - gt(x, y);
+  return !gt(x, y);
 }
 
 function to_float(param) {
@@ -1020,18 +1005,14 @@ function div$1(_self, _other) {
     var self_hi = self[/* hi */0];
     var exit = 0;
     var exit$1 = 0;
-    if (other[/* hi */0] !== 0) {
-      exit$1 = 2;
-    } else if (other[/* lo */1] !== 0) {
+    if (other[/* hi */0] !== 0 || other[/* lo */1] !== 0) {
       exit$1 = 2;
     } else {
       throw division_by_zero;
     }
     if (exit$1 === 2) {
       if (self_hi !== -2147483648) {
-        if (self_hi !== 0) {
-          exit = 1;
-        } else if (self[/* lo */1] !== 0) {
+        if (self_hi !== 0 || self[/* lo */1] !== 0) {
           exit = 1;
         } else {
           return zero;
@@ -1047,9 +1028,7 @@ function div$1(_self, _other) {
         var half_this = asr_(self, 1);
         var approx = lsl_(div$1(half_this, other), 1);
         var exit$2 = 0;
-        if (approx[/* hi */0] !== 0) {
-          exit$2 = 3;
-        } else if (approx[/* lo */1] !== 0) {
+        if (approx[/* hi */0] !== 0 || approx[/* lo */1] !== 0) {
           exit$2 = 3;
         } else if (other_hi < 0) {
           return one;
@@ -1067,9 +1046,7 @@ function div$1(_self, _other) {
     if (exit === 1) {
       var other_hi$1 = other[/* hi */0];
       var exit$3 = 0;
-      if (other_hi$1 !== -2147483648) {
-        exit$3 = 2;
-      } else if (other[/* lo */1] !== 0) {
+      if (other_hi$1 !== -2147483648 || other[/* lo */1] !== 0) {
         exit$3 = 2;
       } else {
         return zero;
@@ -1080,7 +1057,6 @@ function div$1(_self, _other) {
             _other = neg(other);
             _self = neg(self);
             continue ;
-            
           } else {
             return neg(div$1(neg(self), other));
           }
@@ -1139,7 +1115,7 @@ function get(s, i) {
 }
 /* No side effect */
 
-/* not_implemented Not a pure module */
+/* No side effect */
 
 /* No side effect */
 
@@ -1156,20 +1132,10 @@ function length$1(l) {
       _param = param[1];
       _len = len + 1 | 0;
       continue ;
-      
     } else {
       return len;
     }
   }}
-/* No side effect */
-
-function to_js_boolean(b) {
-  if (b) {
-    return true;
-  } else {
-    return false;
-  }
-}
 /* No side effect */
 
 function null_undefined_to_opt(x) {
@@ -1221,7 +1187,6 @@ function fromList$1(list) {
         _param = param[1];
         _i = i + 1 | 0;
         continue ;
-        
       } else {
         return array;
       }
@@ -1240,7 +1205,6 @@ function fromSeq$1(seq) {
       array.push(match[0]);
       _seq = match[1];
       continue ;
-      
     } else {
       return array;
     }
@@ -1248,34 +1212,31 @@ function fromSeq$1(seq) {
 
 function range$2($staropt$star, start, finish) {
   var step = $staropt$star ? $staropt$star[0] : 1;
-  if (step) {
-    if (step < 0 && start < finish) {
-      return /* array */[];
-    } else if (step > 0 && start > finish) {
-      return /* array */[];
-    } else {
-      var array = /* array */[];
-      var last = imul(div(finish - start | 0, step), step) + start | 0;
-      var loop = function (_n) {
-        while(true) {
-          var n = _n;
-          array.push(n);
-          if (n !== last) {
-            _n = n + step | 0;
-            continue ;
-            
-          } else {
-            return 0;
-          }
-        }      };
-      loop(start);
-      return array;
-    }
-  } else {
+  if (step === 0) {
     throw [
           InvalidArgument,
           "Array.range: ~step=0 would cause infinite loop"
         ];
+  } else if (step < 0 && start < finish) {
+    return /* array */[];
+  } else if (step > 0 && start > finish) {
+    return /* array */[];
+  } else {
+    var array = /* array */[];
+    var last = imul(div(finish - start | 0, step), step) + start | 0;
+    var loop = function (_n) {
+      while(true) {
+        var n = _n;
+        array.push(n);
+        if (n !== last) {
+          _n = n + step | 0;
+          continue ;
+        } else {
+          return 0;
+        }
+      }    };
+    loop(start);
+    return array;
   }
 }
 
@@ -1314,27 +1275,19 @@ function setOrRaise(i, value, self) {
 }
 
 function exists$3(f, self) {
-  return +self.some((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.some(__1(f));
 }
 
 function filter$3(f, self) {
-  return self.filter((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.filter(__1(f));
 }
 
 function find$3(f, self) {
-  return undefined_to_opt(self.find((function (x) {
-                    return to_js_boolean(_1(f, x));
-                  })));
+  return undefined_to_opt(self.find(__1(f)));
 }
 
 function findIndex(f, self) {
-  var i = self.findIndex((function (x) {
-          return to_js_boolean(_1(f, x));
-        }));
+  var i = self.findIndex(__1(f));
   if (i !== -1) {
     return /* Some */[/* tuple */[
               i,
@@ -1346,9 +1299,7 @@ function findIndex(f, self) {
 }
 
 function forAll$2(f, self) {
-  return +self.every((function (x) {
-                return to_js_boolean(_1(f, x));
-              }));
+  return self.every(__1(f));
 }
 
 function flatMap$2(f, self) {
@@ -1407,17 +1358,17 @@ function fromResult(param) {
 
 function isSome(param) {
   if (param) {
-    return /* true */1;
+    return true;
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
 function isNone(param) {
   if (param) {
-    return /* false */0;
+    return false;
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -1476,7 +1427,7 @@ function exists$4(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
-    return /* false */0;
+    return false;
   }
 }
 
@@ -1484,7 +1435,7 @@ function forAll$3(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
-    return /* true */1;
+    return true;
   }
 }
 
@@ -1563,7 +1514,7 @@ var flatMap$3 = andThen;
 /* No side effect */
 
 function isEmpty$2(s) {
-  return +(s.trim().length === 0);
+  return s.trim().length === 0;
 }
 
 function join(param) {
@@ -1727,15 +1678,15 @@ function String_001(prim) {
 }
 
 function String_002(prim, prim$1) {
-  return +prim$1.includes(prim);
+  return prim$1.includes(prim);
 }
 
 function String_003(prim, prim$1) {
-  return +prim$1.startsWith(prim);
+  return prim$1.startsWith(prim);
 }
 
 function String_004(prim, prim$1) {
-  return +prim$1.endsWith(prim);
+  return prim$1.endsWith(prim);
 }
 
 function String_006(prim, prim$1, prim$2) {
@@ -1771,8 +1722,8 @@ var $$String = [
 /* No side effect */
 
 function lints_000($$package) {
-  var match = +($$String[/* trim */8]($$package.description) === "");
-  if (match !== 0) {
+  var match = $$String[/* trim */8]($$package.description) === "";
+  if (match) {
     return /* Some */["Missing description"];
   } else {
     return /* None */0;
@@ -1781,8 +1732,8 @@ function lints_000($$package) {
 
 var lints_001 = /* :: */[
   (function ($$package) {
-      var match = +($$String[/* trim */8]($$package.readme) === "");
-      if (match !== 0) {
+      var match = $$String[/* trim */8]($$package.readme) === "";
+      if (match) {
         return /* Some */["Missing readme"];
       } else {
         return /* None */0;
@@ -1791,8 +1742,8 @@ var lints_001 = /* :: */[
   /* :: */[
     (function ($$package) {
         var l = $$String[/* length */1]($$String[/* trim */8]($$package.readme));
-        var match = +(l > 0 && l < 400);
-        if (match !== 0) {
+        var match = l > 0 && l < 400;
+        if (match) {
           return /* Some */["Short readme"];
         } else {
           return /* None */0;
@@ -1800,8 +1751,8 @@ var lints_001 = /* :: */[
       }),
     /* :: */[
       (function ($$package) {
-          var match = +($$package.license == null);
-          if (match !== 0) {
+          var match = ($$package.license == null);
+          if (match) {
             return /* Some */["Missing license"];
           } else {
             return /* None */0;
@@ -1809,8 +1760,8 @@ var lints_001 = /* :: */[
         }),
       /* :: */[
         (function ($$package) {
-            var match = +($$Array[/* length */16]($$package.keywords) === 0);
-            if (match !== 0) {
+            var match = $$Array[/* length */16]($$package.keywords) === 0;
+            if (match) {
               return /* Some */["Missing keywords"];
             } else {
               return /* None */0;
@@ -1819,10 +1770,10 @@ var lints_001 = /* :: */[
         /* :: */[
           (function ($$package) {
               var sorted = $$package.keywords.slice().sort();
-              var match = +sorted.some((function (x, i) {
-                      return +(x === $$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted));
+              var match = sorted.some((function (x, i) {
+                      return x === $$Array[/* unsafeGetUnchecked */21](i - 1 | 0, sorted);
                     }));
-              if (match !== 0) {
+              if (match) {
                 return /* Some */["Duplicate keywords"];
               } else {
                 return /* None */0;
@@ -1833,7 +1784,7 @@ var lints_001 = /* :: */[
                 var match = $$Array[/* exists */9]((function (k) {
                         return $$String[/* startsWith */3]("bs-", k);
                       }), $$package.keywords);
-                if (match !== 0) {
+                if (match) {
                   return /* Some */["Keyword starting with 'bs-'"];
                 } else {
                   return /* None */0;
@@ -1841,8 +1792,8 @@ var lints_001 = /* :: */[
               }),
             /* :: */[
               (function ($$package) {
-                  var match = +($$package.repositoryUrl == null);
-                  if (match !== 0) {
+                  var match = ($$package.repositoryUrl == null);
+                  if (match) {
                     return /* Some */["Missing repository url"];
                   } else {
                     return /* None */0;
@@ -1850,8 +1801,8 @@ var lints_001 = /* :: */[
                 }),
               /* :: */[
                 (function ($$package) {
-                    var match = +($$package.homepageUrl == null);
-                    if (match !== 0) {
+                    var match = ($$package.homepageUrl == null);
+                    if (match) {
                       return /* Some */["Missing homepage url"];
                     } else {
                       return /* None */0;
@@ -1859,8 +1810,8 @@ var lints_001 = /* :: */[
                   }),
                 /* :: */[
                   (function ($$package) {
-                      var match = +($$package.issuesUrl == null);
-                      if (match !== 0) {
+                      var match = ($$package.issuesUrl == null);
+                      if (match) {
                         return /* Some */["Missing issues url"];
                       } else {
                         return /* None */0;
@@ -1868,8 +1819,8 @@ var lints_001 = /* :: */[
                     }),
                   /* :: */[
                     (function ($$package) {
-                        var match = +($$String[/* length */1]($$package.readme) > 10000);
-                        if (match !== 0) {
+                        var match = $$String[/* length */1]($$package.readme) > 10000;
+                        if (match) {
                           return /* Some */["Readme > 10k bytes"];
                         } else {
                           return /* None */0;
@@ -2116,12 +2067,12 @@ function assign(st1, st2) {
 
 function full_init(s, seed) {
   var combine = function (accu, x) {
-    return string(accu + x);
+    return string(accu + String(x));
   };
   var extract = function (d) {
     return ((get(d, 0) + (get(d, 1) << 8) | 0) + (get(d, 2) << 16) | 0) + (get(d, 3) << 24) | 0;
   };
-  var seed$1 = seed.length ? seed : /* int array */[0];
+  var seed$1 = seed.length === 0 ? /* array */[0] : seed;
   var l = seed$1.length;
   for(var i = 0; i <= 54; ++i){
     caml_array_set(s[/* st */0], i, i);
@@ -2184,7 +2135,6 @@ function $$int(s, bound) {
       var v = r % n;
       if ((r - v | 0) > ((1073741823 - n | 0) + 1 | 0)) {
         continue ;
-        
       } else {
         return v;
       }
@@ -2207,7 +2157,6 @@ function int32(s, bound) {
       var v = r % n;
       if ((r - v | 0) > ((max_int$2 - n | 0) + 1 | 0)) {
         continue ;
-        
       } else {
         return v;
       }
@@ -2240,7 +2189,6 @@ function int64(s, bound) {
                   /* lo */1
                 ]))) {
         continue ;
-        
       } else {
         return v;
       }
@@ -2262,7 +2210,7 @@ function $$float(s, bound) {
 }
 
 function bool(s) {
-  return +((bits(s) & 1) === 0);
+  return (bits(s) & 1) === 0;
 }
 
 var State = [
@@ -2287,6 +2235,8 @@ var State = [
 
 /* No side effect */
 
+/* No side effect */
+
 var Undefined = create("CamlinternalLazy.Undefined");
 /* No side effect */
 
@@ -2298,8 +2248,8 @@ var prng = __(246, [(function () {
 function readDirRecursively(dir) {
   return $$Array[/* flatMap */5]((function (filename) {
                 var path = Path.join(dir, filename);
-                var match = +Fs.statSync(path).isDirectory();
-                if (match !== 0) {
+                var match = Fs.statSync(path).isDirectory();
+                if (match) {
                   return readDirRecursively(path);
                 } else {
                   return /* array */[path];
@@ -2346,7 +2296,7 @@ $$Array[/* forEach */8]((function (param) {
                       return /* () */0;
                     }), param[1]);
       }), $$Array[/* filter */10]((function (param) {
-            return +(param[1] !== /* [] */0);
+            return param[1] !== /* [] */0;
           }), $$Array[/* map */0]((function (p) {
                 return /* tuple */[
                         p.name,

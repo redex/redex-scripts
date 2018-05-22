@@ -9,7 +9,6 @@ import * as Resync from "../node_modules/refetch/src/Resync.bs.js";
 import * as Package from "./common/Package.bs.js";
 import * as Process from "process";
 import * as Manifest from "./common/Manifest.bs.js";
-import * as Pervasives from "../node_modules/bs-platform/lib/es6/pervasives.js";
 import * as Repository from "./common/Repository.bs.js";
 
 require('isomorphic-fetch')
@@ -21,7 +20,7 @@ var eventuallyPackage;
 
 if (Rebase.$$String[/* startsWith */3]("github:", name)) {
   var repo = Repository.parse(name);
-  var source_004 = /* platforms : int array */[/* Any */3];
+  var source_004 = /* platforms : array */[/* Any */3];
   var source = /* record */[
     /* id */name,
     /* repository */repo,
@@ -39,7 +38,7 @@ if (Rebase.$$String[/* startsWith */3]("github:", name)) {
                       }));
         }));
 } else {
-  var source_003 = /* platforms : int array */[/* Any */3];
+  var source_003 = /* platforms : array */[/* Any */3];
   var source$1 = /* record */[
     /* id */name,
     /* category : Binding */0,
@@ -64,7 +63,7 @@ Resync.Future[/* whenCompleted */6]((function (param) {
           var truncatedPackage = Rebase.$$String[/* length */1]($$package.readme) > 1000 ? Object.assign($$package, {
                   readme: Rebase.$$String[/* sub */9](0, 1000, $$package.readme) + "..."
                 }) : $$package;
-          console.log("\n", JSON.stringify(truncatedPackage, (null), 2));
+          console.log("\n", JSON.stringify(truncatedPackage, null, 2));
           var errors = Lint.lintPackage($$package);
           if (Rebase.List[/* isEmpty */15](errors)) {
             console.log("\x1b[32;1m");
@@ -73,7 +72,7 @@ Resync.Future[/* whenCompleted */6]((function (param) {
             return /* () */0;
           } else {
             console.log("\x1b[31;1m");
-            console.log(Pervasives.string_of_int(Rebase.List[/* length */19](errors)) + " problems:");
+            console.log(String(Rebase.List[/* length */19](errors)) + " problems:");
             Rebase.List[/* forEach */8]((function (error) {
                     console.log("  ", error);
                     return /* () */0;

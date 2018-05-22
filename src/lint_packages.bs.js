@@ -15,7 +15,7 @@ Rebase.$$Array[/* forEach */8]((function (param) {
                       return /* () */0;
                     }), param[1]);
       }), Rebase.$$Array[/* filter */10]((function (param) {
-            return +(param[1] !== /* [] */0);
+            return param[1] !== /* [] */0;
           }), Rebase.$$Array[/* map */0]((function (p) {
                 return /* tuple */[
                         p.name,

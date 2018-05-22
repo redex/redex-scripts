@@ -63,12 +63,12 @@ function _ignoreKeyword(k) {
   switch (k) {
     case "data" : 
     case "reason" : 
-        return /* true */1;
+        return true;
     default:
       if (Rebase.$$String[/* startsWith */3]("bs-", k)) {
-        return /* true */1;
+        return true;
       } else {
-        return /* false */0;
+        return false;
       }
   }
 }
@@ -78,7 +78,7 @@ var partial_arg = Rebase.$$Array[/* map */0];
 var partial_arg$1 = Rebase.$$Array[/* map */0];
 
 var partial_arg$2 = Curry._2(Rebase.Fn[/* << */5], (function (prim) {
-        return 1 - prim;
+        return !prim;
       }), _ignoreKeyword);
 
 var partial_arg$3 = Rebase.$$Array[/* filter */10];
@@ -111,23 +111,23 @@ function fromPublished(source, data) {
           flags: ensureDeprecated(data[/* deprecated */5], Rebase.Option[/* getOr */16](/* array */[], source[/* flags */2])),
           platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */3]),
           description: data[/* description */3],
-          deprecated: Js_null_undefined.from_opt(data[/* deprecated */5]),
-          author: Js_null_undefined.from_opt(data[/* author */6]),
-          license: Js_null_undefined.from_opt(data[/* license */7]),
+          deprecated: Js_null_undefined.fromOption(data[/* deprecated */5]),
+          author: Js_null_undefined.fromOption(data[/* author */6]),
+          license: Js_null_undefined.fromOption(data[/* license */7]),
           keywords: Curry._1(_normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](data[/* keywords */9], source[/* keywords */4]))),
           originalKeywords: Curry._1(_normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], data[/* keywords */9])),
           readme: Rebase.Option[/* getOr */16]("", data[/* readme */8]),
           analyzed: data[/* analyzed */0],
           updated: data[/* analyzed */0],
-          stars: Js_null_undefined.from_opt(data[/* stars */10]),
+          stars: Js_null_undefined.fromOption(data[/* stars */10]),
           score: data[/* score */11],
           quality: data[/* quality */12],
           popularity: data[/* popularity */13],
           maintenance: data[/* maintenance */14],
-          homepageUrl: Js_null_undefined.from_opt(data[/* homepageUrl */15]),
-          repositoryUrl: Js_null_undefined.from_opt(data[/* repositoryUrl */16]),
-          npmUrl: Js_null_undefined.from_opt(data[/* npmUrl */17]),
-          issuesUrl: Js_null_undefined.from_opt(data[/* issuesUrl */18]),
+          homepageUrl: Js_null_undefined.fromOption(data[/* homepageUrl */15]),
+          repositoryUrl: Js_null_undefined.fromOption(data[/* repositoryUrl */16]),
+          npmUrl: Js_null_undefined.fromOption(data[/* npmUrl */17]),
+          issuesUrl: Js_null_undefined.fromOption(data[/* issuesUrl */18]),
           docsUrl: undefined
         };
 }
@@ -143,8 +143,8 @@ function fromUnpublished(source, manifest, readme, stars) {
           platforms: Rebase.$$Array[/* map */0](_encodePlatform, source[/* platforms */4]),
           description: Rebase.Option[/* getOr */16]("", manifest[/* description */2]),
           deprecated: undefined,
-          author: Js_null_undefined.from_opt(manifest[/* author */3]),
-          license: Js_null_undefined.from_opt(manifest[/* license */4]),
+          author: Js_null_undefined.fromOption(manifest[/* author */3]),
+          license: Js_null_undefined.fromOption(manifest[/* license */4]),
           keywords: Curry._1(_normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], Rebase.Option[/* or_ */15](manifest[/* keywords */5], source[/* keywords */5]))),
           originalKeywords: Curry._1(_normalizeKeywords, Rebase.Option[/* getOr */16](/* array */[], manifest[/* keywords */5])),
           readme: readme,
@@ -155,10 +155,10 @@ function fromUnpublished(source, manifest, readme, stars) {
           quality: 0,
           popularity: 0,
           maintenance: 0,
-          homepageUrl: Js_null_undefined.from_opt(manifest[/* homepage */7]),
+          homepageUrl: Js_null_undefined.fromOption(manifest[/* homepage */7]),
           repositoryUrl: Repository.getUrl(source[/* repository */1]),
           npmUrl: undefined,
-          issuesUrl: Js_null_undefined.from_opt(manifest[/* bugsUrl */9]),
+          issuesUrl: Js_null_undefined.fromOption(manifest[/* bugsUrl */9]),
           docsUrl: undefined
         };
 }
