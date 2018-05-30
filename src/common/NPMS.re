@@ -20,27 +20,29 @@ type t = {
   issuesUrl     : option(string),
 };
 
-let fromJson = json => Json.Decode.{
-  analyzed      : json |> field("analyzedAt", string |> map(Js.Date.fromString)),
-  name          : json |> at(["collected", "metadata", "name"], string),
-  version       : json |> at(["collected", "metadata", "version"], string),
-  description   : json |> at(["collected", "metadata", "description"], string),
-  updated       : json |> at(["collected", "metadata", "date"], string |> map(Js.Date.fromString)),
-  deprecated    : json |> optional(at(["collected", "metadata", "deprecated"], string)),
-  author        : json |> optional(at(["collected", "metadata", "author", "name"], string)),
-  license       : json |> optional(at(["collected", "metadata", "license"], string)),
-  readme        : json |> optional(at(["collected", "metadata", "readme"], string)),
-  keywords      : json |> optional(at(["collected", "metadata", "keywords"], array(string))),
-  stars         : json |> optional(at(["collected", "github", "starsCount"], int)),
-  score         : json |> at(["score", "final"], Json.Decode.float),
-  quality       : json |> at(["score", "detail", "quality"], Json.Decode.float),
-  popularity    : json |> at(["score", "detail", "popularity"], Json.Decode.float),
-  maintenance   : json |> at(["score", "detail", "maintenance"], Json.Decode.float),
-  homepageUrl   : json |> optional(at(["collected", "metadata", "links", "homepage"], string)),
-  repositoryUrl : json |> optional(at(["collected", "metadata", "links", "repository"], string)),
-  npmUrl        : json |> optional(at(["collected", "metadata", "links", "npm"], string)),
-  issuesUrl     : json |> optional(at(["collected", "metadata", "links", "bugs"], string)),
-};
+let fromJson = Json.Decode.(
+  obj (({field, at}) => {
+    analyzed      : field.required("analyzedAt", string |> map(Js.Date.fromString)),
+    name          : at.required(["collected", "metadata", "name"], string),
+    version       : at.required(["collected", "metadata", "version"], string),
+    description   : at.required(["collected", "metadata", "description"], string),
+    updated       : at.required(["collected", "metadata", "date"], string |> map(Js.Date.fromString)),
+    deprecated    : at.optional(["collected", "metadata", "deprecated"], string),
+    author        : at.optional(["collected", "metadata", "author", "name"], string),
+    license       : at.optional(["collected", "metadata", "license"], string),
+    readme        : at.optional(["collected", "metadata", "readme"], string),
+    keywords      : at.optional(["collected", "metadata", "keywords"], array(string)),
+    stars         : at.optional(["collected", "github", "starsCount"], int),
+    score         : at.required(["score", "final"], Json.Decode.float),
+    quality       : at.required(["score", "detail", "quality"], Json.Decode.float),
+    popularity    : at.required(["score", "detail", "popularity"], Json.Decode.float),
+    maintenance   : at.required(["score", "detail", "maintenance"], Json.Decode.float),
+    homepageUrl   : at.optional(["collected", "metadata", "links", "homepage"], string),
+    repositoryUrl : at.optional(["collected", "metadata", "links", "repository"], string),
+    npmUrl        : at.optional(["collected", "metadata", "links", "npm"], string),
+    issuesUrl     : at.optional(["collected", "metadata", "links", "bugs"], string),
+  })
+);
 
 let get = (packageName: string) => {
   open Refetch;

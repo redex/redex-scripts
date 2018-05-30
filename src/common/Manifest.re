@@ -1,3 +1,5 @@
+open Rebase;
+
 type t = {
   name          : string,
   version       : string,
@@ -12,24 +14,23 @@ type t = {
 
 };
 
-let fromJson = json => Json.Decode.{
-  name          : json |> field("name", string),
-  version       : json |> field("version", string),
-  description   : json |> optional(field("description", string)),
-  author        : json |> optional(field("author", string)),
-  license       : json |> optional(either(
-                            at(["license", "type"], string),
-                            field("license", string))),
-  keywords      : json |> optional(field("keywords", array(string))),
-  dependencies  : json |> optional(field("dependencies", dict(string))),
-  homepage      : json |> optional(field("homepage", string)),
-  repositoryUrl : json |> optional(either(
-                            at(["repository", "url"], string),
-                            field("repository", string))),
-  bugsUrl       : json |> optional(either(
-                            at(["bugs", "url"], string),
-                            field("bugs", string))),
-};
+let fromJson = Json.Decode.(
+  obj (({field, at}) => {
+    name          : field.required("name", string),
+    version       : field.required("version", string),
+    description   : field.optional("description", string),
+    author        : field.optional("author", string),
+    license       : at.optional(["license", "type"], string)
+                    |> Option.or_(field.optional("type", string)),
+    keywords      : field.optional("keywords", array(string)),
+    dependencies  : field.optional("dependencies", dict(string)),
+    homepage      : field.optional("homepage", string),
+    repositoryUrl : at.optional(["repository", "url"], string)
+                    |> Option.or_(field.optional("repository", string)),
+    bugsUrl       : at.optional(["bugs", "url"], string)
+                    |> Option.or_(field.optional("bugs", string)),
+  })
+);
 
 let get = repo => {
   open Refetch;

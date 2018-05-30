@@ -1,63 +1,52 @@
 
 
 import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
+import * as Rebase from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
 import * as Resync from "../../node_modules/refetch/src/Resync.bs.js";
 import * as Refetch from "../../node_modules/refetch/src/Refetch.bs.js";
 import * as Pervasives from "../../node_modules/bs-platform/lib/es6/pervasives.js";
 import * as Json_decode from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
 import * as Refetch__Response from "../../node_modules/refetch/src/Refetch__Response.bs.js";
 
-function fromJson(json) {
-  return /* record */[
-          /* name */Json_decode.field("name", Json_decode.string, json),
-          /* version */Json_decode.field("version", Json_decode.string, json),
-          /* description */Json_decode.optional((function (param) {
-                  return Json_decode.field("description", Json_decode.string, param);
-                }), json),
-          /* author */Json_decode.optional((function (param) {
-                  return Json_decode.field("author", Json_decode.string, param);
-                }), json),
-          /* license */Json_decode.optional(Json_decode.either(Json_decode.at(/* :: */[
-                        "license",
-                        /* :: */[
-                          "type",
-                          /* [] */0
-                        ]
-                      ], Json_decode.string), (function (param) {
-                      return Json_decode.field("license", Json_decode.string, param);
-                    })), json),
-          /* keywords */Json_decode.optional((function (param) {
-                  return Json_decode.field("keywords", (function (param) {
+function fromJson(param) {
+  return Json_decode.obj((function (param) {
+                var at = param[/* at */1];
+                var field = param[/* field */0];
+                return /* record */[
+                        /* name */Curry._2(field[/* required */1], "name", Json_decode.string),
+                        /* version */Curry._2(field[/* required */1], "version", Json_decode.string),
+                        /* description */Curry._2(field[/* optional */0], "description", Json_decode.string),
+                        /* author */Curry._2(field[/* optional */0], "author", Json_decode.string),
+                        /* license */Rebase.Option[/* or_ */15](Curry._2(field[/* optional */0], "type", Json_decode.string), Curry._2(at[/* optional */0], /* :: */[
+                                  "license",
+                                  /* :: */[
+                                    "type",
+                                    /* [] */0
+                                  ]
+                                ], Json_decode.string)),
+                        /* keywords */Curry._2(field[/* optional */0], "keywords", (function (param) {
                                 return Json_decode.array(Json_decode.string, param);
-                              }), param);
-                }), json),
-          /* dependencies */Json_decode.optional((function (param) {
-                  return Json_decode.field("dependencies", (function (param) {
+                              })),
+                        /* dependencies */Curry._2(field[/* optional */0], "dependencies", (function (param) {
                                 return Json_decode.dict(Json_decode.string, param);
-                              }), param);
-                }), json),
-          /* homepage */Json_decode.optional((function (param) {
-                  return Json_decode.field("homepage", Json_decode.string, param);
-                }), json),
-          /* repositoryUrl */Json_decode.optional(Json_decode.either(Json_decode.at(/* :: */[
-                        "repository",
-                        /* :: */[
-                          "url",
-                          /* [] */0
-                        ]
-                      ], Json_decode.string), (function (param) {
-                      return Json_decode.field("repository", Json_decode.string, param);
-                    })), json),
-          /* bugsUrl */Json_decode.optional(Json_decode.either(Json_decode.at(/* :: */[
-                        "bugs",
-                        /* :: */[
-                          "url",
-                          /* [] */0
-                        ]
-                      ], Json_decode.string), (function (param) {
-                      return Json_decode.field("bugs", Json_decode.string, param);
-                    })), json)
-        ];
+                              })),
+                        /* homepage */Curry._2(field[/* optional */0], "homepage", Json_decode.string),
+                        /* repositoryUrl */Rebase.Option[/* or_ */15](Curry._2(field[/* optional */0], "repository", Json_decode.string), Curry._2(at[/* optional */0], /* :: */[
+                                  "repository",
+                                  /* :: */[
+                                    "url",
+                                    /* [] */0
+                                  ]
+                                ], Json_decode.string)),
+                        /* bugsUrl */Rebase.Option[/* or_ */15](Curry._2(field[/* optional */0], "bugs", Json_decode.string), Curry._2(at[/* optional */0], /* :: */[
+                                  "bugs",
+                                  /* :: */[
+                                    "url",
+                                    /* [] */0
+                                  ]
+                                ], Json_decode.string))
+                      ];
+              }), param);
 }
 
 function get(repo) {

@@ -1545,31 +1545,9 @@ function array(decode, json) {
   }
 }
 
-function dict(decode, json) {
+function _jsonDict(json) {
   if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    var keys = Object.keys(json);
-    var l = keys.length;
-    var target = { };
-    for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
-      var key = keys[i];
-      var value;
-      try {
-        value = _1(decode, json[key]);
-      }
-      catch (raw_exn){
-        var exn = internalToOCamlException(raw_exn);
-        if (exn[0] === DecodeError) {
-          throw [
-                DecodeError,
-                exn[1] + "\n\tin dict"
-              ];
-        } else {
-          throw exn;
-        }
-      }
-      target[key] = value;
-    }
-    return target;
+    return json;
   } else {
     throw [
           DecodeError,
@@ -1578,34 +1556,57 @@ function dict(decode, json) {
   }
 }
 
+function dict(decode, json) {
+  var source = _jsonDict(json);
+  var keys = Object.keys(source);
+  var l = keys.length;
+  var target = { };
+  for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
+    var key = keys[i];
+    var value;
+    try {
+      value = _1(decode, source[key]);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === DecodeError) {
+        throw [
+              DecodeError,
+              exn[1] + "\n\tin dict"
+            ];
+      } else {
+        throw exn;
+      }
+    }
+    target[key] = value;
+  }
+  return target;
+}
+
+var FieldNotFound = create("Json_decode.FieldNotFound");
+
 function field(key, decode, json) {
-  if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    var match = json[key];
-    if (match !== undefined) {
-      try {
-        return _1(decode, match);
+  var dict = _jsonDict(json);
+  var match = dict[key];
+  if (match !== undefined) {
+    try {
+      return _1(decode, match);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === DecodeError) {
+        throw [
+              DecodeError,
+              exn[1] + ("\n\tat field '" + (key + "'"))
+            ];
+      } else {
+        throw exn;
       }
-      catch (raw_exn){
-        var exn = internalToOCamlException(raw_exn);
-        if (exn[0] === DecodeError) {
-          throw [
-                DecodeError,
-                exn[1] + ("\n\tat field '" + (key + "'"))
-              ];
-        } else {
-          throw exn;
-        }
-      }
-    } else {
-      throw [
-            DecodeError,
-            "Expected field \'" + (String(key) + "\'")
-          ];
     }
   } else {
     throw [
           DecodeError,
-          "Expected object, got " + JSON.stringify(json)
+          "Expected field \'" + (String(key) + "\'")
         ];
   }
 }

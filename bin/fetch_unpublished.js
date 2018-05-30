@@ -1284,26 +1284,6 @@ function length$1(l) {
       return len;
     }
   }}
-
-function rev_append(_l1, _l2) {
-  while(true) {
-    var l2 = _l2;
-    var l1 = _l1;
-    if (l1) {
-      _l2 = /* :: */[
-        l1[0],
-        l2
-      ];
-      _l1 = l1[1];
-      continue ;
-    } else {
-      return l2;
-    }
-  }}
-
-function rev(l) {
-  return rev_append(l, /* [] */0);
-}
 /* No side effect */
 
 function undefined_to_opt(x) {
@@ -3441,31 +3421,9 @@ function array(decode, json) {
   }
 }
 
-function dict(decode, json) {
+function _jsonDict(json) {
   if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    var keys = Object.keys(json);
-    var l = keys.length;
-    var target = { };
-    for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
-      var key = keys[i];
-      var value;
-      try {
-        value = _1(decode, json[key]);
-      }
-      catch (raw_exn){
-        var exn = internalToOCamlException(raw_exn);
-        if (exn[0] === DecodeError) {
-          throw [
-                DecodeError,
-                exn[1] + "\n\tin dict"
-              ];
-        } else {
-          throw exn;
-        }
-      }
-      target[key] = value;
-    }
-    return target;
+    return json;
   } else {
     throw [
           DecodeError,
@@ -3474,19 +3432,57 @@ function dict(decode, json) {
   }
 }
 
-function field(key, decode, json) {
-  if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    var match = json[key];
+function dict(decode, json) {
+  var source = _jsonDict(json);
+  var keys = Object.keys(source);
+  var l = keys.length;
+  var target = { };
+  for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
+    var key = keys[i];
+    var value;
+    try {
+      value = _1(decode, source[key]);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === DecodeError) {
+        throw [
+              DecodeError,
+              exn[1] + "\n\tin dict"
+            ];
+      } else {
+        throw exn;
+      }
+    }
+    target[key] = value;
+  }
+  return target;
+}
+
+var FieldNotFound = create("Json_decode.FieldNotFound");
+
+function obj(builder, json) {
+  _jsonDict(json);
+  var tag = function (msg, key) {
+    return msg + ("\n\tat field '" + (key + "'"));
+  };
+  var get$$1 = function (key, decode, json) {
+    var match = _jsonDict(json)[key];
     if (match !== undefined) {
       try {
         return _1(decode, match);
       }
       catch (raw_exn){
         var exn = internalToOCamlException(raw_exn);
-        if (exn[0] === DecodeError) {
+        if (exn[0] === FieldNotFound) {
+          throw [
+                FieldNotFound,
+                tag(exn[1], key)
+              ];
+        } else if (exn[0] === DecodeError) {
           throw [
                 DecodeError,
-                exn[1] + ("\n\tat field '" + (key + "'"))
+                tag(exn[1], key)
               ];
         } else {
           throw exn;
@@ -3494,36 +3490,140 @@ function field(key, decode, json) {
       }
     } else {
       throw [
-            DecodeError,
-            "Expected field \'" + (String(key) + "\'")
+            FieldNotFound,
+            "Expected required field '" + (key + "'")
           ];
+    }
+  };
+  var field_000 = function (key, decode) {
+    var exit = 0;
+    var x;
+    try {
+      x = get$$1(key, decode, json);
+      exit = 1;
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        return /* None */0;
+      } else {
+        throw exn;
+      }
+    }
+    if (exit === 1) {
+      return /* Some */[x];
+    }
+    
+  };
+  var field_001 = function (key, decode) {
+    try {
+      return get$$1(key, decode, json);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        throw [
+              DecodeError,
+              exn[1]
+            ];
+      } else {
+        throw exn;
+      }
+    }
+  };
+  var field = /* record */[
+    field_000,
+    field_001
+  ];
+  var getPath = function (key_path, decode) {
+    if (key_path) {
+      var rest = key_path[1];
+      var key = key_path[0];
+      if (rest) {
+        var partial_arg = getPath(rest, decode);
+        return (function (param) {
+            return get$$1(key, partial_arg, param);
+          });
+      } else {
+        return (function (param) {
+            return get$$1(key, decode, param);
+          });
+      }
+    } else {
+      throw [
+            invalid_argument,
+            "Expected key_path to contain at least one element"
+          ];
+    }
+  };
+  var at_000 = function (path, decode) {
+    var exit = 0;
+    var x;
+    try {
+      x = getPath(path, decode)(json);
+      exit = 1;
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        return /* None */0;
+      } else {
+        throw exn;
+      }
+    }
+    if (exit === 1) {
+      return /* Some */[x];
+    }
+    
+  };
+  var at_001 = function (path, decode) {
+    try {
+      return getPath(path, decode)(json);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        throw [
+              DecodeError,
+              exn[1]
+            ];
+      } else {
+        throw exn;
+      }
+    }
+  };
+  var at = /* record */[
+    at_000,
+    at_001
+  ];
+  return _1(builder, /* record */[
+              /* field */field,
+              /* at */at
+            ]);
+}
+
+function field(key, decode, json) {
+  var dict = _jsonDict(json);
+  var match = dict[key];
+  if (match !== undefined) {
+    try {
+      return _1(decode, match);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === DecodeError) {
+        throw [
+              DecodeError,
+              exn[1] + ("\n\tat field '" + (key + "'"))
+            ];
+      } else {
+        throw exn;
+      }
     }
   } else {
     throw [
           DecodeError,
-          "Expected object, got " + JSON.stringify(json)
-        ];
-  }
-}
-
-function at(key_path, decoder) {
-  if (key_path) {
-    var rest = key_path[1];
-    var key = key_path[0];
-    if (rest) {
-      var partial_arg = at(rest, decoder);
-      return (function (param) {
-          return field(key, partial_arg, param);
-        });
-    } else {
-      return (function (param) {
-          return field(key, decoder, param);
-        });
-    }
-  } else {
-    throw [
-          invalid_argument,
-          "Expected key_path to contain at least one element"
+          "Expected field \'" + (String(key) + "\'")
         ];
   }
 }
@@ -3540,52 +3640,6 @@ function optional(decode, json) {
       throw exn;
     }
   }
-}
-
-function oneOf(decoders, json) {
-  var _decoders = decoders;
-  var _errors = /* [] */0;
-  while(true) {
-    var errors = _errors;
-    var decoders$1 = _decoders;
-    if (decoders$1) {
-      try {
-        return _1(decoders$1[0], json);
-      }
-      catch (raw_exn){
-        var exn = internalToOCamlException(raw_exn);
-        if (exn[0] === DecodeError) {
-          _errors = /* :: */[
-            exn[1],
-            errors
-          ];
-          _decoders = decoders$1[1];
-          continue ;
-        } else {
-          throw exn;
-        }
-      }
-    } else {
-      var revErrors = rev(errors);
-      throw [
-            DecodeError,
-            "All decoders given to oneOf failed. Here are all the errors: " + (String(revErrors) + ". And the JSON being decoded: ") + JSON.stringify(json)
-          ];
-    }
-  }}
-
-function either(a, b) {
-  var partial_arg_001 = /* :: */[
-    b,
-    /* [] */0
-  ];
-  var partial_arg = /* :: */[
-    a,
-    partial_arg_001
-  ];
-  return (function (param) {
-      return oneOf(partial_arg, param);
-    });
 }
 
 function map$10(f, decode, json) {
@@ -3913,57 +3967,45 @@ function fromUnpublished(source, manifest, readme, stars) {
 }
 /* _normalizeKeywords Not a pure module */
 
-function fromJson$2(json) {
-  return /* record */[
-          /* name */field("name", string$1, json),
-          /* version */field("version", string$1, json),
-          /* description */optional((function (param) {
-                  return field("description", string$1, param);
-                }), json),
-          /* author */optional((function (param) {
-                  return field("author", string$1, param);
-                }), json),
-          /* license */optional(either(at(/* :: */[
-                        "license",
-                        /* :: */[
-                          "type",
-                          /* [] */0
-                        ]
-                      ], string$1), (function (param) {
-                      return field("license", string$1, param);
-                    })), json),
-          /* keywords */optional((function (param) {
-                  return field("keywords", (function (param) {
+function fromJson$2(param) {
+  return obj((function (param) {
+                var at$$1 = param[/* at */1];
+                var field$$1 = param[/* field */0];
+                return /* record */[
+                        /* name */_2(field$$1[/* required */1], "name", string$1),
+                        /* version */_2(field$$1[/* required */1], "version", string$1),
+                        /* description */_2(field$$1[/* optional */0], "description", string$1),
+                        /* author */_2(field$$1[/* optional */0], "author", string$1),
+                        /* license */Option[/* or_ */15](_2(field$$1[/* optional */0], "type", string$1), _2(at$$1[/* optional */0], /* :: */[
+                                  "license",
+                                  /* :: */[
+                                    "type",
+                                    /* [] */0
+                                  ]
+                                ], string$1)),
+                        /* keywords */_2(field$$1[/* optional */0], "keywords", (function (param) {
                                 return array(string$1, param);
-                              }), param);
-                }), json),
-          /* dependencies */optional((function (param) {
-                  return field("dependencies", (function (param) {
+                              })),
+                        /* dependencies */_2(field$$1[/* optional */0], "dependencies", (function (param) {
                                 return dict(string$1, param);
-                              }), param);
-                }), json),
-          /* homepage */optional((function (param) {
-                  return field("homepage", string$1, param);
-                }), json),
-          /* repositoryUrl */optional(either(at(/* :: */[
-                        "repository",
-                        /* :: */[
-                          "url",
-                          /* [] */0
-                        ]
-                      ], string$1), (function (param) {
-                      return field("repository", string$1, param);
-                    })), json),
-          /* bugsUrl */optional(either(at(/* :: */[
-                        "bugs",
-                        /* :: */[
-                          "url",
-                          /* [] */0
-                        ]
-                      ], string$1), (function (param) {
-                      return field("bugs", string$1, param);
-                    })), json)
-        ];
+                              })),
+                        /* homepage */_2(field$$1[/* optional */0], "homepage", string$1),
+                        /* repositoryUrl */Option[/* or_ */15](_2(field$$1[/* optional */0], "repository", string$1), _2(at$$1[/* optional */0], /* :: */[
+                                  "repository",
+                                  /* :: */[
+                                    "url",
+                                    /* [] */0
+                                  ]
+                                ], string$1)),
+                        /* bugsUrl */Option[/* or_ */15](_2(field$$1[/* optional */0], "bugs", string$1), _2(at$$1[/* optional */0], /* :: */[
+                                  "bugs",
+                                  /* :: */[
+                                    "url",
+                                    /* [] */0
+                                  ]
+                                ], string$1))
+                      ];
+              }), param);
 }
 
 function get$4(repo) {

@@ -2685,31 +2685,9 @@ function array(decode, json) {
   }
 }
 
-function dict(decode, json) {
+function _jsonDict(json) {
   if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    var keys = Object.keys(json);
-    var l = keys.length;
-    var target = { };
-    for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
-      var key = keys[i];
-      var value;
-      try {
-        value = _1(decode, json[key]);
-      }
-      catch (raw_exn){
-        var exn = internalToOCamlException(raw_exn);
-        if (exn[0] === DecodeError) {
-          throw [
-                DecodeError,
-                exn[1] + "\n\tin dict"
-              ];
-        } else {
-          throw exn;
-        }
-      }
-      target[key] = value;
-    }
-    return target;
+    return json;
   } else {
     throw [
           DecodeError,
@@ -2718,19 +2696,57 @@ function dict(decode, json) {
   }
 }
 
-function field(key, decode, json) {
-  if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    var match = json[key];
+function dict(decode, json) {
+  var source = _jsonDict(json);
+  var keys = Object.keys(source);
+  var l = keys.length;
+  var target = { };
+  for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
+    var key = keys[i];
+    var value;
+    try {
+      value = _1(decode, source[key]);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === DecodeError) {
+        throw [
+              DecodeError,
+              exn[1] + "\n\tin dict"
+            ];
+      } else {
+        throw exn;
+      }
+    }
+    target[key] = value;
+  }
+  return target;
+}
+
+var FieldNotFound = create("Json_decode.FieldNotFound");
+
+function obj(builder, json) {
+  _jsonDict(json);
+  var tag = function (msg, key) {
+    return msg + ("\n\tat field '" + (key + "'"));
+  };
+  var get$$1 = function (key, decode, json) {
+    var match = _jsonDict(json)[key];
     if (match !== undefined) {
       try {
         return _1(decode, match);
       }
       catch (raw_exn){
         var exn = internalToOCamlException(raw_exn);
-        if (exn[0] === DecodeError) {
+        if (exn[0] === FieldNotFound) {
+          throw [
+                FieldNotFound,
+                tag(exn[1], key)
+              ];
+        } else if (exn[0] === DecodeError) {
           throw [
                 DecodeError,
-                exn[1] + ("\n\tat field '" + (key + "'"))
+                tag(exn[1], key)
               ];
         } else {
           throw exn;
@@ -2738,36 +2754,140 @@ function field(key, decode, json) {
       }
     } else {
       throw [
-            DecodeError,
-            "Expected field \'" + (String(key) + "\'")
+            FieldNotFound,
+            "Expected required field '" + (key + "'")
           ];
+    }
+  };
+  var field_000 = function (key, decode) {
+    var exit = 0;
+    var x;
+    try {
+      x = get$$1(key, decode, json);
+      exit = 1;
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        return /* None */0;
+      } else {
+        throw exn;
+      }
+    }
+    if (exit === 1) {
+      return /* Some */[x];
+    }
+    
+  };
+  var field_001 = function (key, decode) {
+    try {
+      return get$$1(key, decode, json);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        throw [
+              DecodeError,
+              exn[1]
+            ];
+      } else {
+        throw exn;
+      }
+    }
+  };
+  var field = /* record */[
+    field_000,
+    field_001
+  ];
+  var getPath = function (key_path, decode) {
+    if (key_path) {
+      var rest = key_path[1];
+      var key = key_path[0];
+      if (rest) {
+        var partial_arg = getPath(rest, decode);
+        return (function (param) {
+            return get$$1(key, partial_arg, param);
+          });
+      } else {
+        return (function (param) {
+            return get$$1(key, decode, param);
+          });
+      }
+    } else {
+      throw [
+            invalid_argument,
+            "Expected key_path to contain at least one element"
+          ];
+    }
+  };
+  var at_000 = function (path, decode) {
+    var exit = 0;
+    var x;
+    try {
+      x = getPath(path, decode)(json);
+      exit = 1;
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        return /* None */0;
+      } else {
+        throw exn;
+      }
+    }
+    if (exit === 1) {
+      return /* Some */[x];
+    }
+    
+  };
+  var at_001 = function (path, decode) {
+    try {
+      return getPath(path, decode)(json);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === FieldNotFound) {
+        throw [
+              DecodeError,
+              exn[1]
+            ];
+      } else {
+        throw exn;
+      }
+    }
+  };
+  var at = /* record */[
+    at_000,
+    at_001
+  ];
+  return _1(builder, /* record */[
+              /* field */field,
+              /* at */at
+            ]);
+}
+
+function field(key, decode, json) {
+  var dict = _jsonDict(json);
+  var match = dict[key];
+  if (match !== undefined) {
+    try {
+      return _1(decode, match);
+    }
+    catch (raw_exn){
+      var exn = internalToOCamlException(raw_exn);
+      if (exn[0] === DecodeError) {
+        throw [
+              DecodeError,
+              exn[1] + ("\n\tat field '" + (key + "'"))
+            ];
+      } else {
+        throw exn;
+      }
     }
   } else {
     throw [
           DecodeError,
-          "Expected object, got " + JSON.stringify(json)
-        ];
-  }
-}
-
-function at(key_path, decoder) {
-  if (key_path) {
-    var rest = key_path[1];
-    var key = key_path[0];
-    if (rest) {
-      var partial_arg = at(rest, decoder);
-      return (function (param) {
-          return field(key, partial_arg, param);
-        });
-    } else {
-      return (function (param) {
-          return field(key, decoder, param);
-        });
-    }
-  } else {
-    throw [
-          invalid_argument,
-          "Expected key_path to contain at least one element"
+          "Expected field \'" + (String(key) + "\'")
         ];
   }
 }
@@ -2791,212 +2911,215 @@ function map$8(f, decode, json) {
 }
 /* No side effect */
 
-function fromJson(json) {
-  return /* record */[
-          /* analyzed */field("analyzedAt", (function (param) {
-                  return map$8((function (prim) {
-                                return new Date(prim);
-                              }), string, param);
-                }), json),
-          /* name */at(/* :: */[
-                  "collected",
-                  /* :: */[
-                    "metadata",
-                    /* :: */[
-                      "name",
-                      /* [] */0
-                    ]
-                  ]
-                ], string)(json),
-          /* version */at(/* :: */[
-                  "collected",
-                  /* :: */[
-                    "metadata",
-                    /* :: */[
-                      "version",
-                      /* [] */0
-                    ]
-                  ]
-                ], string)(json),
-          /* description */at(/* :: */[
-                  "collected",
-                  /* :: */[
-                    "metadata",
-                    /* :: */[
-                      "description",
-                      /* [] */0
-                    ]
-                  ]
-                ], string)(json),
-          /* updated */at(/* :: */[
-                  "collected",
-                  /* :: */[
-                    "metadata",
-                    /* :: */[
-                      "date",
-                      /* [] */0
-                    ]
-                  ]
-                ], (function (param) {
-                    return map$8((function (prim) {
-                                  return new Date(prim);
-                                }), string, param);
-                  }))(json),
-          /* deprecated */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "deprecated",
-                        /* [] */0
-                      ]
-                    ]
-                  ], string), json),
-          /* author */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "author",
-                        /* :: */[
-                          "name",
-                          /* [] */0
-                        ]
-                      ]
-                    ]
-                  ], string), json),
-          /* license */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "license",
-                        /* [] */0
-                      ]
-                    ]
-                  ], string), json),
-          /* readme */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "readme",
-                        /* [] */0
-                      ]
-                    ]
-                  ], string), json),
-          /* keywords */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "keywords",
-                        /* [] */0
-                      ]
-                    ]
-                  ], (function (param) {
-                      return array(string, param);
-                    })), json),
-          /* stars */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "github",
-                      /* :: */[
-                        "starsCount",
-                        /* [] */0
-                      ]
-                    ]
-                  ], $$int), json),
-          /* score */at(/* :: */[
-                  "score",
-                  /* :: */[
-                    "final",
-                    /* [] */0
-                  ]
-                ], $$float)(json),
-          /* quality */at(/* :: */[
-                  "score",
-                  /* :: */[
-                    "detail",
-                    /* :: */[
-                      "quality",
-                      /* [] */0
-                    ]
-                  ]
-                ], $$float)(json),
-          /* popularity */at(/* :: */[
-                  "score",
-                  /* :: */[
-                    "detail",
-                    /* :: */[
-                      "popularity",
-                      /* [] */0
-                    ]
-                  ]
-                ], $$float)(json),
-          /* maintenance */at(/* :: */[
-                  "score",
-                  /* :: */[
-                    "detail",
-                    /* :: */[
-                      "maintenance",
-                      /* [] */0
-                    ]
-                  ]
-                ], $$float)(json),
-          /* homepageUrl */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "links",
-                        /* :: */[
-                          "homepage",
-                          /* [] */0
-                        ]
-                      ]
-                    ]
-                  ], string), json),
-          /* repositoryUrl */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "links",
-                        /* :: */[
-                          "repository",
-                          /* [] */0
-                        ]
-                      ]
-                    ]
-                  ], string), json),
-          /* npmUrl */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "links",
-                        /* :: */[
-                          "npm",
-                          /* [] */0
-                        ]
-                      ]
-                    ]
-                  ], string), json),
-          /* issuesUrl */optional(at(/* :: */[
-                    "collected",
-                    /* :: */[
-                      "metadata",
-                      /* :: */[
-                        "links",
-                        /* :: */[
-                          "bugs",
-                          /* [] */0
-                        ]
-                      ]
-                    ]
-                  ], string), json)
-        ];
+function fromJson(param) {
+  return obj((function (param) {
+                var at$$1 = param[/* at */1];
+                return /* record */[
+                        /* analyzed */_2(param[/* field */0][/* required */1], "analyzedAt", (function (param) {
+                                return map$8((function (prim) {
+                                              return new Date(prim);
+                                            }), string, param);
+                              })),
+                        /* name */_2(at$$1[/* required */1], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "name",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], string),
+                        /* version */_2(at$$1[/* required */1], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "version",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], string),
+                        /* description */_2(at$$1[/* required */1], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "description",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], string),
+                        /* updated */_2(at$$1[/* required */1], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "date",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], (function (param) {
+                                return map$8((function (prim) {
+                                              return new Date(prim);
+                                            }), string, param);
+                              })),
+                        /* deprecated */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "deprecated",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], string),
+                        /* author */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "author",
+                                  /* :: */[
+                                    "name",
+                                    /* [] */0
+                                  ]
+                                ]
+                              ]
+                            ], string),
+                        /* license */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "license",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], string),
+                        /* readme */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "readme",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], string),
+                        /* keywords */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "keywords",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], (function (param) {
+                                return array(string, param);
+                              })),
+                        /* stars */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "github",
+                                /* :: */[
+                                  "starsCount",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], $$int),
+                        /* score */_2(at$$1[/* required */1], /* :: */[
+                              "score",
+                              /* :: */[
+                                "final",
+                                /* [] */0
+                              ]
+                            ], $$float),
+                        /* quality */_2(at$$1[/* required */1], /* :: */[
+                              "score",
+                              /* :: */[
+                                "detail",
+                                /* :: */[
+                                  "quality",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], $$float),
+                        /* popularity */_2(at$$1[/* required */1], /* :: */[
+                              "score",
+                              /* :: */[
+                                "detail",
+                                /* :: */[
+                                  "popularity",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], $$float),
+                        /* maintenance */_2(at$$1[/* required */1], /* :: */[
+                              "score",
+                              /* :: */[
+                                "detail",
+                                /* :: */[
+                                  "maintenance",
+                                  /* [] */0
+                                ]
+                              ]
+                            ], $$float),
+                        /* homepageUrl */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "links",
+                                  /* :: */[
+                                    "homepage",
+                                    /* [] */0
+                                  ]
+                                ]
+                              ]
+                            ], string),
+                        /* repositoryUrl */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "links",
+                                  /* :: */[
+                                    "repository",
+                                    /* [] */0
+                                  ]
+                                ]
+                              ]
+                            ], string),
+                        /* npmUrl */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "links",
+                                  /* :: */[
+                                    "npm",
+                                    /* [] */0
+                                  ]
+                                ]
+                              ]
+                            ], string),
+                        /* issuesUrl */_2(at$$1[/* optional */0], /* :: */[
+                              "collected",
+                              /* :: */[
+                                "metadata",
+                                /* :: */[
+                                  "links",
+                                  /* :: */[
+                                    "bugs",
+                                    /* [] */0
+                                  ]
+                                ]
+                              ]
+                            ], string)
+                      ];
+              }), param);
 }
 
 function get$3(packageName) {
