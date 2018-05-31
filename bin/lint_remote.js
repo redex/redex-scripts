@@ -370,6 +370,23 @@ var NotFound = create("Rebase__Types.NotFound");
 
 /* No side effect */
 
+function null_undefined_to_opt(x) {
+  if (x === null || x === undefined) {
+    return /* None */0;
+  } else {
+    return /* Some */[x];
+  }
+}
+
+function undefined_to_opt(x) {
+  if (x === undefined) {
+    return /* None */0;
+  } else {
+    return /* Some */[x];
+  }
+}
+/* No side effect */
+
 function from$1(x) {
   return /* :: */[
           x,
@@ -1247,23 +1264,6 @@ function length$1(l) {
   }}
 /* No side effect */
 
-function null_undefined_to_opt(x) {
-  if (x === null || x === undefined) {
-    return /* None */0;
-  } else {
-    return /* Some */[x];
-  }
-}
-
-function undefined_to_opt(x) {
-  if (x === undefined) {
-    return /* None */0;
-  } else {
-    return /* Some */[x];
-  }
-}
-/* No side effect */
-
 function from$2(x) {
   return /* array */[x];
 }
@@ -1383,18 +1383,6 @@ function setOrRaise(i, value, self) {
   }
 }
 
-function exists$3(f, self) {
-  return self.some(__1(f));
-}
-
-function filter$3(f, self) {
-  return self.filter(__1(f));
-}
-
-function find$3(f, self) {
-  return undefined_to_opt(self.find(__1(f)));
-}
-
 function findIndex(f, self) {
   var i = self.findIndex(__1(f));
   if (i !== -1) {
@@ -1405,10 +1393,6 @@ function findIndex(f, self) {
   } else {
     return /* None */0;
   }
-}
-
-function forAll$2(f, self) {
-  return self.every(__1(f));
 }
 
 function flatMap$2(f, self) {
@@ -1532,7 +1516,7 @@ function mapOrElse(f, g, param) {
   }
 }
 
-function exists$4(predicate, param) {
+function exists$3(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
@@ -1540,7 +1524,7 @@ function exists$4(predicate, param) {
   }
 }
 
-function forAll$3(predicate, param) {
+function forAll$2(predicate, param) {
   if (param) {
     return _1(predicate, param[0]);
   } else {
@@ -1548,7 +1532,7 @@ function forAll$3(predicate, param) {
   }
 }
 
-function filter$4(predicate, self) {
+function filter$3(predicate, self) {
   if (self && _1(predicate, self[0])) {
     return self;
   } else {
@@ -1564,7 +1548,7 @@ function forEach$2(f, param) {
   }
 }
 
-function find$4(predicate, param) {
+function find$3(predicate, param) {
   if (param) {
     var x = param[0];
     if (_1(predicate, x)) {
@@ -1675,9 +1659,25 @@ function Array_004(prim, prim$1, prim$2) {
   return prim$2.reduceRight(prim, prim$1);
 }
 
+function Array_006(prim, prim$1) {
+  return prim$1.every(prim);
+}
+
+function Array_007(prim, prim$1) {
+  return undefined_to_opt(prim$1.find(prim));
+}
+
 function Array_008(prim, prim$1) {
   prim$1.forEach(prim);
   return /* () */0;
+}
+
+function Array_009(prim, prim$1) {
+  return prim$1.some(prim);
+}
+
+function Array_010(prim, prim$1) {
+  return prim$1.filter(prim);
 }
 
 function Array_011(prim, prim$1) {
@@ -1717,11 +1717,11 @@ var $$Array = [
   Array_003,
   Array_004,
   flatMap$2,
-  forAll$2,
-  find$3,
+  Array_006,
+  Array_007,
   Array_008,
-  exists$3,
-  filter$3,
+  Array_009,
+  Array_010,
   Array_011,
   make,
   fromList$1,
@@ -1786,11 +1786,11 @@ var Option = [
   reduce$2,
   reduceRight$2,
   flatMap$3,
-  forAll$3,
-  find$4,
+  forAll$2,
+  find$3,
   forEach$2,
-  exists$4,
-  filter$4,
+  exists$3,
+  filter$3,
   some,
   fromResult,
   isSome,
