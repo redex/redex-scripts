@@ -25,7 +25,7 @@ let fromJson = Json.Decode.(
     description   : field.optional("description", string),
     author        : field.optional("author", string),
     license       : at.optional(["license", "type"], string)
-                    |> _orElse(() => field.optional("type", string)),
+                    |> _orElse(() => field.optional("license", string)),
     keywords      : field.optional("keywords", array(string)),
     dependencies  : field.optional("dependencies", dict(string)),
     homepage      : field.optional("homepage", string),

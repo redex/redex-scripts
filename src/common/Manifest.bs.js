@@ -25,7 +25,7 @@ function fromJson(param) {
                         /* description */Curry._2(field[/* optional */0], "description", Json_decode.string),
                         /* author */Curry._2(field[/* optional */0], "author", Json_decode.string),
                         /* license */_orElse((function () {
-                                return Curry._2(field[/* optional */0], "type", Json_decode.string);
+                                return Curry._2(field[/* optional */0], "license", Json_decode.string);
                               }), Curry._2(at[/* optional */0], /* :: */[
                                   "license",
                                   /* :: */[
