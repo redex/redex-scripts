@@ -1,12 +1,19 @@
 
 
 import * as Curry from "../../node_modules/bs-platform/lib/es6/curry.js";
-import * as Rebase from "../../node_modules/@glennsl/rebase/src/Rebase.bs.js";
 import * as Resync from "../../node_modules/refetch/src/Resync.bs.js";
 import * as Refetch from "../../node_modules/refetch/src/Refetch.bs.js";
 import * as Pervasives from "../../node_modules/bs-platform/lib/es6/pervasives.js";
 import * as Json_decode from "../../node_modules/@glennsl/bs-json/src/Json_decode.bs.js";
 import * as Refetch__Response from "../../node_modules/refetch/src/Refetch__Response.bs.js";
+
+function _orElse(f, self) {
+  if (self) {
+    return self;
+  } else {
+    return Curry._1(f, /* () */0);
+  }
+}
 
 function fromJson(param) {
   return Json_decode.obj((function (param) {
@@ -17,7 +24,9 @@ function fromJson(param) {
                         /* version */Curry._2(field[/* required */1], "version", Json_decode.string),
                         /* description */Curry._2(field[/* optional */0], "description", Json_decode.string),
                         /* author */Curry._2(field[/* optional */0], "author", Json_decode.string),
-                        /* license */Rebase.Option[/* or_ */15](Curry._2(field[/* optional */0], "type", Json_decode.string), Curry._2(at[/* optional */0], /* :: */[
+                        /* license */_orElse((function () {
+                                return Curry._2(field[/* optional */0], "type", Json_decode.string);
+                              }), Curry._2(at[/* optional */0], /* :: */[
                                   "license",
                                   /* :: */[
                                     "type",
@@ -31,14 +40,18 @@ function fromJson(param) {
                                 return Json_decode.dict(Json_decode.string, param);
                               })),
                         /* homepage */Curry._2(field[/* optional */0], "homepage", Json_decode.string),
-                        /* repositoryUrl */Rebase.Option[/* or_ */15](Curry._2(field[/* optional */0], "repository", Json_decode.string), Curry._2(at[/* optional */0], /* :: */[
+                        /* repositoryUrl */_orElse((function () {
+                                return Curry._2(field[/* optional */0], "repository", Json_decode.string);
+                              }), Curry._2(at[/* optional */0], /* :: */[
                                   "repository",
                                   /* :: */[
                                     "url",
                                     /* [] */0
                                   ]
                                 ], Json_decode.string)),
-                        /* bugsUrl */Rebase.Option[/* or_ */15](Curry._2(field[/* optional */0], "bugs", Json_decode.string), Curry._2(at[/* optional */0], /* :: */[
+                        /* bugsUrl */_orElse((function () {
+                                return Curry._2(field[/* optional */0], "bugs", Json_decode.string);
+                              }), Curry._2(at[/* optional */0], /* :: */[
                                   "bugs",
                                   /* :: */[
                                     "url",
@@ -61,6 +74,7 @@ function get(repo) {
 }
 
 export {
+  _orElse ,
   fromJson ,
   get ,
   

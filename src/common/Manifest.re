@@ -1,5 +1,9 @@
 open Rebase;
 
+let _orElse = f =>
+  fun | Some(_) as self => self
+      | None            => f();
+
 type t = {
   name          : string,
   version       : string,
@@ -21,14 +25,14 @@ let fromJson = Json.Decode.(
     description   : field.optional("description", string),
     author        : field.optional("author", string),
     license       : at.optional(["license", "type"], string)
-                    |> Option.or_(field.optional("type", string)),
+                    |> _orElse(() => field.optional("type", string)),
     keywords      : field.optional("keywords", array(string)),
     dependencies  : field.optional("dependencies", dict(string)),
     homepage      : field.optional("homepage", string),
     repositoryUrl : at.optional(["repository", "url"], string)
-                    |> Option.or_(field.optional("repository", string)),
+                    |> _orElse(() => field.optional("repository", string)),
     bugsUrl       : at.optional(["bugs", "url"], string)
-                    |> Option.or_(field.optional("bugs", string)),
+                    |> _orElse(() => field.optional("bugs", string)),
   })
 );
 
