@@ -1545,9 +1545,26 @@ function array(decode, json) {
   }
 }
 
+function _isObject(json) {
+  if (typeof json === "object" && !Array.isArray(json)) {
+    return json !== null;
+  } else {
+    return false;
+  }
+}
+
 function _jsonDict(json) {
-  if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    return json;
+  if (_isObject(json)) {
+    return /* Some */[json];
+  } else {
+    return /* None */0;
+  }
+}
+
+function _assertJsonDict(json) {
+  var match = _jsonDict(json);
+  if (match) {
+    return match[0];
   } else {
     throw [
           DecodeError,
@@ -1557,7 +1574,7 @@ function _jsonDict(json) {
 }
 
 function dict(decode, json) {
-  var source = _jsonDict(json);
+  var source = _assertJsonDict(json);
   var keys = Object.keys(source);
   var l = keys.length;
   var target = { };
@@ -1585,9 +1602,10 @@ function dict(decode, json) {
 
 var FieldNotFound = create("Json_decode.FieldNotFound");
 
+var NotAnObject = create("Json_decode.NotAnObject");
+
 function field(key, decode, json) {
-  var dict = _jsonDict(json);
-  var match = dict[key];
+  var match = _assertJsonDict(json)[key];
   if (match !== undefined) {
     try {
       return _1(decode, match);

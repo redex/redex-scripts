@@ -3421,9 +3421,26 @@ function array(decode, json) {
   }
 }
 
+function _isObject(json) {
+  if (typeof json === "object" && !Array.isArray(json)) {
+    return json !== null;
+  } else {
+    return false;
+  }
+}
+
 function _jsonDict(json) {
-  if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    return json;
+  if (_isObject(json)) {
+    return /* Some */[json];
+  } else {
+    return /* None */0;
+  }
+}
+
+function _assertJsonDict(json) {
+  var match = _jsonDict(json);
+  if (match) {
+    return match[0];
   } else {
     throw [
           DecodeError,
@@ -3433,7 +3450,7 @@ function _jsonDict(json) {
 }
 
 function dict(decode, json) {
-  var source = _jsonDict(json);
+  var source = _assertJsonDict(json);
   var keys = Object.keys(source);
   var l = keys.length;
   var target = { };
@@ -3461,150 +3478,167 @@ function dict(decode, json) {
 
 var FieldNotFound = create("Json_decode.FieldNotFound");
 
+var NotAnObject = create("Json_decode.NotAnObject");
+
 function obj(builder, json) {
-  _jsonDict(json);
-  var tag = function (msg, key) {
-    return msg + ("\n\tat field '" + (key + "'"));
-  };
-  var get$$1 = function (key, decode, json) {
-    var match = _jsonDict(json)[key];
-    if (match !== undefined) {
+  if (_isObject(json)) {
+    var tag = function (msg, key) {
+      return msg + ("\n\tat field '" + (key + "'"));
+    };
+    var get$$1 = function (key, decode, json) {
+      var match = _jsonDict(json);
+      if (match) {
+        var match$1 = match[0][key];
+        if (match$1 !== undefined) {
+          try {
+            return _1(decode, match$1);
+          }
+          catch (raw_exn){
+            var exn = internalToOCamlException(raw_exn);
+            if (exn[0] === FieldNotFound) {
+              throw [
+                    FieldNotFound,
+                    tag(exn[1], key)
+                  ];
+            } else if (exn[0] === DecodeError) {
+              throw [
+                    DecodeError,
+                    tag(exn[1], key)
+                  ];
+            } else {
+              throw exn;
+            }
+          }
+        } else {
+          throw [
+                FieldNotFound,
+                "Expected required field '" + (key + "'")
+              ];
+        }
+      } else {
+        throw NotAnObject;
+      }
+    };
+    var field_000 = function (key, decode) {
+      var exit = 0;
+      var x;
       try {
-        return _1(decode, match);
+        x = get$$1(key, decode, json);
+        exit = 1;
+      }
+      catch (raw_exn){
+        var exn = internalToOCamlException(raw_exn);
+        if (exn[0] === FieldNotFound) {
+          return /* None */0;
+        } else {
+          throw exn;
+        }
+      }
+      if (exit === 1) {
+        return /* Some */[x];
+      }
+      
+    };
+    var field_001 = function (key, decode) {
+      try {
+        return get$$1(key, decode, json);
       }
       catch (raw_exn){
         var exn = internalToOCamlException(raw_exn);
         if (exn[0] === FieldNotFound) {
           throw [
-                FieldNotFound,
-                tag(exn[1], key)
-              ];
-        } else if (exn[0] === DecodeError) {
-          throw [
                 DecodeError,
-                tag(exn[1], key)
+                exn[1]
               ];
         } else {
           throw exn;
         }
       }
-    } else {
-      throw [
-            FieldNotFound,
-            "Expected required field '" + (key + "'")
-          ];
-    }
-  };
-  var field_000 = function (key, decode) {
-    var exit = 0;
-    var x;
-    try {
-      x = get$$1(key, decode, json);
-      exit = 1;
-    }
-    catch (raw_exn){
-      var exn = internalToOCamlException(raw_exn);
-      if (exn[0] === FieldNotFound) {
-        return /* None */0;
+    };
+    var field = /* record */[
+      field_000,
+      field_001
+    ];
+    var getPath = function (key_path, decode) {
+      if (key_path) {
+        var rest = key_path[1];
+        var key = key_path[0];
+        if (rest) {
+          var partial_arg = getPath(rest, decode);
+          return (function (param) {
+              return get$$1(key, partial_arg, param);
+            });
+        } else {
+          return (function (param) {
+              return get$$1(key, decode, param);
+            });
+        }
       } else {
-        throw exn;
-      }
-    }
-    if (exit === 1) {
-      return /* Some */[x];
-    }
-    
-  };
-  var field_001 = function (key, decode) {
-    try {
-      return get$$1(key, decode, json);
-    }
-    catch (raw_exn){
-      var exn = internalToOCamlException(raw_exn);
-      if (exn[0] === FieldNotFound) {
         throw [
-              DecodeError,
-              exn[1]
+              invalid_argument,
+              "Expected key_path to contain at least one element"
             ];
-      } else {
-        throw exn;
       }
-    }
-  };
-  var field = /* record */[
-    field_000,
-    field_001
-  ];
-  var getPath = function (key_path, decode) {
-    if (key_path) {
-      var rest = key_path[1];
-      var key = key_path[0];
-      if (rest) {
-        var partial_arg = getPath(rest, decode);
-        return (function (param) {
-            return get$$1(key, partial_arg, param);
-          });
-      } else {
-        return (function (param) {
-            return get$$1(key, decode, param);
-          });
+    };
+    var at_000 = function (path, decode) {
+      var exit = 0;
+      var x;
+      try {
+        x = getPath(path, decode)(json);
+        exit = 1;
       }
-    } else {
-      throw [
-            invalid_argument,
-            "Expected key_path to contain at least one element"
-          ];
-    }
-  };
-  var at_000 = function (path, decode) {
-    var exit = 0;
-    var x;
-    try {
-      x = getPath(path, decode)(json);
-      exit = 1;
-    }
-    catch (raw_exn){
-      var exn = internalToOCamlException(raw_exn);
-      if (exn[0] === FieldNotFound) {
-        return /* None */0;
-      } else {
-        throw exn;
+      catch (raw_exn){
+        var exn = internalToOCamlException(raw_exn);
+        if (exn[0] === FieldNotFound || exn === NotAnObject) {
+          return /* None */0;
+        } else {
+          throw exn;
+        }
       }
-    }
-    if (exit === 1) {
-      return /* Some */[x];
-    }
-    
-  };
-  var at_001 = function (path, decode) {
-    try {
-      return getPath(path, decode)(json);
-    }
-    catch (raw_exn){
-      var exn = internalToOCamlException(raw_exn);
-      if (exn[0] === FieldNotFound) {
-        throw [
-              DecodeError,
-              exn[1]
-            ];
-      } else {
-        throw exn;
+      if (exit === 1) {
+        return /* Some */[x];
       }
-    }
-  };
-  var at = /* record */[
-    at_000,
-    at_001
-  ];
-  return _1(builder, /* record */[
-              /* field */field,
-              /* at */at
-            ]);
+      
+    };
+    var at_001 = function (path, decode) {
+      try {
+        return getPath(path, decode)(json);
+      }
+      catch (raw_exn){
+        var exn = internalToOCamlException(raw_exn);
+        if (exn[0] === FieldNotFound) {
+          throw [
+                DecodeError,
+                exn[1]
+              ];
+        } else if (exn === NotAnObject) {
+          throw [
+                DecodeError,
+                "Expected object, got " + JSON.stringify(json)
+              ];
+        } else {
+          throw exn;
+        }
+      }
+    };
+    var at = /* record */[
+      at_000,
+      at_001
+    ];
+    return _1(builder, /* record */[
+                /* field */field,
+                /* at */at
+              ]);
+  } else {
+    throw [
+          DecodeError,
+          "Expected object, got " + JSON.stringify(json)
+        ];
+  }
 }
 
 function field(key, decode, json) {
-  var dict = _jsonDict(json);
-  var match = dict[key];
+  var match = _assertJsonDict(json)[key];
   if (match !== undefined) {
     try {
       return _1(decode, match);
@@ -3967,6 +4001,14 @@ function fromUnpublished(source, manifest, readme, stars) {
 }
 /* _normalizeKeywords Not a pure module */
 
+function _orElse(f, self) {
+  if (self) {
+    return self;
+  } else {
+    return _1(f, /* () */0);
+  }
+}
+
 function fromJson$2(param) {
   return obj((function (param) {
                 var at$$1 = param[/* at */1];
@@ -3976,7 +4018,9 @@ function fromJson$2(param) {
                         /* version */_2(field$$1[/* required */1], "version", string$1),
                         /* description */_2(field$$1[/* optional */0], "description", string$1),
                         /* author */_2(field$$1[/* optional */0], "author", string$1),
-                        /* license */Option[/* or_ */15](_2(field$$1[/* optional */0], "type", string$1), _2(at$$1[/* optional */0], /* :: */[
+                        /* license */_orElse((function () {
+                                return _2(field$$1[/* optional */0], "license", string$1);
+                              }), _2(at$$1[/* optional */0], /* :: */[
                                   "license",
                                   /* :: */[
                                     "type",
@@ -3990,14 +4034,18 @@ function fromJson$2(param) {
                                 return dict(string$1, param);
                               })),
                         /* homepage */_2(field$$1[/* optional */0], "homepage", string$1),
-                        /* repositoryUrl */Option[/* or_ */15](_2(field$$1[/* optional */0], "repository", string$1), _2(at$$1[/* optional */0], /* :: */[
+                        /* repositoryUrl */_orElse((function () {
+                                return _2(field$$1[/* optional */0], "repository", string$1);
+                              }), _2(at$$1[/* optional */0], /* :: */[
                                   "repository",
                                   /* :: */[
                                     "url",
                                     /* [] */0
                                   ]
                                 ], string$1)),
-                        /* bugsUrl */Option[/* or_ */15](_2(field$$1[/* optional */0], "bugs", string$1), _2(at$$1[/* optional */0], /* :: */[
+                        /* bugsUrl */_orElse((function () {
+                                return _2(field$$1[/* optional */0], "bugs", string$1);
+                              }), _2(at$$1[/* optional */0], /* :: */[
                                   "bugs",
                                   /* :: */[
                                     "url",
